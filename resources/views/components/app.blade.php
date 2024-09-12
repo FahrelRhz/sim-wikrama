@@ -21,7 +21,7 @@
             position: fixed;
             width: 250px;
             height: 100%;
-            background-color: #343a40;
+            background-color: #042456;
             transition: width 0.3s ease;
             z-index: 9999;
         }
@@ -86,6 +86,7 @@
         }
 
         .navbar {
+            
             z-index: 9998;
         }
 
@@ -132,12 +133,6 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const toggleButton = document.getElementById('toggleSidebar');
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            const sidebarIcon = document.getElementById('sidebarIcon');
-
             toggleButton.addEventListener('click', () => {
                 sidebar.classList.toggle('collapsed');
                 content.classList.toggle('collapsed');

@@ -11,7 +11,6 @@
 
         th,
         td {
-            padding: 15px;
             text-align: center;
         }
 
@@ -31,15 +30,49 @@
         }
 
         .chart-container {
-            width: 300px;
-            height: 300px;
+            width: 100%;
+            max-width: 200px;
+            margin-right: 75px;
+            margin-top: -25px;
         }
 
         .table-chart-container {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-top: 20px;
+        }
+
+        @media (max-width: 750px) {
+            .table-chart-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            th,
+            td {
+                font-size: 15px;
+            }
+
+            table {
+                width: 70%;
+                max-width: 70%;
+                overflow-x: auto;
+            }
+
+            td.bg-success-subtle {
+                font-size: 10px;
+            }
+
+            .chart-container {
+                width: 100%;
+                max-width: 150px;
+                justify-content: center;
+                align-items: center;
+                display: flex;
+                margin-top: 20px;
+                margin-left: 40px;
+            }
+
         }
     </style>
 
@@ -50,7 +83,7 @@
             <a class="text-decoration-none" href="/dashboard">
                 <h6 class="text-secondary">
                     <i class="bi bi-house"></i>
-                    Dashboard / 
+                    Dashboard /
                 </h6>
             </a>
         </div>
@@ -122,7 +155,8 @@
             </div>
         </div>
 
-        <div class="table-chart-container mt-5">
+        <h5 class="table-title mt-5">Status Terbaru</h5>
+        <div class="table-chart-container">
             <div class="col">
                 <table>
                     <tr>
@@ -147,6 +181,7 @@
             </div>
 
             <div class="chart-container">
+                <h5>Kategori Barang Pinjaman</h5>
                 <canvas id="myPieChart"></canvas>
             </div>
         </div>
@@ -165,7 +200,12 @@
                 }]
             },
             options: {
-                responsive: true
+                // responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
             }
         });
     </script>

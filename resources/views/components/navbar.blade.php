@@ -1,8 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <button id="toggleSidebar" class="btn btn-secondary d-lg-none">
-            <i id="sidebarIcon" class="bi bi-list"></i>
-        </button>
         <a class="navbar-brand ms-3" href="#">Dashboard</a>
         <div class="d-flex ms-auto">
             <button class="btn btn-secondary me-2" id="profile-btn">

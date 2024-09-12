@@ -15,13 +15,13 @@
         </li>
         <li class="nav-item">
             <a href="" class="nav-link text-white">
-                <i class="bi bi-person-fill me-2"></i>
+                <i class="bi bi-archive  -fill me-2"></i>
                 <span class="d-sm-inline nav-text">About</span>
             </a>
         </li>
         <li class="nav-item">
             <a href="" class="nav-link text-white">
-                <i class="bi bi-archive-fill me-2"></i>
+                <i class="bi bi-person-fill me-2"></i>
                 <span class="d-sm-inline nav-text">User</span>
             </a>
         </li>

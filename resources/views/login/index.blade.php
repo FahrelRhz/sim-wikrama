@@ -8,21 +8,23 @@
     <title>Inventaris</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+        rel="stylesheet">
     <style>
         body {
             font-family: 'Lexend Deca', sans-serif;
         }
 
         .logo {
-            width: 60px; height: 60px;
+            width: 60px;
+            height: 60px;
         }
 
         .login-frame {
-            width: 400px; height: 400px;
+            width: 400px;
+            height: 400px;
         }
-
-    </style>    
+    </style>
 </head>
 
 <body>
@@ -41,7 +43,7 @@
                 <div class="">
                     <div class="">
                         <h1 class="text-primary fs-1">Selamat Datang!</h1>
-                        <h4 class="mb-5">Ada banyak peminjam yang menunggumu!</h4>
+                        <h4 class="text-secondary mb-5">Ada banyak peminjam yang menunggumu!</h4>
                     </div>
 
                     <div class="input-group mb-3">
@@ -51,8 +53,11 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-lock"></i></span>
-                        <input type="text" class="form-control" placeholder="password" aria-label="Password"
+                        <input type="password" class="form-control" placeholder="password" aria-label="Password"
                             aria-describedby="basic-addon1">
+                    </div>
+                    <div class="d-grid gap-2 col-12">
+                        <button class="btn btn-primary" type="button">Login</button>
                     </div>
                 </div>
             </div>

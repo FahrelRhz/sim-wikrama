@@ -1,4 +1,4 @@
-<div id="sidebar" class="sidebar">
+<div class="sidebar">
     <div class="d-flex align-items-center px-3 py-4 logo-container">
         <img class="logo" src="{{ asset('login/wikrama-logo.png') }}" alt="Logo">
         <div class="title">
@@ -8,27 +8,43 @@
     <hr class="text-white">
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a href="" class="nav-link text-white">
+            <a href="" class="nav-link">
                 <i class="bi bi-house me-2"></i>
                 <span class="d-sm-inline nav-text">Home</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="" class="nav-link text-white">
-                <i class="bi bi-archive  -fill me-2"></i>
-                <span class="d-sm-inline nav-text">About</span>
+        <li class="nav-item position-relative">
+            <a href="#submenu1" class="nav-link" data-bs-toggle="collapse">
+                <i class="bi bi-archive-fill me-2"></i>
+                <span class="d-sm-inline nav-text">Daftar Barang</span>
+                <i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            <ul class="nav collapse position-relative flex-column submenu" id="submenu1">
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="bi bi-laptop me-2"></i>
+                        <span class="d-sm-inline nav-text">Elektronik</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="bi bi-printer me-2"></i>
+                        <span class="d-sm-inline nav-text">Peralatan Kantor</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="bi bi-gear-fill me-2"></i>
+                        <span class="d-sm-inline nav-text">Maintenance</span>
+                    </a>
+                </li>
+            </ul>
         </li>
         <li class="nav-item">
-            <a href="" class="nav-link text-white">
+            <a href="" class="nav-link">
                 <i class="bi bi-person-fill me-2"></i>
-                <span class="d-sm-inline nav-text">User</span>
+                <span class="d-sm-inline nav-text">Daftar User</span>
             </a>
         </li>
     </ul>
-    <div class="sidebar-footer">
-        <button id="toggleSidebar" class="btn btn-secondary">
-            <i id="sidebarIcon" class="bi bi-list"></i>
-        </button>
-    </div>
 </div>

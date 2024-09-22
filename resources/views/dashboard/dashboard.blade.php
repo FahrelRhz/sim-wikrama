@@ -4,7 +4,7 @@
     <style>
         table {
             width: 100%;
-            max-width: 720px;
+            /* max-width: 720px; */
             border-collapse: separate;
             border-spacing: 10px 15px;
         }
@@ -19,6 +19,11 @@
             border-radius: 10px;
         }
 
+        td.bg-danger-subtle {
+            color: rgb(255, 0, 0);
+            border-radius: 10px;
+        }
+
         .count {
             font-size: 26px;
             font-weight: bold;
@@ -30,10 +35,7 @@
         }
 
         .chart-container {
-            width: 100%;
-            max-width: 200px;
-            margin-right: 75px;
-            margin-top: -25px;
+            margin-top: 25px;
         }
 
         .table-chart-container {
@@ -42,10 +44,133 @@
             align-items: flex-start;
         }
 
+        .card {
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .icon-background {
+            background-color: #042456;
+            color: #fff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .card:hover {
+            background-color: #042456;
+            color: #fff;
+        }
+
+        .card:hover .icon-background {
+            background-color: #fff;
+            color: #042456;
+        }
+
+        .right-sidebar {
+            width: 250px;
+            position: fixed;
+            top: 20px;
+            right: -300px;
+            bottom: 20px;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+            transition: right 0.5s ease;
+            border-radius: 20px;
+        }
+
+        .sidebar-open {
+            right: 0;
+        }
+
+        .sidebar-date {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #042456;
+        }
+
+        .sidebar-profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-profile h6 {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-welcome {
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: #042456;
+        }
+
+        .sidebar-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .sidebar-icon {
+            background-color: #042456;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-icon:hover {
+            background-color: rgb(255, 255, 255);
+            cursor: pointer;
+            color: #042456;
+        }
+
+        .sidebar-bottom-text {
+            margin-top: auto;
+            font-size: 18px;
+            color: gray;
+        }
+
+        .close-sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #042456;
+        }
+
+        .user-button {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #042456;
+            color: white;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
         @media (max-width: 750px) {
             .table-chart-container {
                 flex-direction: column;
-                align-items: flex-start;
+            }
+
+            h5.table-title {
+                text-align: center;
             }
 
             th,
@@ -54,25 +179,25 @@
             }
 
             table {
-                width: 70%;
-                max-width: 70%;
+                width: 100%;
+                max-width: 100%;
                 overflow-x: auto;
             }
 
+            td.bg-danger-subtle,
             td.bg-success-subtle {
                 font-size: 10px;
             }
 
             .chart-container {
+                margin-top: -55px;
                 width: 100%;
-                max-width: 150px;
+                max-width: 400px;
                 justify-content: center;
                 align-items: center;
                 display: flex;
-                margin-top: 20px;
-                margin-left: 40px;
+                flex-direction: column;
             }
-
         }
     </style>
 
@@ -93,7 +218,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <i class="bg-primary p-3 text-white rounded bi bi-gear-fill me-2 icon-background"></i>
+                            <i class="p-3 rounded bi bi-gear-fill me-2 icon-background"></i>
                             <div>
                                 <h5 class="card-title mb-1">Request Perbaikan</h5>
                                 <p class="card-text me-2">
@@ -109,7 +234,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <i class="bg-primary p-3 text-white rounded bi bi-wrench me-2 icon-background"></i>
+                            <i class="p-3 rounded bi bi-wrench me-2 icon-background"></i>
                             <div>
                                 <h5 class="card-title mb-1">Sedang Diperbaiki</h5>
                                 <p class="card-text me-2">
@@ -125,7 +250,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <i class="bg-primary p-3 text-white rounded bi bi-check-circle-fill me-2 icon-background"></i>
+                            <i class="p-3 rounded bi bi-check-circle-fill me-2 icon-background"></i>
                             <div>
                                 <h5 class="card-title mb-1">Selesai Perbaikan</h5>
                                 <p class="card-text me-2">
@@ -141,7 +266,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <i class="bg-primary p-3 text-white rounded bi bi-check2-all me-2 icon-background"></i>
+                            <i class="p-3 rounded bi bi-check2-all me-2 icon-background"></i>
                             <div>
                                 <h5 class="card-title mb-1">Selesai Diperbaiki</h5>
                                 <p class="card-text me-2">
@@ -168,45 +293,121 @@
                     <tr>
                         <td>1</td>
                         <td>John Doe</td>
-                        <td>Daftar Barang</td>
+                        <td>Handphone</td>
                         <td class="bg-success-subtle fw-bold">Kembali</td>
                     </tr>
                     <tr>
                         <td>2</td>
                         <td>Jane Smith</td>
-                        <td>Daftar Barang</td>
-                        <td class="bg-success-subtle fw-bold">Kembali</td>
+                        <td>Laptop</td>
+                        <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
                     </tr>
                 </table>
             </div>
-
-            <div class="chart-container">
-                <h5>Kategori Barang Pinjaman</h5>
-                <canvas id="myPieChart"></canvas>
+        </div>
+        <div class="pagination d-flex justify-content-center mt-4 mb-4">
+            <div class="btn-group" role="group" aria-label="Pagination">
+                <button type="button" class="btn btn-outline-secondary">10 Items</button>
+                <button type="button" class="btn btn-outline-secondary">25</button>
+                <button type="button" class="btn btn-outline-secondary">50</button>
+                <button type="button" class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i></button>
+                <button type="button" class="btn btn-outline-secondary">1 of 1</button>
+                <button type="button" class="btn btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
             </div>
         </div>
+
+        {{-- grafik --}}
+        <div class="chart-container" style="height: 250px;">
+            <h5>Kategori Barang Pinjaman</h5>
+            <canvas id="myBarChart" style="width: 100%; height: 100%;"></canvas>
+        </div>
+
+        <div class="user-button" onclick="openSidebar()">
+            <i class="bi bi-person-fill"></i>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar" id="right-sidebar">
+            <span class="close-sidebar" onclick="closeSidebar()">&times;</span>
+            <div class="sidebar-date" id="sidebar-date"></div>
+
+            <div class="sidebar-profile">
+                <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                <h6>Admin</h6>
+            </div>
+
+            <div class="sidebar-welcome">
+                Welcome Admin!
+            </div>
+
+            <div class="sidebar-icons">
+                <div class="sidebar-icon">
+                    <i class="bi bi-gear-fill"></i>
+                </div>
+                <div class="sidebar-icon">
+                    <i class="bi bi-box-arrow-right"></i>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom-text">
+                Have a nice day!
+            </div>
+        </div>
+
     </div>
 
     <script>
-        const ctx = document.getElementById('myPieChart').getContext('2d');
-        const myPieChart = new Chart(ctx, {
-            type: 'pie',
+        const ctx = document.getElementById('myBarChart').getContext('2d');
+        const myBarChart = new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels: ['Barang Kembali', 'Barang Belum Kembali'],
+                labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
                 datasets: [{
-                    data: [10, 1],
-                    backgroundColor: ['#0d6efd', '#0dcaf0'],
+                    label: 'Barang Belum Kembali',
+                    data: [10, 12, 15, 8, 12, 10, 8],
+                    backgroundColor: '#0d6efd',
+                    hoverOffset: 4
+                }, {
+                    label: 'Barang Sudah Kembali',
+                    data: [8, 10, 12, 15, 8, 12, 10],
+                    backgroundColor: '#0dcaf0',
                     hoverOffset: 4
                 }]
             },
             options: {
-                // responsive: true,
                 plugins: {
                     legend: {
-                        display: false
+                        display: true
                     }
                 }
             }
         });
+    </script>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('right-sidebar').classList.add('sidebar-open');
+        }
+
+        function closeSidebar() {
+            document.getElementById('right-sidebar').classList.remove('sidebar-open');
+        }
+
+        function displayDate() {
+            const dateElement = document.getElementById('sidebar-date');
+            const now = new Date();
+
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+
+            dateElement.innerHTML = formattedDate;
+        }
+
+        displayDate();
     </script>
 @endsection

@@ -19,15 +19,19 @@
 
         .sidebar {
             position: fixed;
-            width: 250px;
-            height: 100%;
+            width: 225px;
+            height: 95%;
             background-color: #042456;
-            transition: width 0.3s ease;
             z-index: 9999;
+            border-radius: 30px;
+            left: 20px;
+            top: 20px;
+            bottom: 20px;
         }
 
         .sidebar.collapsed {
             width: 80px;
+            border-radius: 20px;
         }
 
         .sidebar .logo-container {
@@ -54,19 +58,37 @@
             align-items: center;
             padding: 10px;
             color: #fff;
+            transition: background-color 0.5s ease, margin 0.5s ease;
+            border-radius: 30px 0 0 30px;
+            padding-left: 10px;
         }
 
-        .sidebar .nav-item:hover {
-            background-color: #495057;
+        .sidebar .nav-item:hover,
+        .sidebar .nav-item.active {
+            background-color: #fff;
+            color: #000;
+            margin-left: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar .nav-item:hover .nav-link i,
+        .sidebar .nav-item.active .nav-link i {
+            color: #000;
         }
 
         .sidebar .nav-link {
-            color: #fff;
+            color: inherit;
             width: 100%;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: color 0.5s ease;
         }
 
         .sidebar .nav-link i {
-            margin-right: 10px;
+            margin-right: 15px;
+            transition: color 0.5s ease;
         }
 
         .sidebar.collapsed .nav-link span {
@@ -85,9 +107,48 @@
             text-align: center;
         }
 
-        .navbar {
-            
-            z-index: 9998;
+        .submenu {
+            display: none;
+            position: relative;
+            top: 0;
+            width: 100%;
+            transition: all 0.3s ease;
+            background-color: #042456;
+            color: #000;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .submenu.show {
+            display: block;
+        }
+
+        .sidebar .nav-item.position-relative .submenu {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .sidebar .nav-item.position-relative .submenu.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sidebar .nav-item .nav-link i {
+            transition: transform 0.5s ease;
+        }
+
+        .sidebar .nav-item .collapse.show+.nav-link i.bi-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .sidebar .nav-item ul.nav {
+            padding-left: 0;
+        }
+
+        .sidebar .nav-item ul.nav .nav-item {
+            padding-left: 20px;
         }
 
         .card {
@@ -97,64 +158,77 @@
         .content {
             margin-left: 250px;
             padding: 20px;
-            transition: margin-left 0.3s ease;
+            transition: margin-left 0.5s ease;
         }
 
         .content.collapsed {
-            margin-left: 80px;
+            margin-left: 0px;
         }
 
         @media (max-width: 750px) {
-            .title {
-                display: none;
+            body {
+                position: relative;
             }
 
             .sidebar {
-                width: 80px;
+                position: fixed;
+                transform: translateY(calc(99vh - 75px));
+                width: 100%;
+                height: 75px;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                border-radius: 20px 20px 0 0;
+                padding: 10px;
+                left: 0;
+                right: 0;
+                z-index: 9999;
+                background-color: #042456;
+            }
+
+            .sidebar .nav-item {
+                margin: 0 10px;
+                padding: 5px;
+                border-radius: 50%;
+                align-items: center;
+                font-size: 20px;
+                text-align: center;
+            }
+
+            .sidebar .nav-link {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
 
             .sidebar .nav-link span {
                 display: none;
             }
 
+            .sidebar .logo {
+                display: none;
+            }
+
+            .sidebar .logo-text {
+                display: none;
+            }
+
             .content {
-                margin-left: 80px;
+                position: relative;
+                margin-left: 0;
+                /* padding-bottom: 60px; */
+                margin-bottom: 75px;
             }
         }
     </style>
 </head>
 
 <body>
-    @include('components.navbar')
     @include('components.sidebar')
 
     <div class="content" id="content">
         @yield('content')
     </div>
-
-    <script>
-            toggleButton.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                content.classList.toggle('collapsed');
-                sidebarIcon.classList.toggle('bi-list');
-                sidebarIcon.classList.toggle('bi-x');
-            });
-
-            const profileBtn = document.getElementById('profile-btn');
-            const profileDropdown = document.getElementById('profile-dropdown');
-
-            profileBtn.addEventListener('click', () => {
-                profileDropdown.style.display = profileDropdown.style.display === 'none' || profileDropdown
-                    .style.display === '' ? 'block' : 'none';
-            });
-
-            document.addEventListener('click', (event) => {
-                if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-                    profileDropdown.style.display = 'none';
-                }
-            });
-        });
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

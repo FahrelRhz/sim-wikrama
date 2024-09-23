@@ -87,7 +87,7 @@
         }
 
         .sidebar-date {
-            font-size: 15px;
+            font-size: 12px;
             font-weight: bold;
             margin-bottom: 15px;
             color: #042456;
@@ -218,9 +218,9 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <i class="p-3 rounded bi bi-gear-fill me-2 icon-background"></i>
+                            <i class="p-3 rounded bi bi-arrow-down-left-circle-fill me-2 icon-background"></i>
                             <div>
-                                <h5 class="card-title mb-1">Request Perbaikan</h5>
+                                <h5 class="card-title mb-1">Dipinjamkan</h5>
                                 <p class="card-text me-2">
                                     <span class="count">4</span>
                                     <span class="count-text">Barang</span>
@@ -234,9 +234,9 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <i class="p-3 rounded bi bi-wrench me-2 icon-background"></i>
+                            <i class="p-3 rounded bi bi-hourglass-split me-2 icon-background"></i>
                             <div>
-                                <h5 class="card-title mb-1">Sedang Diperbaiki</h5>
+                                <h5 class="card-title mb-1">Dalam Peminjaman</h5>
                                 <p class="card-text me-2">
                                     <span class="count">24</span>
                                     <span class="count-text">Barang</span>
@@ -252,7 +252,7 @@
                         <div class="d-flex align-items-center">
                             <i class="p-3 rounded bi bi-check-circle-fill me-2 icon-background"></i>
                             <div>
-                                <h5 class="card-title mb-1">Selesai Perbaikan</h5>
+                                <h5 class="card-title mb-1">Dikembalikan</h5>
                                 <p class="card-text me-2">
                                     <span class="count">15</span>
                                     <span class="count-text">Barang</span>
@@ -266,9 +266,9 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <i class="p-3 rounded bi bi-check2-all me-2 icon-background"></i>
+                            <i class="p-3 rounded bi bi-shield-slash-fill me-2 icon-background"></i>
                             <div>
-                                <h5 class="card-title mb-1">Selesai Diperbaiki</h5>
+                                <h5 class="card-title mb-1">Barang Rusak</h5>
                                 <p class="card-text me-2">
                                     <span class="count">80</span>
                                     <span class="count-text">Barang</span>
@@ -303,16 +303,6 @@
                         <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
                     </tr>
                 </table>
-            </div>
-        </div>
-        <div class="pagination d-flex justify-content-center mt-4 mb-4">
-            <div class="btn-group" role="group" aria-label="Pagination">
-                <button type="button" class="btn btn-outline-secondary">10 Items</button>
-                <button type="button" class="btn btn-outline-secondary">25</button>
-                <button type="button" class="btn btn-outline-secondary">50</button>
-                <button type="button" class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i></button>
-                <button type="button" class="btn btn-outline-secondary">1 of 1</button>
-                <button type="button" class="btn btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
             </div>
         </div>
 
@@ -363,14 +353,25 @@
             data: {
                 labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
                 datasets: [{
-                    label: 'Barang Belum Kembali',
+                    label: 'Dipinjamkan',
                     data: [10, 12, 15, 8, 12, 10, 8],
+                    backgroundColor: '#042456',
+                    hoverOffset: 4
+                }, {
+                    label: 'Dalam Peminjaman',
+                    data: [8, 10, 12, 15, 8, 12, 10],
                     backgroundColor: '#0d6efd',
                     hoverOffset: 4
                 }, {
-                    label: 'Barang Sudah Kembali',
+                    label: 'Dikembalikan',
                     data: [8, 10, 12, 15, 8, 12, 10],
                     backgroundColor: '#0dcaf0',
+                    hoverOffset: 4
+                
+                }, {
+                    label: 'Barang Rusak',
+                    data: [8, 10, 12, 15, 8, 12, 10],
+                    backgroundColor: '#7CF5FF',
                     hoverOffset: 4
                 }]
             },

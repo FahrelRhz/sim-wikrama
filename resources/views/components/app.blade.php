@@ -58,7 +58,7 @@
             align-items: center;
             padding: 10px;
             color: #fff;
-            transition: background-color 0.5s ease, margin 0.5s ease;
+            transition: background-color 0.5s ease, color 0.5s ease;
             border-radius: 30px 0 0 30px;
             padding-left: 10px;
         }
@@ -67,9 +67,6 @@
         .sidebar .nav-item.active {
             background-color: #fff;
             color: #000;
-            margin-left: 10px;
-            margin-top: 5px;
-            margin-bottom: 5px;
         }
 
         .sidebar .nav-item:hover .nav-link i,
@@ -139,16 +136,8 @@
             transition: transform 0.5s ease;
         }
 
-        .sidebar .nav-item .collapse.show+.nav-link i.bi-chevron-down {
-            transform: rotate(180deg);
-        }
-
         .sidebar .nav-item ul.nav {
             padding-left: 0;
-        }
-
-        .sidebar .nav-item ul.nav .nav-item {
-            padding-left: 20px;
         }
 
         .card {
@@ -159,10 +148,6 @@
             margin-left: 250px;
             padding: 20px;
             transition: margin-left 0.5s ease;
-        }
-
-        .content.collapsed {
-            margin-left: 0px;
         }
 
         @media (max-width: 750px) {
@@ -187,18 +172,18 @@
             }
 
             .sidebar .nav-item {
-                margin: 0 10px;
-                padding: 5px;
                 border-radius: 50%;
-                align-items: center;
+                max-width: 50px;
+                max-height: 50px;
                 font-size: 20px;
                 text-align: center;
+                position: relative;
+                backface-visibility: hidden;
             }
 
             .sidebar .nav-link {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
             }
 
             .sidebar .nav-link span {
@@ -213,14 +198,64 @@
                 display: none;
             }
 
+            .chevron {
+                display: none;
+            }
+
+            .sidebar .nav-item.position-relative .submenu {
+                display: none;
+                position: absolute;
+                top: -150px;
+                transform: translateX(-100%);
+                justify-content: center;
+                align-items: center;
+                width: auto;
+                background-color: #042456;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                opacity: 0;
+            }
+
+            .sidebar .nav-item.position-relative .submenu.show {
+                display: flex;
+                transform: translateX(-78%) translateY(15%);
+                text-align: center;
+                padding: 5px;
+                opacity: 1;
+            }
+
+            .sidebar .nav-item.position-relative .submenu.show i {
+                padding: 3px;
+                text-align: center;
+            }
+
+            .sidebar .nav-item.active .submenu {
+                display: block;
+                opacity: 1;
+            }
+
+            .sidebar .nav-item:hover,
+            .sidebar .nav-item.active {
+                background-color: #fff;
+                color: #000;
+                max-width: 50px;
+                max-height: 50px;
+            }
+
+            .sidebar .nav-item:hover .nav-link i,
+            .sidebar .nav-item.active .nav-link i {
+                color: #000;
+            }
+
             .content {
                 position: relative;
                 margin-left: 0;
-                /* padding-bottom: 60px; */
                 margin-bottom: 75px;
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -231,6 +266,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

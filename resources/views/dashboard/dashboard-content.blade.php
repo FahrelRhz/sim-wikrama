@@ -92,8 +92,26 @@
             </tr>
             <tr>
                 <td>2</td>
-                <td>Jane Smith</td>
-                <td>Laptop</td>
+                <td>Bude</td>
+                <td>Gudeg</td>
+                <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Om Samuel</td>
+                <td>Pensil</td>
+                <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Mba e</td>
+                <td>Motor</td>
+                <td class="bg-success-subtle fw-bold">Kembali</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Sitit</td>
+                <td>jet</td>
                 <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
             </tr>
         </table>
@@ -101,7 +119,7 @@
 </div>
 
 {{-- grafik --}}
-<div class="chart-container" style="height: 250px;">
+<div class="chart-container" style="height: 200px;">
     <h5>Kategori Barang Pinjaman</h5>
     <canvas id="myBarChart" style="width: 100%; height: 100%;"></canvas>
 </div>

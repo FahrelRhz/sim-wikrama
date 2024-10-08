@@ -58,7 +58,7 @@
             align-items: center;
             padding: 10px;
             color: #fff;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: all 0.5s ease, color 0.5s ease;
             border-radius: 30px 0 0 30px;
             padding-left: 10px;
         }
@@ -67,6 +67,7 @@
         .sidebar .nav-item.active {
             background-color: #fff;
             color: #000;
+            margin-left: 20px;
         }
 
         .sidebar .nav-item:hover .nav-link i,
@@ -109,7 +110,7 @@
             position: relative;
             top: 0;
             width: 100%;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             background-color: #042456;
             color: #000;
             border-radius: 10px;
@@ -124,7 +125,7 @@
         .sidebar .nav-item.position-relative .submenu {
             opacity: 0;
             transform: translateY(-10px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transition: all 0.4s ease, transform 0.4s ease;
         }
 
         .sidebar .nav-item.position-relative .submenu.show {
@@ -241,6 +242,7 @@
                 color: #000;
                 max-width: 50px;
                 max-height: 50px;
+                margin-right: 20px;
             }
 
             .sidebar .nav-item:hover .nav-link i,

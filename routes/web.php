@@ -20,4 +20,7 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 });
+Route::get('/dashboard/barang', function () {
+    return view('daftar-barang.inventaris');
+});
 

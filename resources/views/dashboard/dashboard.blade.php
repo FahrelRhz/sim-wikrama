@@ -4,9 +4,8 @@
     <style>
         table {
             width: 100%;
-            /* max-width: 720px; */
             border-collapse: separate;
-            border-spacing: 10px 15px;
+            border-spacing: 10px 14px;
         }
 
         th,

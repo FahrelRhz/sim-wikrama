@@ -16,23 +16,22 @@ class AdminAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
+    
         if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended('/_admin/dashboard');
+            return redirect()->intended('/admin/dashboard');
         }
-
+    
         return back()->withErrors(['email' => 'Email or password is incorrect.']);
     }
-
+    
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
-
-        // Invalidate the session and regenerate CSRF token
+    
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect('/_admin/login');
+    
+        return redirect('/admin/login');
     }
 
 }

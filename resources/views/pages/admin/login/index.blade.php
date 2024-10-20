@@ -46,9 +46,9 @@
                         <h4 class="text-secondary mb-5">Ada banyak peminjam yang menunggumu!</h4>
                     </div>
 
-                    <form action="/_admin/login" method="POST">
+                    <form action="/admin/login" method="POST">
                         @if ($errors->any())
-                            <div>
+                            <div class="mb-4 text-danger">
                                 <strong>Error:</strong> {{ $errors->first() }}
                             </div>
                         @endif

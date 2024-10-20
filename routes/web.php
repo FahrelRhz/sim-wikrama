@@ -14,7 +14,7 @@ use App\Http\Controllers\admin\AdminAuthController;
 */ 
 
 
-Route::prefix('_admin')->group(function () {
+Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [AdminAuthController::class, 'login']);
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');

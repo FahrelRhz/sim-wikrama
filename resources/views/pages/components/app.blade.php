@@ -261,7 +261,7 @@
 </head>
 
 <body>
-    @include('components.sidebar')
+    @include('pages.components.sidebar')
 
     <div class="content" id="content">
         @yield('content')

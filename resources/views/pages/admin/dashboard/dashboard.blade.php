@@ -1,4 +1,4 @@
-@extends('components.app')
+@extends('pages.components.app')
 
 @section('content')
     <style>
@@ -203,7 +203,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    @include('dashboard.dashboard-content')
+    @include('pages.admin.dashboard.dashboard-content')
     <div class="container-fluid">
         @yield('content')
     </div>
@@ -229,7 +229,7 @@
                     data: [8, 10, 12, 15, 8, 12, 10],
                     backgroundColor: '#0dcaf0',
                     hoverOffset: 4
-                
+
                 }, {
                     label: 'Barang Rusak',
                     data: [8, 10, 12, 15, 8, 12, 10],

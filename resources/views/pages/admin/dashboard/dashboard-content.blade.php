@@ -1,10 +1,5 @@
 <div class="d-flex justify-content-start mb-4">
-    <a class="text-decoration-none" href="/dashboard">
-        <h6 class="text-secondary">
-            <i class="bi bi-house"></i>
-            Dashboard /
-        </h6>
-    </a>
+    <h4 class="fw-bold mb-4">DAFTAR BARANG</h4>
 </div>
 
 <div class="row g-4">
@@ -98,18 +93,6 @@
             </tr>
             <tr>
                 <td>3</td>
-                <td>Om Samuel</td>
-                <td>Pensil</td>
-                <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Mba e</td>
-                <td>Motor</td>
-                <td class="bg-success-subtle fw-bold">Kembali</td>
-            </tr>
-            <tr>
-                <td>5</td>
                 <td>Sitit</td>
                 <td>jet</td>
                 <td class="bg-danger-subtle fw-bold">Belum Kembali</td>

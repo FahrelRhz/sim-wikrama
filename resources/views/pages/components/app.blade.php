@@ -105,42 +105,6 @@
             text-align: center;
         }
 
-        .submenu {
-            display: none;
-            position: relative;
-            top: 0;
-            width: 100%;
-            transition: all 0.5s ease;
-            background-color: #042456;
-            color: #000;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .submenu.show {
-            display: block;
-        }
-
-        .sidebar .nav-item.position-relative .submenu {
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.4s ease, transform 0.4s ease;
-        }
-
-        .sidebar .nav-item.position-relative .submenu.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .sidebar .nav-item .nav-link i {
-            transition: transform 0.5s ease;
-        }
-
-        .sidebar .nav-item ul.nav {
-            padding-left: 0;
-        }
-
         .card {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -197,57 +161,6 @@
 
             .sidebar .logo-text {
                 display: none;
-            }
-
-            .chevron {
-                display: none;
-            }
-
-            .sidebar .nav-item.position-relative .submenu {
-                display: none;
-                position: absolute;
-                top: -150px;
-                transform: translateX(-100%);
-                justify-content: center;
-                align-items: center;
-                width: auto;
-                background-color: #042456;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                transition: transform 0.3s ease, opacity 0.3s ease;
-                opacity: 0;
-            }
-
-            .sidebar .nav-item.position-relative .submenu.show {
-                display: flex;
-                transform: translateX(-78%) translateY(15%);
-                text-align: center;
-                padding: 5px;
-                opacity: 1;
-            }
-
-            .sidebar .nav-item.position-relative .submenu.show i {
-                padding: 3px;
-                text-align: center;
-            }
-
-            .sidebar .nav-item.active .submenu {
-                display: block;
-                opacity: 1;
-            }
-
-            .sidebar .nav-item:hover,
-            .sidebar .nav-item.active {
-                background-color: #fff;
-                color: #000;
-                max-width: 50px;
-                max-height: 50px;
-                margin-right: 20px;
-            }
-
-            .sidebar .nav-item:hover .nav-link i,
-            .sidebar .nav-item.active .nav-link i {
-                color: #000;
             }
 
             .content {

@@ -14,9 +14,18 @@ use App\Http\Controllers\admin\AdminAuthController;
 */
 
 
+<<<<<<< HEAD
 // Route::get('/_admin/login', function () {
 //     return view('pages.admin.login.index');
 // });
+=======
+Route::get('/dashboard', function () {
+    return view('dashboard.dashboard');
+});
+Route::get('/dashboard/barang', function () {
+    return view('daftar-barang.inventaris');
+});
+>>>>>>> 0b5922a81e31d6b5d0dc87df2f99366c84c2b914
 
 // Route::get('/_admin/dashboard', function () {  
 //     return view('pages.admin.dashboard.dashboard');

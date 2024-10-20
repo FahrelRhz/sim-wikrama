@@ -129,9 +129,15 @@
         <div class="sidebar-icon">
             <i class="bi bi-gear-fill"></i>
         </div>
-        <div class="sidebar-icon">
-            <i class="bi bi-box-arrow-right"></i>
-        </div>
+        <form action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
+            @csrf
+            <button type="submit" class="btn btn-link p-0" style="border: none; background: none;">
+                <div class="sidebar-icon">
+                    <i class="bi bi-box-arrow-right"></i>
+                </div>
+            </button>
+        </form>
+
     </div>
 
     <div class="sidebar-bottom-text">

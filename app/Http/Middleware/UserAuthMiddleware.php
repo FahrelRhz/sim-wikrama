@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AdminAuthMiddleware
+class UserAuthMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,8 @@ class AdminAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::guard('admin')->check()) {
-            return redirect('/admin/login')->with('error', 'Anda harus login sebagai admin untuk mengakses halaman ini.');
+        if (!Auth::guard('web')->check()) {
+            return redirect('/user/login')->with('error', 'Anda harus login sebagai user untuk mengakses halaman ini.');
         }
 
         return $next($request);

@@ -8,7 +8,7 @@
     <hr class="text-white">
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a href="/dashboard" class="nav-link">
+            <a href="/admin/dashboard" class="nav-link">
                 <i class="bi bi-house me-2"></i>
                 <span class="d-sm-inline nav-text">Dashboard</span>
             </a>
@@ -27,7 +27,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="" class="nav-link">
+            <a href="{{ route('admin.daftar-user.index') }}" class="nav-link">
                 <i class="bi bi-person-fill me-2"></i>
                 <span class="d-sm-inline nav-text">Daftar User</span>
             </a>

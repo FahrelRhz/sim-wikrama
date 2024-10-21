@@ -14,6 +14,9 @@
                         <h5 class="mb-4">Daftar User</h5>
                         
                         <div class="table-responsive">
+                            <div class="">
+                                <a href="{{ route('admin.daftar-user.create') }}" class="btn text-white" style="background-color: #042456">Tambah User</a>
+                            </div>
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                     <tr>
@@ -28,9 +31,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="">
-                    <a href="{{ route('admin.daftar-user.create') }}" class="btn text-white" style="background-color: #042456">Tambah User</a>
                 </div>
                
             </div>

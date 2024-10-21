@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-start mb-4">
+<div class="d-flex justify-content-start mt-4">
     <h4 class="fw-bold mb-4">DAFTAR BARANG</h4>
 </div>
 

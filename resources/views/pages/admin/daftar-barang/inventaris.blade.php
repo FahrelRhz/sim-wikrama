@@ -15,15 +15,14 @@
             width: 100%;
         }
 
-        /* Bungkus tabel untuk memungkinkan scroll ke samping di mobile */
         .table-responsive {
             width: 100%;
-            overflow-x: auto; /* Tabel bisa di-scroll ke samping */
+            overflow-x: auto;
         }
 
         .table {
             width: 100%;
-            min-width: 600px; /* Pastikan tabel tetap terlihat penuh dan bisa di-scroll */
+            min-width: 600px;
         }
     }
 </style>

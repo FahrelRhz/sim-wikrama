@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminAuthController;
+use App\Http\Controllers\admin\DaftarUserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,4 +23,11 @@ Route::prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('pages.admin.dashboard.dashboard');
     })->middleware('admin');
+
+    Route::get('/daftar-user', [DaftarUserController::class, 'index'])->name('admin.daftar-user.index');
+    Route::get('/daftar-user/create', [DaftarUserController::class, 'create'])->name('admin.daftar-user.create');
+    Route::post('/daftar-user', [DaftarUserController::class, 'store'])->name('admin.daftar-user.store');
+    Route::get('/daftar-user/{id}/edit', [DaftarUserController::class, 'edit'])->name('admin.daftar-user.edit');
+    Route::put('/daftar-user/{id}', [DaftarUserController::class, 'update'])->name('admin.daftar-user.update');
+    Route::delete('/daftar-user/{id}', [DaftarUserController::class, 'destroy'])->name('admin.daftar-user.destroy');
 });

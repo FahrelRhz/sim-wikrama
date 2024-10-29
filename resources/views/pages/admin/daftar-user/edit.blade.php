@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-2">
-        @extends('pages.components.app')
+        @extends('pages.components.app-admin')
     </div>
     
     <div class="col-md-10">
@@ -31,9 +31,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="jurusan" class="form-label">Jurusan</label>
-                        <input type="text" class="form-control" id="jurusan" name="jurusan"
-                               value="{{ old('jurusan', $user->jurusan) }}" required>
+                        <label for="jurusan_id" class="form-label">Jurusan</label>
+                        <select class="form-control" id="jurusan_id" name="jurusan_id" required>
+                            <option value="">Pilih Jurusan</option>
+                            @foreach($jurusans as $jurusan)
+                                <option value="{{ $jurusan->id }}" {{ old('jurusan_id', $user->jurusan_id) == $jurusan->id ? 'selected' : '' }}>
+                                    {{ $jurusan->nama_jurusan }}
+                                </option>
+                            @endforeach
+                        </select>
                         @error('jurusan')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror

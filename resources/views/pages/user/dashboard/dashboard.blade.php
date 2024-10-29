@@ -203,7 +203,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    @include('pages.admin.dashboard.dashboard-content')
+    @include('pages.user.dashboard.dashboard-content')
     <div class="container-fluid">
         @yield('content')
     </div>

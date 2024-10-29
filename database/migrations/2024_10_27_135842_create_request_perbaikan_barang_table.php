@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permintaans', function (Blueprint $table) {
+        Schema::create('request_perbaikan_barang', function (Blueprint $table) {
             $table->id();
-            $table->integer('nip');
-            $table->string('nama_guru');
-            $table->string('nama_barang');
-            $table->date('tanggal_pengadaan');
-            $table->string('jumlah_barang_diminta');
-            $table->integer('id_barang');
+            $table->unsignedBigInteger('barang_id'); 
+            $table->unsignedBigInteger('user_id'); 
+            $table->date('tanggal_request');
+            $table->enum('status', ['pending', 'dalam perbaikan', 'selesai']);
+            $table->text('deskripsi_kerusakan');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permintaans');
+        Schema::dropIfExists('request_perbaikan_barang');
     }
 };

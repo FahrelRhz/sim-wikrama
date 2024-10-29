@@ -8,18 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Peminjaman extends Model
 {
     use HasFactory;
-    
+
+    protected $table = 'peminjaman'; 
+
     protected $fillable = [
-        'nip',
-        'nama_guru',
-        'nama-barang',
-        'tanggal_peminjaman',
-        'jumlah_barang_dipinjam',
-        'id_barang',
-        'status_peminjaman',
-        'keperluan',
-        'keterangan',
-        'kategori_barang',
-        'tempat_ruangan',
+        'siswa_id',
+        'barang_id',
+        'tanggal_pinjam',
+        'tanggal_kembali',
+        'status_pinjam',
     ];
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'barang_id');
+    }
 }

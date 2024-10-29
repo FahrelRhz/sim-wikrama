@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ruangans', function (Blueprint $table) {
+        Schema::create('barang', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_barang');
             $table->string('nama_barang');
-            $table->string('jenis_barang');
+            $table->string('merk_barang')->nullable();
             $table->date('tanggal_pengadaan');
-            $table->string('sumber_dana');
+            $table->string('sumber_dana')->nullable();
             $table->integer('jumlah_barang');
-            $table->string('merek_barang');
+            $table->string('kategori_barang');
             $table->string('kondisi_barang');
-            $table->string('deskripsi_barang');
-            $table->string('penanggungjawab_ruangan');
-            $table->string('nama_ruangan');
+            $table->text('deskripsi_barang')->nullable();
+            $table->unsignedBigInteger('jurusan_id'); 
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ruangans');
+        Schema::dropIfExists('barang');
     }
 };

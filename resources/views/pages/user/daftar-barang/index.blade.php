@@ -1,4 +1,5 @@
-@extends('pages.components.app-admin')
+
+@extends('pages.components.app')
 
 @include('partials.datatable')
 
@@ -11,19 +12,20 @@
             <div class="row">
                 <div class="card mb-4 mt-4">
                     <div class="card-body">
-                        <h5 class="mb-4">Daftar User</h5>
+                        <h5 class="mb-4">Daftar Barang</h5>
                         
                         <div class="table-responsive">
                             <div class="">
-                                <a href="{{ route('admin.daftar-user.create') }}" class="btn text-white" style="background-color: #042456">Tambah User</a>
+                                <a href="{{ route('user.daftar-barang.create') }}" class="btn text-white" style="background-color: #042456">Tambah Barang</a>
                             </div>
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Jurusan</th>
-                                        <th>Actions</th>
+                                        <th>Kode Barang</th>
+                                        <th>Nama Barang</th>
+                                        <th>Merk Barang</th>
+                                        <th>Kategori Barang</th>
+                                        <th>Jumlah Barang</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,18 +41,26 @@
 </div>
 
 <script>
-    var table = initializeDataTable('#myTable', "{{ route('admin.daftar-user.index') }}", [
+    var table = initializeDataTable('#myTable', "{{ route('user.daftar-barang.index') }}", [
         {
-            data: 'name',
-            name: 'name'
+            data: 'kode_barang',
+            name: 'kode_barang'
         },
         {
-            data: 'email',
-            name: 'email'
+            data: 'nama_barang',
+            name: 'nama_barang'
         },
         {
-            data: 'jurusan',
-            name: 'jurusan'
+            data: 'merk_barang',
+            name: 'merk_barang'
+        },
+        {
+            data: 'kategori_barang',
+            name: 'kategori_barang'
+        },
+        {
+            data: 'jumlah_barang',
+            name: 'jumlah_barang'
         },
         {
             data: 'actions',
@@ -58,12 +68,13 @@
             orderable: false,
             searchable: false
         }
+
     ]);
 
-    window.deleteUser = function(id) {
-        if (confirm('Are you sure you want to delete this user?')) {
+    window.deleteBarang = function(id) {
+        if (confirm('Are you sure you want to delete this barang?')) {
             $.ajax({
-                url: '{{ route('admin.daftar-user.destroy', ':id') }}'.replace(':id', id),
+                url: '{{ route('user.daftar-barang.destroy', ':id') }}'.replace(':id', id),
                 type: 'DELETE',
                 data: {
                     "_token": "{{ csrf_token() }}"
@@ -79,4 +90,5 @@
             });
         }
     }
+
 </script>

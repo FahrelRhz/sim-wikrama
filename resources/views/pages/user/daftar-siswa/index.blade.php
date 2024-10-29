@@ -1,4 +1,5 @@
-@extends('pages.components.app-admin')
+
+@extends('pages.components.app')
 
 @include('partials.datatable')
 
@@ -11,17 +12,19 @@
             <div class="row">
                 <div class="card mb-4 mt-4">
                     <div class="card-body">
-                        <h5 class="mb-4">Daftar User</h5>
+                        <h5 class="mb-4">Daftar Siswa</h5>
                         
                         <div class="table-responsive">
                             <div class="">
-                                <a href="{{ route('admin.daftar-user.create') }}" class="btn text-white" style="background-color: #042456">Tambah User</a>
+                                <a href="{{ route('user.daftar-siswa.create') }}" class="btn text-white" style="background-color: #042456">Tambah Siswa</a>
                             </div>
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
+                                        <th>NIS</th>
+                                        <th>Nama</th>
+                                        <th>Rombel</th>
+                                        <th>Rayon</th>
                                         <th>Jurusan</th>
                                         <th>Actions</th>
                                     </tr>
@@ -39,14 +42,22 @@
 </div>
 
 <script>
-    var table = initializeDataTable('#myTable', "{{ route('admin.daftar-user.index') }}", [
+    var table = initializeDataTable('#myTable', "{{ route('user.daftar-siswa.index') }}", [
         {
-            data: 'name',
-            name: 'name'
+            data: 'nis',
+            name: 'nis'
         },
         {
-            data: 'email',
-            name: 'email'
+            data: 'nama_siswa',
+            name: 'nama_siswa'
+        },
+        {
+            data: 'rombel',
+            name: 'rombel'
+        },
+        {
+            data: 'rayon',
+            name: 'rayon'
         },
         {
             data: 'jurusan',
@@ -58,12 +69,13 @@
             orderable: false,
             searchable: false
         }
+
     ]);
 
-    window.deleteUser = function(id) {
-        if (confirm('Are you sure you want to delete this user?')) {
+    window.deleteSiswa = function(id) {
+        if (confirm('Are you sure you want to delete this siswa?')) {
             $.ajax({
-                url: '{{ route('admin.daftar-user.destroy', ':id') }}'.replace(':id', id),
+                url: '{{ route('user.daftar-siswa.destroy', ':id') }}'.replace(':id', id),
                 type: 'DELETE',
                 data: {
                     "_token": "{{ csrf_token() }}"
@@ -74,9 +86,10 @@
                     alert(response.success); 
                 },
                 error: function(xhr) {
-                    alert('Error deleting user: ' + xhr.responseText); 
+                    alert('Error deleting siswa: ' + xhr.responseText); 
                 }
             });
         }
     }
+
 </script>

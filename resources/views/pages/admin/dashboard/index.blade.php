@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <h3>halo user</h3>
-    <form action="{{ route('user.logout') }}" method="POST" class="d-inline">
+    <h3>halo admin</h3>
+    <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
         @csrf
         <button type="submit" class="btn btn-danger">Logout</button>
     </form>

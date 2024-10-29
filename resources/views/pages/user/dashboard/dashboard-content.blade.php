@@ -118,18 +118,18 @@
 
     <div class="sidebar-profile">
         <img src="https://via.placeholder.com/80" alt="Profile Picture">
-        <h6>Admin</h6>
+        <h6>Kaprog</h6>
     </div>
 
     <div class="sidebar-welcome">
-        Welcome Admin!
+        Welcome Kaprog!
     </div>
 
     <div class="sidebar-icons">
         <div class="sidebar-icon">
             <i class="bi bi-gear-fill"></i>
         </div>
-        <form action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
+        <form action="{{ route('user.logout') }}" method="POST" style="display: inline;">
             @csrf
             <button type="submit" class="btn btn-link p-0" style="border: none; background: none;">
                 <div class="sidebar-icon">

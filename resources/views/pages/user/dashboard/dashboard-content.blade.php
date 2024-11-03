@@ -72,36 +72,40 @@
 <h5 class="table-title mt-5">Status Terbaru</h5>
 <div class="table-chart-container">
     <div class="col">
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Nama Peminjam</th>
-                <th>Daftar Barang</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>John Doe</td>
-                <td>Handphone</td>
-                <td class="bg-success-subtle fw-bold">Kembali</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Bude</td>
-                <td>Gudeg</td>
-                <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Sitit</td>
-                <td>jet</td>
-                <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
-            </tr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Peminjam</th>
+                    <th>Daftar Barang</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>Handphone</td>
+                    <td class="bg-success-subtle fw-bold">Kembali</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Bude</td>
+                    <td>Gudeg</td>
+                    <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Sitit</td>
+                    <td>Jet</td>
+                    <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>
 
-{{-- grafik --}}
+{{-- Grafik --}}
 <div class="chart-container" style="height: 200px;">
     <h5>Kategori Barang Pinjaman</h5>
     <canvas id="myBarChart" style="width: 100%; height: 100%;"></canvas>
@@ -117,12 +121,12 @@
     <div class="sidebar-date" id="sidebar-date"></div>
 
     <div class="sidebar-profile">
-        <img src="https://via.placeholder.com/80" alt="Profile Picture">
-        <h6>Kaprog</h6>
-    </div>
+        <img src="https://via.placeholder.com/80" alt="Profile Picture" class="img-fluid rounded-circle">
+        <h6>{{ $user_name->name }}</h6>
+    </div>    
 
     <div class="sidebar-welcome">
-        Welcome Kaprog!
+        Welcome {{ $user_name->name }}!
     </div>
 
     <div class="sidebar-icons">
@@ -137,7 +141,6 @@
                 </div>
             </button>
         </form>
-
     </div>
 
     <div class="sidebar-bottom-text">

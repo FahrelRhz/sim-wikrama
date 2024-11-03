@@ -84,7 +84,7 @@ class PeminjamanBarangController extends Controller
     {
         $request->validate([
             "tanggal_pinjam" => "required|date",
-            "tanggal_kembali" => "nullable|date", 
+            "tanggal_kembali" => "nullable|date",
             "status_pinjam" => "required",
         ]);
 
@@ -96,7 +96,7 @@ class PeminjamanBarangController extends Controller
         ];
 
         if ($request->status_pinjam === 'dipinjam') {
-            $dataToUpdate['tanggal_kembali'] = null; 
+            $dataToUpdate['tanggal_kembali'] = null;
         } else {
             $dataToUpdate['tanggal_kembali'] = $request->tanggal_kembali;
         }

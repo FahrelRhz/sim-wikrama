@@ -65,8 +65,14 @@
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-archive"></i></span>
-                            <input type="jurusan" name="jurusan" class="form-control" placeholder="Jurusan"
-                                aria-label="Jurusan" required>
+                            <select class="form-control" id="jurusan" name="jurusan" required>
+                                <option value="">Pilih Jurusan</option>
+                                @foreach ($jurusans as $jurusan)
+                                    <option value="{{ $jurusan->nama_jurusan }}">
+                                        {{ $jurusan->nama_jurusan }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-lock"></i></span>

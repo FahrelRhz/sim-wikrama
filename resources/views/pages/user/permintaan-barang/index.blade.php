@@ -1,31 +1,37 @@
-
 @extends('pages.components.app')
 
 @include('partials.datatable')
 
+@include('pages.user.permintaan-barang.edit')
+
 <div class="row">
     <div class="col-md-2">
     </div>
-    
+
     <div class="col-md-10">
         <div class="container">
             <div class="row">
                 <div class="card mb-4 mt-4">
                     <div class="card-body">
-                        <h5 class="mb-4">Daftar Barang</h5>
-                        
+                        <h5 class="mb-4">Permintaan</h5>
+
                         <div class="table-responsive">
                             <div class="">
-                                <a href="{{ route('user.daftar-barang.create') }}" class="btn text-white" style="background-color: #042456">Tambah Barang</a>
+
+                                <a href="{{ route('user.permintaan-barang.create') }}" class="btn text-white"
+                                    style="background-color: #042456" data-bs-toggle="modal"
+                                    data-bs-target="#tambahPermintaanModal">Tambah Permintaan</a>
+                                @include('pages.user.permintaan-barang.create')
+
                             </div>
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Kode Barang</th>
-                                        <th>Nama Barang</th>
-                                        <th>Merk Barang</th>
-                                        <th>Kategori Barang</th>
-                                        <th>Jumlah Barang</th>
+                                        <th>Barang</th>
+                                        <th>Nama Peminta</th>
+                                        <th>Tanggal Permintaan</th>
+                                        <th>Alasan Permintaan</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -34,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -42,26 +48,21 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    var table = initializeDataTable('#myTable', "{{ route('user.daftar-barang.index') }}", [
-        {
-            data: 'kode_barang',
-            name: 'kode_barang'
+    var table = initializeDataTable('#myTable', "{{ route('user.permintaan-barang.index') }}", [{
+            data: 'barang',
+            name: 'barang'
         },
         {
-            data: 'nama_barang',
-            name: 'nama_barang'
+            data: 'user',
+            name: 'user'
         },
         {
-            data: 'merk_barang',
-            name: 'merk_barang'
+            data: 'tanggal_permintaan',
+            name: 'tanggal_permintaan'
         },
         {
-            data: 'kategori_barang',
-            name: 'kategori_barang'
-        },
-        {
-            data: 'jumlah_barang',
-            name: 'jumlah_barang'
+            data: 'alasan_permintaan',
+            name: 'alasan_permintaan'
         },
         {
             data: 'actions',
@@ -71,6 +72,25 @@
         }
 
     ]);
+
+
+    $(document).on('click', '.edit-button', function() {
+        var id = $(this).data('id');
+        var barang = $(this).data('barang');
+        var user_id = $(this).data('user-id');
+        var tanggal_permintaan = $(this).data('tanggal-permintaan');
+        var alasan_permintaan = $(this).data('alasan-permintaan');
+
+        $('#editPermintaanForm').attr('action', "/user/permintaan-barang/" + id);
+
+        $('#edit_barang').val(barang);
+        $('#edit_user_id').val(user_id);
+        $('#edit_tanggal_permintaan').val(tanggal_permintaan);
+        $('#edit_alasan_permintaan').val(alasan_permintaan);
+
+        $('#editPermintaanModal').modal('show');
+    });
+
 
 </script>
 <script>
@@ -84,7 +104,7 @@
         });
     @endif
 
-    function deleteBarang(id) {
+    function deletePermintaan(id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Data yang sudah dihapus tidak bisa dikembalikan!",
@@ -96,7 +116,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('user.daftar-barang.destroy', ':id') }}'.replace(':id', id),
+                    url: '{{ route('user.permintaan-barang.delete', ':id') }}'.replace(':id', id),
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"
@@ -115,7 +135,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Gagal',
-                            text: 'Gagal menghapus barang: ' + xhr.responseText,
+                            text: 'Gagal menghapus permintaan: ' + xhr.responseText,
                         });
                     }
                 });
@@ -123,4 +143,3 @@
         });
     }
 </script>
-

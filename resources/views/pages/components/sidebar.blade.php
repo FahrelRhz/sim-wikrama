@@ -28,7 +28,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="" class="nav-link">
+            <a href="/user/permintaan-barang" class="nav-link">
                 <i class="bi bi-laptop me-2"></i>
                 <span class="d-sm-inline nav-text">Permintaan</span>
             </a>

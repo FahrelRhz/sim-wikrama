@@ -7,6 +7,7 @@ use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\user\DaftarBarangController;
 use App\Http\Controllers\user\DaftarSiswaController;
 use App\Http\Controllers\user\PeminjamanBarangController;
+use App\Http\Controllers\user\PermintaanBarangController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,7 +53,7 @@ Route::prefix('user')->group(function () {
             return view('pages.user.dashboard.dashboard');
         });
 
-        //daftar barang
+        // Daftar Barang
         Route::get('/daftar-barang', [DaftarBarangController::class, 'index'])->name('user.daftar-barang.index');
         Route::get('/daftar-barang/create', [DaftarBarangController::class, 'create'])->name('user.daftar-barang.create');
         Route::post('/daftar-barang', [DaftarBarangController::class, 'store'])->name('user.daftar-barang.store');
@@ -60,13 +61,9 @@ Route::prefix('user')->group(function () {
         Route::put('/daftar-barang/{id}', [DaftarBarangController::class, 'update'])->name('user.daftar-barang.update');
         Route::delete('/daftar-barang/{id}', [DaftarBarangController::class, 'destroy'])->name('user.daftar-barang.destroy');
 
-        //daftar siswa
+        // Daftar Siswa
         Route::get('/daftar-siswa', [DaftarSiswaController::class, 'index'])->name('user.daftar-siswa.index');
-        Route::get('/daftar-siswa/create', [DaftarSiswaController::class, 'create'])->name('user.daftar-siswa.create');
-        Route::post('/daftar-siswa', [DaftarSiswaController::class, 'store'])->name('user.daftar-siswa.store');
-        Route::get('/daftar-siswa/{id}/edit', [DaftarSiswaController::class, 'edit'])->name('user.daftar-siswa.edit');
-        Route::put('/daftar-siswa/{id}', [DaftarSiswaController::class, 'update'])->name('user.daftar-siswa.update');
-        Route::delete('/daftar-siswa/{id}', [DaftarSiswaController::class, 'destroy'])->name('user.daftar-siswa.destroy');
+        Route::get('/fetch', [DaftarSiswaController::class, 'fetchDataSiswa'])->name('user.fetch');
 
         //peminjaman barang
         Route::get('/peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('user.peminjaman-barang.index');
@@ -76,6 +73,12 @@ Route::prefix('user')->group(function () {
         Route::put('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'update'])->name('user.peminjaman-barang.update');
         Route::delete('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('user.peminjaman-barang.destroy');
         
-        
+        // Permintaan Barang
+        Route::get('/permintaan-barang', [PermintaanBarangController::class, 'index'])->name('user.permintaan-barang.index');
+        Route::get('/permintaan-barang/create', [PermintaanBarangController::class, 'create'])->name('user.permintaan-barang.create');
+        Route::post('/permintaan-barang', [PermintaanBarangController::class, 'store'])->name('user.permintaan-barang.store');
+        Route::get('/permintaan-barang/{id}/edit', [PermintaanBarangController::class, 'edit'])->name('user.permintaan-barang.edit');
+        Route::put('/permintaan-barang/{id}', [PermintaanBarangController::class, 'update'])->name('user.permintaan-barang.update');
+        Route::delete('/user/permintaan-barang/{id}', [PermintaanBarangController::class, 'destroy'])->name('user.permintaan-barang.delete');
     });
 });

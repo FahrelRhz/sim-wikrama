@@ -8,8 +8,7 @@
             border-spacing: 10px 14px;
         }
 
-        th,
-        td {
+        th, td {
             text-align: center;
         }
 
@@ -70,7 +69,7 @@
             top: 20px;
             right: -300px;
             bottom: 20px;
-            background-color: rgb(255, 255, 255);
+            background-color: #fff;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
@@ -131,7 +130,7 @@
         }
 
         .sidebar-icon:hover {
-            background-color: rgb(255, 255, 255);
+            background-color: #fff;
             cursor: pointer;
             color: #042456;
         }
@@ -172,16 +171,8 @@
                 text-align: center;
             }
 
-            th,
-            td {
+            th, td {
                 font-size: 15px;
-            }
-
-            table {
-                width: 100%;
-                max-width: 100%;
-                overflow-x: auto;
-                margin-bottom: 75px;
             }
 
             td.bg-danger-subtle,
@@ -204,6 +195,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @include('pages.user.dashboard.dashboard-content')
+    
     <div class="container-fluid">
         @yield('content')
     </div>
@@ -214,28 +206,32 @@
             type: 'bar',
             data: {
                 labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                datasets: [{
-                    label: 'Dipinjamkan',
-                    data: [10, 12, 15, 8, 12, 10, 8],
-                    backgroundColor: '#042456',
-                    hoverOffset: 4
-                }, {
-                    label: 'Dalam Peminjaman',
-                    data: [8, 10, 12, 15, 8, 12, 10],
-                    backgroundColor: '#0d6efd',
-                    hoverOffset: 4
-                }, {
-                    label: 'Dikembalikan',
-                    data: [8, 10, 12, 15, 8, 12, 10],
-                    backgroundColor: '#0dcaf0',
-                    hoverOffset: 4
-
-                }, {
-                    label: 'Barang Rusak',
-                    data: [8, 10, 12, 15, 8, 12, 10],
-                    backgroundColor: '#7CF5FF',
-                    hoverOffset: 4
-                }]
+                datasets: [
+                    {
+                        label: 'Dipinjamkan',
+                        data: [10, 12, 15, 8, 12, 10, 8],
+                        backgroundColor: '#042456',
+                        hoverOffset: 4
+                    },
+                    {
+                        label: 'Dalam Peminjaman',
+                        data: [8, 10, 12, 15, 8, 12, 10],
+                        backgroundColor: '#0d6efd',
+                        hoverOffset: 4
+                    },
+                    {
+                        label: 'Dikembalikan',
+                        data: [8, 10, 12, 15, 8, 12, 10],
+                        backgroundColor: '#0dcaf0',
+                        hoverOffset: 4
+                    },
+                    {
+                        label: 'Barang Rusak',
+                        data: [8, 10, 12, 15, 8, 12, 10],
+                        backgroundColor: '#7CF5FF',
+                        hoverOffset: 4
+                    }
+                ]
             },
             options: {
                 plugins: {
@@ -245,9 +241,7 @@
                 }
             }
         });
-    </script>
 
-    <script>
         function openSidebar() {
             document.getElementById('right-sidebar').classList.add('sidebar-open');
         }
@@ -259,15 +253,8 @@
         function displayDate() {
             const dateElement = document.getElementById('sidebar-date');
             const now = new Date();
-
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const formattedDate = now.toLocaleDateString('en-US', options);
-
             dateElement.innerHTML = formattedDate;
         }
 

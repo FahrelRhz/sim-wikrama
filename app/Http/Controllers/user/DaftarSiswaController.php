@@ -23,7 +23,7 @@ class DaftarSiswaController extends Controller
     // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmlzIjpudWxsLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBob3RvX3Byb2ZpbGUiOm51bGwsInJvbGUiOm51bGwsImtlbGFzIjpudWxsLCJyb21iZWwiOm51bGwsInJheW9uIjpudWxsLCJqdXJ1c2FuIjpudWxsLCJpYXQiOjE3MzAyNjY5MDR9._AjAi76GnmcIGkwbVwtY0cOXy3CjUvr4aJxCHsys9F8
     public function fetchDataSiswa(Request $request)
     {
-        $token = ' eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmlzIjpudWxsLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBob3RvX3Byb2ZpbGUiOm51bGwsInJvbGUiOm51bGwsImtlbGFzIjpudWxsLCJyb21iZWwiOm51bGwsInJheW9uIjpudWxsLCJqdXJ1c2FuIjpudWxsLCJpYXQiOjE3MzAyNjY5MDR9._AjAi76GnmcIGkwbVwtY0cOXy3CjUvr4aJxCHsys9F8';
+        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmlzIjpudWxsLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBob3RvX3Byb2ZpbGUiOm51bGwsInJvbGUiOm51bGwsImtlbGFzIjpudWxsLCJyb21iZWwiOm51bGwsInJheW9uIjpudWxsLCJqdXJ1c2FuIjpudWxsLCJpYXQiOjE3MzEzMzYxMjN9.oKqf3se7FM7k6K2i9dEF6fflMvhJVuOadPqifqiGtwE';
     
         try {
             // Ambil data pengguna yang login

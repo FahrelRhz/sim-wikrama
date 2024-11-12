@@ -17,7 +17,7 @@ use App\Http\Controllers\user\PermintaanBarangController;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/ 
+*/
 
 //admin
 Route::prefix('admin')->group(function () {
@@ -27,7 +27,7 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/dashboard', function () {
-            return view('pages.admin.dashboard.index'); 
+            return view('pages.admin.dashboard.index');
         });
 
         //daftar user
@@ -49,9 +49,11 @@ Route::prefix('user')->group(function () {
     Route::post('/logout', [UserAuthController::class, 'logout'])->name('user.logout');
 
     Route::middleware('user')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('pages.user.dashboard.dashboard');
+        // Mengubah route untuk dashboard agar menggunakan method dari controller
+        Route::middleware('user')->group(function () {
+            Route::get('/dashboard', [UserAuthController::class, 'dashboard'])->name('user.dashboard'); // Pastikan nama route sesuai
         });
+
 
         // Daftar Barang
         Route::get('/daftar-barang', [DaftarBarangController::class, 'index'])->name('user.daftar-barang.index');
@@ -59,6 +61,7 @@ Route::prefix('user')->group(function () {
         Route::post('/daftar-barang', [DaftarBarangController::class, 'store'])->name('user.daftar-barang.store');
         Route::get('/daftar-barang/{id}/edit', [DaftarBarangController::class, 'edit'])->name('user.daftar-barang.edit');
         Route::put('/daftar-barang/{id}', [DaftarBarangController::class, 'update'])->name('user.daftar-barang.update');
+        Route::get('/daftar-barang/{id}', [DaftarBarangController::class, 'show'])->name('user.daftar-barang.show');
         Route::delete('/daftar-barang/{id}', [DaftarBarangController::class, 'destroy'])->name('user.daftar-barang.destroy');
 
         // Daftar Siswa
@@ -68,11 +71,12 @@ Route::prefix('user')->group(function () {
         //peminjaman barang
         Route::get('/peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('user.peminjaman-barang.index');
         Route::get('/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])->name('user.peminjaman-barang.create');
+        Route::get('/peminjaman/fetch', [PeminjamanBarangController::class, 'fetchDataSiswa'])->name('peminjaman.fetch');
         Route::post('/peminjaman-barang', [PeminjamanBarangController::class, 'store'])->name('user.peminjaman-barang.store');
         Route::get('/peminjaman-barang/{id}/edit', [PeminjamanBarangController::class, 'edit'])->name('user.peminjaman-barang.edit');
         Route::put('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'update'])->name('user.peminjaman-barang.update');
         Route::delete('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('user.peminjaman-barang.destroy');
-        
+
         // Permintaan Barang
         Route::get('/permintaan-barang', [PermintaanBarangController::class, 'index'])->name('user.permintaan-barang.index');
         Route::get('/permintaan-barang/create', [PermintaanBarangController::class, 'create'])->name('user.permintaan-barang.create');

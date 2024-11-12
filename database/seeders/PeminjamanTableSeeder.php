@@ -17,7 +17,7 @@ class PeminjamanTableSeeder extends Seeder
     {
         $peminjaman = [
             [
-                'siswa_id' => 1,
+                'siswa' => 1,
                 'barang_id' => 1,
                 'tanggal_pinjam' => Carbon::now()->subDays(3),
                 'tanggal_kembali' => Carbon::now()->subDays(1),

@@ -13,13 +13,25 @@ class DaftarBarangController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $barangs = Barang::with('jurusan')->select(['id', 'kode_barang', 'nama_barang', 'merk_barang','kategori_barang','jumlah_barang']);
+            $barangs = Barang::with('jurusan')->select(['id', 'kode_barang', 'nama_barang', 'merk_barang', 'sumber_dana', 'jumlah_barang', 'kategori_barang', 'kondisi_barang', 'deskripsi_barang', 'tanggal_pengadaan']);
             return DataTables::of($barangs)
                 ->addIndexColumn()
                 ->addColumn('actions', function ($row) {
-                    $editBtn = '<a href="' . route('user.daftar-barang.edit', $row->id) . '" class="btn btn-warning btn-sm me-2">Edit</a>';
-                    $deleteBtn = '<button class="btn btn-danger btn-sm mb-1" data-id="' . $row->id . '" onclick="deleteBarang(' . $row->id . ')">Delete</button>';
-                    return $editBtn . $deleteBtn;
+                    $showBtn = '<a href="#" class="bi bi-eye btn btn-info btn-sm me-2 show-barang" 
+                    data-id="' . $row->id . '"
+                    data-kode_barang="' . $row->kode_barang . '"
+                    data-nama_barang="' . $row->nama_barang . '" 
+                    data-merk_barang="' . $row->merk_barang . '"
+                    data-sumber_dana="' . $row->sumber_dana . '"
+                    data-jumlah_barang="' . $row->jumlah_barang . '"
+                    data-kategori_barang="' . $row->kategori_barang . '"
+                    data-kondisi_barang="' . $row->kondisi_barang . '"
+                    data-deskripsi_barang="' . $row->deskripsi_barang . '"
+                    data-tanggal_pengadaan="' . $row->tanggal_pengadaan . '">
+                    </a>';
+                    $editBtn = '<a href="' . route('user.daftar-barang.edit', $row->id) . '" class="bi bi-card-checklist btn btn-warning btn-sm me-2"></a>';
+                    $deleteBtn = '<button class="bi bi-trash btn btn-danger btn-sm mb-1" data-id="' . $row->id . '" onclick="deleteBarang(' . $row->id . ')"></button>';
+                    return $showBtn . $editBtn . $deleteBtn;
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
@@ -63,6 +75,13 @@ class DaftarBarangController extends Controller
         ]);
 
         return redirect()->route('user.daftar-barang.index')->with('success', 'Barang berhasil ditambahkan.');
+    }
+
+    public function show($id)
+    {
+        $barangs = Barang::findOrFail($id);
+        $jurusans = Jurusan::all();
+        return view('pages.user.daftar-barang.show', compact('barangs', 'jurusans'));
     }
 
     public function edit($id)

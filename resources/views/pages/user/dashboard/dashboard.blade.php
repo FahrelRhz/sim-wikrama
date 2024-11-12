@@ -181,7 +181,6 @@
             }
 
             .chart-container {
-                margin-top: -55px;
                 width: 100%;
                 max-width: 400px;
                 justify-content: center;

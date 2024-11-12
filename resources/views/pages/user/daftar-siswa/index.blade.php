@@ -40,6 +40,7 @@
             ajax: {
                 url: "{{ route('user.fetch') }}",
                 type: 'GET',
+                cache: false,
                 error: function(xhr, error, code) {
                     console.log("Error fetching data:", xhr.responseText);
                 }
@@ -47,6 +48,7 @@
             pageLength: 10,
             lengthMenu: [10, 25, 50, 100],
             deferRender: true,
+            stateSave: true,
             columns: [{
                     data: 'nis',
                     name: 'nis'
@@ -70,12 +72,19 @@
             ],
             language: {
                 search: "Cari:",
-                lengthMenu: "Tampilkan _MENU_  data per halaman",
+                lengthMenu: "Tampilkan _MENU_ data per halaman",
                 zeroRecords: "Data tidak ditemukan",
                 info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
                 infoEmpty: "Tidak ada data",
+                loadingRecords: "Memuat data, harap tunggu...", 
+                processing: "Memproses data, harap tunggu..."
+            },
+            preDrawCallback: function(settings) {
+                $('#myTable').hide();
+            },
+            drawCallback: function(settings) {
+                $('#myTable').show();
             }
         });
-
     });
 </script>

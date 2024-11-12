@@ -106,7 +106,7 @@
 </div>
 
 {{-- Grafik --}}
-<div class="chart-container" style="height: 200px;">
+<div class="chart-container" style="height: 175px">
     <h5>Kategori Barang Pinjaman</h5>
     <canvas id="myBarChart" style="width: 100%; height: 100%;"></canvas>
 </div>

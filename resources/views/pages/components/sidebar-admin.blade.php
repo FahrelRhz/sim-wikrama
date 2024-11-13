@@ -19,5 +19,11 @@
                 <span class="d-sm-inline nav-text">Daftar User</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.request-perbaikan-barang.index') }}" class="nav-link">
+                <i class="bi bi-tools me-2"></i>
+                <span class="d-sm-inline nav-text">Perbaikan</span>
+            </a>
+        </li>
     </ul>
 </div>

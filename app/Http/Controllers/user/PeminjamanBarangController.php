@@ -81,7 +81,6 @@ class PeminjamanBarangController extends Controller
                 'recordsTotal' => count($siswaData),
                 'recordsFiltered' => count($filteredSiswaData),
             ]);
-
         } catch (RequestException $e) {
             \Log::error('API Error', [
                 'message' => $e->getMessage(),
@@ -114,12 +113,12 @@ class PeminjamanBarangController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-    
+
         $barangs = Barang::all();
-    
+
         return view('pages.user.peminjaman-barang.index', compact('barangs'));
     }
-    
+
 
     public function create(Request $request)
     {
@@ -139,9 +138,9 @@ class PeminjamanBarangController extends Controller
             'tanggal_kembali' => 'nullable|date',
             'status_pinjam' => 'required|in:kembali,dipinjam',
         ]);
-    
+
         Log::info('Data yang diterima: ', $validatedData);
-    
+
         try {
             // Menyimpan data ke database
             $peminjaman = Peminjaman::create([
@@ -151,9 +150,9 @@ class PeminjamanBarangController extends Controller
                 'tanggal_kembali' => $validatedData['tanggal_kembali'] ?? null,
                 'status_pinjam' => $validatedData['status_pinjam'],
             ]);
-    
+
             Log::info('Data berhasil disimpan:', ['id' => $peminjaman->id]);
-    
+
             // Mengembalikan response jika berhasil
             return response()->json([
                 'success' => true,
@@ -161,7 +160,7 @@ class PeminjamanBarangController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan peminjaman: ', ['error' => $e->getMessage()]);
-    
+
             // Menangani kesalahan jika terjadi
             return response()->json([
                 'success' => false,
@@ -169,8 +168,8 @@ class PeminjamanBarangController extends Controller
             ]);
         }
     }
-    
-    
+
+
     public function edit($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);

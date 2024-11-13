@@ -1,38 +1,37 @@
-@extends('pages.components.app')
+@extends('pages.components.app-admin')
 
 @include('partials.datatable')
 
-@include('pages.user.permintaan-barang.edit')
+@include('pages.admin.request-perbaikan-barang.edit')
+
+{{-- <style>
+    .btn {
+        background-color: #e0d100;
+    }
+</style> --}}
+
 
 <div class="row">
     <div class="col-md-2">
     </div>
-    
+
 
     <div class="col-md-10">
         <div class="container">
             <div class="row">
                 <div class="card mb-4 mt-4">
                     <div class="card-body">
-                        <h5 class="mb-4">Permintaan</h5>
+                        <h5 class="mb-4">Permintaan Perbaikan Barang</h5>
 
                         <div class="table-responsive">
-                            <div class="">
-
-                                <a href="{{ route('user.permintaan-barang.create') }}" class="btn text-white"
-                                    style="background-color: #042456" data-bs-toggle="modal"
-                                    data-bs-target="#tambahPermintaanModal">Tambah Permintaan</a>
-                                @include('pages.user.permintaan-barang.create')
-
-                            </div>
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Barang</th>
                                         <th>Nama Peminta</th>
                                         <th>Tanggal Permintaan</th>
-                                        <th>Alasan Permintaan</th>
-                                        <th></th>
+                                        <th>Deskripsi Kerusakan</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,7 +48,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    var table = initializeDataTable('#myTable', "{{ route('user.permintaan-barang.index') }}", [{
+    var table = initializeDataTable('#myTable', "{{ route('admin.request-perbaikan-barang.index') }}", [{
             data: 'barang',
             name: 'barang'
         },
@@ -58,13 +57,39 @@
             name: 'user'
         },
         {
-            data: 'tanggal_permintaan',
-            name: 'tanggal_permintaan'
+            data: 'tanggal_request',
+            name: 'tanggal_request'
         },
         {
-            data: 'alasan_permintaan',
-            name: 'alasan_permintaan'
+            data: 'deskripsi_kerusakan',
+            name: 'deskripsi_kerusakan'
         },
+        {
+            data: 'status',
+            name: 'status',
+            render: function(data, type, row) {
+                var btnStyle;
+                var statusText;
+
+                if (data === 'Pending') {
+                    btnStyle = 'background-color: #f8d7da; color: #721c24;';
+                    statusText = 'Pending';
+                } else if (data === 'Dalam Perbaikan') {
+                    btnStyle = 'background-color: #fff4b1; color: #a67c00;';
+                    statusText = 'Dalam Perbaikan';
+                } else if (data === 'Selesai') {
+                    btnStyle = 'background-color: #d4edda; color: #155724;';
+                    statusText = 'Selesai';
+                } else {
+                    btnStyle = 'background-color: #e2e3e5; color: #383d41;'; 
+                    statusText = 'Tidak Diketahui';
+                }
+
+                return '<button class="btn btn-sm" style="' + btnStyle + '">' + statusText + '</button>';
+            }
+        },
+
+
         {
             data: 'actions',
             name: 'actions',
@@ -77,22 +102,23 @@
 
     $(document).on('click', '.edit-button', function() {
         var id = $(this).data('id');
-        var barang = $(this).data('barang');
+        var barang_id = $(this).data('barang-id');
         var user_id = $(this).data('user-id');
-        var tanggal_permintaan = $(this).data('tanggal-permintaan');
-        var alasan_permintaan = $(this).data('alasan-permintaan');
+        var status = $(this).data('status')
+        var tanggal_request = $(this).data('tanggal-request');
+        var deskripsi_kerusakan = $(this).data('deskripsi-kerusakan');
 
-        $('#editPermintaanForm').attr('action', "/user/permintaan-barang/" + id);
+        $('#editRequestPerbaikanBarangForm').attr('action', "/admin/request-perbaikan-barang/" + id);
 
-        $('#edit_barang').val(barang);
+        $('#edit_barang_id').val(barang_id);
         $('#edit_user_id').val(user_id);
-        $('#edit_tanggal_permintaan').val(tanggal_permintaan);
-        $('#edit_alasan_permintaan').val(alasan_permintaan);
+        $('#status').val(status);
+        $('#edit_tanggal_request').val(tanggal_request);
+        $('#edit_deskripsi_kerusakan').val(deskripsi_kerusakan);
 
-        $('#editPermintaanModal').modal('show');
+
+        $('#editRequestPerbaikanBarangModal').modal('show');
     });
-
-
 </script>
 <script>
     @if (session('success'))
@@ -105,7 +131,7 @@
         });
     @endif
 
-    function deletePermintaan(id) {
+    function deleteRequestPerbaikanBarang(id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Data yang sudah dihapus tidak bisa dikembalikan!",
@@ -117,7 +143,8 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('user.permintaan-barang.delete', ':id') }}'.replace(':id', id),
+                    url: '{{ route('admin.request-perbaikan-barang.destroy', ':id') }}'.replace(':id',
+                        id),
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"

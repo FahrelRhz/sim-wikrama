@@ -19,11 +19,6 @@ class Peminjaman extends Model
         'status_pinjam',
     ];
 
-    public function siswa()
-    {
-        return $this->belongsTo(Siswa::class, 'siswa_id');
-    }
-
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'barang_id');

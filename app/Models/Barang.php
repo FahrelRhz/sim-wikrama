@@ -32,4 +32,9 @@ class Barang extends Model
     {
         return $this->hasMany(Peminjaman::class);
     }
+
+    public function requestPerbaikanBarang()
+    {
+        return $this->hasMany(RequestPerbaikanBarang::class);
+    }
 }

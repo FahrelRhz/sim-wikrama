@@ -1,8 +1,9 @@
-@extends('pages.components.app')
+@extends('pages.components.app-admin')
 
 @include('partials.datatable')
 
-@include('pages.user.permintaan-barang.edit')
+@include('pages.admin.permintaan-barang.edit')
+
 
 <div class="row">
     <div class="col-md-2">
@@ -19,19 +20,15 @@
                         <div class="table-responsive">
                             <div class="">
 
-                                <a href="{{ route('user.permintaan-barang.create') }}" class="btn text-white"
-                                    style="background-color: #042456" data-bs-toggle="modal"
-                                    data-bs-target="#tambahPermintaanModal">Tambah Permintaan</a>
-                                @include('pages.user.permintaan-barang.create')
-
                             </div>
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Barang</th>
-                                        {{-- <th>Nama Peminta</th> --}}
+                                        <th>Nama Peminta</th>
                                         <th>Tanggal Permintaan</th>
                                         <th>Alasan Permintaan</th>
+                                        <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -49,14 +46,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    var table = initializeDataTable('#myTable', "{{ route('user.permintaan-barang.index') }}", [{
+    var table = initializeDataTable('#myTable', "{{ route('admin.permintaan-barang.index') }}", [{
             data: 'barang',
             name: 'barang'
         },
-        // {
-        //     data: 'user',
-        //     name: 'user'
-        // },
+        {
+            data: 'user',
+            name: 'user'
+        },
         {
             data: 'tanggal_permintaan',
             name: 'tanggal_permintaan'
@@ -66,6 +63,28 @@
             name: 'alasan_permintaan'
         },
         {
+            data: 'status',
+            name: 'status',
+            render: function(data, type, row) {
+                var btnStyle;
+                var statusText;
+
+                if (data === 'Pending') {
+                    btnStyle = 'background-color: #f8d7da; color: #721c24;';
+                    statusText = 'Pending';
+                } else if (data === 'ACC') {
+                    btnStyle = 'background-color: #d4edda; color: #155724;';
+                    statusText = 'Selesai';
+                } else {
+                    btnStyle = 'background-color: #f1f1f1; color: #000;';
+                    statusText = 'Tidak Diketahui';
+                }
+
+                return '<button class="btn btn-sm" style="' + btnStyle + '">' + statusText + '</button>';
+            }
+        },
+
+        {
             data: 'actions',
             name: 'actions',
             orderable: false,
@@ -73,26 +92,28 @@
         }
 
     ]);
-
-
+</script>
+<script>
     $(document).on('click', '.edit-button', function() {
         var id = $(this).data('id');
         var barang = $(this).data('barang');
         var user_id = $(this).data('user-id');
         var tanggal_permintaan = $(this).data('tanggal-permintaan');
         var alasan_permintaan = $(this).data('alasan-permintaan');
+        var status = $(this).data('status')
 
-        $('#editPermintaanForm').attr('action', "/user/permintaan-barang/" + id);
+        $('#editPermintaanBarangForm').attr('action', "/admin/permintaan-barang/" + id);
 
         $('#edit_barang').val(barang);
         $('#edit_user_id').val(user_id);
         $('#edit_tanggal_permintaan').val(tanggal_permintaan);
         $('#edit_alasan_permintaan').val(alasan_permintaan);
+        $('#status').val(status);
 
-        $('#editPermintaanModal').modal('show');
+
+        $('#editPermintaanBarangModal').modal('show');
     });
-</script>
-<script>
+
     @if (session('success'))
         Swal.fire({
             icon: 'success',
@@ -115,7 +136,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('user.permintaan-barang.delete', ':id') }}'.replace(':id', id),
+                    url: '{{ route('admin.permintaan-barang.destroy', ':id') }}'.replace(':id', id),
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"

@@ -34,6 +34,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="/user/request-perbaikan-barang" class="nav-link">
+                <i class="bi bi-tools me-2"></i>
+                <span class="d-sm-inline nav-text">Perbaikan</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('user.daftar-siswa.index') }}" class="nav-link">
                 <i class="bi bi-person-fill me-2"></i>
                 <span class="d-sm-inline nav-text">Daftar Siswa</span>

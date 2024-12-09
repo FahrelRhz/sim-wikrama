@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Barang;
 use App\Models\Jurusan;
 use Yajra\DataTables\DataTables;
@@ -13,7 +14,14 @@ class DaftarBarangController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $barangs = Barang::with('jurusan')->select(['id', 'kode_barang', 'nama_barang', 'merk_barang', 'sumber_dana', 'jumlah_barang', 'kategori_barang', 'kondisi_barang', 'deskripsi_barang', 'tanggal_pengadaan']);
+            // Mendapatkan jurusan user yang login
+            $userJurusanId = Auth::user()->jurusan_id;
+    
+            // Mengambil data barang sesuai dengan jurusan user yang login
+            $barangs = Barang::with('jurusan')
+                ->where('jurusan_id', $userJurusanId)
+                ->select(['id', 'kode_barang', 'nama_barang', 'merk_barang', 'sumber_dana','kondisi_barang', 'deskripsi_barang', 'tanggal_pengadaan']);
+    
             return DataTables::of($barangs)
                 ->addIndexColumn()
                 ->addColumn('actions', function ($row) {
@@ -23,8 +31,6 @@ class DaftarBarangController extends Controller
                     data-nama_barang="' . $row->nama_barang . '" 
                     data-merk_barang="' . $row->merk_barang . '"
                     data-sumber_dana="' . $row->sumber_dana . '"
-                    data-jumlah_barang="' . $row->jumlah_barang . '"
-                    data-kategori_barang="' . $row->kategori_barang . '"
                     data-kondisi_barang="' . $row->kondisi_barang . '"
                     data-deskripsi_barang="' . $row->deskripsi_barang . '"
                     data-tanggal_pengadaan="' . $row->tanggal_pengadaan . '">
@@ -36,10 +42,9 @@ class DaftarBarangController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-
+    
         return view('pages.user.daftar-barang.index');
     }
-
     public function create()
     {
         $jurusans = Jurusan::all();
@@ -54,8 +59,6 @@ class DaftarBarangController extends Controller
             'merk_barang' => 'required|string|max:255',
             'tanggal_pengadaan' => 'required|date',
             'sumber_dana' => 'required|string|max:255',
-            'jumlah_barang' => 'required|integer',
-            'kategori_barang' => 'required|string|max:255',
             'kondisi_barang' => 'required|string|max:255',
             'deskripsi_barang' => 'required|string|max:255',
             'jurusan_id' => 'required|exists:jurusan,id',
@@ -67,8 +70,6 @@ class DaftarBarangController extends Controller
             'merk_barang' => $request->merk_barang,
             'tanggal_pengadaan' => $request->tanggal_pengadaan,
             'sumber_dana' => $request->sumber_dana,
-            'jumlah_barang' => $request->jumlah_barang,
-            'kategori_barang' => $request->kategori_barang,
             'kondisi_barang' => $request->kondisi_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
             'jurusan_id' => $request->jurusan_id,
@@ -100,8 +101,6 @@ class DaftarBarangController extends Controller
             'merk_barang' => 'required|string|max:255',
             'tanggal_pengadaan' => 'required|date',
             'sumber_dana' => 'required|string|max:255',
-            'jumlah_barang' => 'required|integer',
-            'kategori_barang' => 'required|string|max:255',
             'kondisi_barang' => 'required|string|max:255',
             'deskripsi_barang' => 'required|string|max:255',
             'jurusan_id' => 'required|exists:jurusan,id',
@@ -114,8 +113,6 @@ class DaftarBarangController extends Controller
             'merk_barang' => $request->merk_barang,
             'tanggal_pengadaan' => $request->tanggal_pengadaan,
             'sumber_dana' => $request->sumber_dana,
-            'jumlah_barang' => $request->jumlah_barang,
-            'kategori_barang' => $request->kategori_barang,
             'kondisi_barang' => $request->kondisi_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
             'jurusan_id' => $request->jurusan_id,

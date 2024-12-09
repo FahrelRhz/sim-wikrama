@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Permintaan;
@@ -14,25 +15,32 @@ class PermintaanBarangController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $permintaans = Permintaan::with(['user'])->select(['id', 'barang', 'user_id', 'tanggal_permintaan', 'alasan_permintaan']);
+            // Mendapatkan jurusan user yang login
+            $userJurusanId = Auth::user()->jurusan_id;
+
+            // Mengambil data permintaan sesuai dengan jurusan user yang login
+            $permintaans = Permintaan::with(['user'])
+                ->whereHas('user', function ($query) use ($userJurusanId) {
+                    $query->where('jurusan_id', $userJurusanId);
+                })
+                ->select(['id', 'barang', 'user_id', 'tanggal_permintaan', 'alasan_permintaan']);
+
             return DataTables::of($permintaans)
                 ->addIndexColumn()
-                ->addColumn('user', function ($user) {
-                    return $user->user->name ?? '-';
+                ->addColumn('user', function ($row) {
+                    return $row->user->name ?? '-';
                 })
                 ->addColumn('actions', function ($row) {
-
                     $editBtn = '<a href="#" class="bi bi-card-checklist btn mx-1 btn-info edit-button" 
-                                data-id="' . $row->id . '" 
-                                data-barang="' . $row->barang . '"
-                                data-user-id="' . $row->user_id . '"
-                                data-tanggal-permintaan="' . $row->tanggal_permintaan . '"
-                                data-alasan-permintaan="' . $row->alasan_permintaan . '"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#editPermintaanModal">
-                        </a>';
+                            data-id="' . $row->id . '" 
+                            data-barang="' . $row->barang . '"
+                            data-user-id="' . $row->user_id . '"
+                            data-tanggal-permintaan="' . $row->tanggal_permintaan . '"
+                            data-alasan-permintaan="' . $row->alasan_permintaan . '"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editPermintaanModal">
+                    </a>';
                     $deleteBtn = '<a class="bi bi-trash btn btn-danger" data-id="' . $row->id . '" onclick="deletePermintaan(' . $row->id . ')"></a>';
-
 
                     return $editBtn . $deleteBtn;
                 })
@@ -49,55 +57,72 @@ class PermintaanBarangController extends Controller
 
     public function create()
     {
-        $users = User::all();
+        // $userJurusanId = Auth::user()->jurusan_id;
+        // $users = User::where('jurusan_id', $userJurusanId)->get();
         return view('pages.user.permintaan-barang.create', compact('users'));
     }
+
 
     public function store(Request $request)
     {
         $request->validate([
             'barang' => 'required',
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
             'tanggal_permintaan' => 'required|date',
             'alasan_permintaan' => 'required',
         ]);
-    
-        Permintaan::create($request->all());
-    
+
+        // Simpan permintaan
+        Permintaan::create([
+            'barang' => $request->barang,
+            'user_id' => Auth::id(), // Ambil ID user yang sedang login
+            'tanggal_permintaan' => $request->tanggal_permintaan,
+            'alasan_permintaan' => $request->alasan_permintaan,
+        ]);
+
         return redirect()->route('user.permintaan-barang.index')
-                         ->with('success', 'Permintaan sudah berhasil dikirim!');
+            ->with('success', 'Permintaan sudah berhasil dikirim!');
     }
+
 
     public function edit($id)
     {
-        $permintaan = Permintaan::find($id);
-        $users = User::all();
+        $permintaan = Permintaan::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
-        return view('pages.user.permintaan-barang.edit', compact('permintaan', 'users'));
+        return view('pages.user.permintaan-barang.edit', compact('permintaan'));
     }
-    
+
+
     public function update(Request $request, $id)
     {
         $request->validate([
-            'barang' => 'nullable',
-            'user_id' => 'nullable|exists:users,id',
-            'tanggal_permintaan' => 'nullable|date',
-            'alasan_permintaan' => 'nullable',
+            'barang' => 'required',
+            'tanggal_permintaan' => 'required|date',
+            'alasan_permintaan' => 'required',
         ]);
-    
-        $permintaans = Permintaan::findOrFail($id);
-        $permintaans->update($request->only('barang', 'user_id', 'tanggal_permintaan', 'alasan_permintaan'));
-    
+
+        $permintaan = Permintaan::where('id', $id)
+            ->where('user_id', Auth::id()) 
+            ->firstOrFail();
+
+        $permintaan->update([
+            'barang' => $request->barang,
+            'tanggal_permintaan' => $request->tanggal_permintaan,
+            'alasan_permintaan' => $request->alasan_permintaan,
+        ]);
+
         return redirect()->route('user.permintaan-barang.index')
-                         ->with('success', 'Permintaan berhasil diubah!');
+            ->with('success', 'Permintaan berhasil diubah!');
     }
-    
+
+
     public function destroy($id)
     {
         $permintaans = Permintaan::findOrFail($id);
         $permintaans->delete();
-    
+
         return response()->json(['success' => 'Permintaan berhasil dihapus!']);
     }
-    
 }

@@ -16,8 +16,6 @@ class Barang extends Model
         'merk_barang',
         'tanggal_pengadaan',
         'sumber_dana',
-        'jumlah_barang',
-        'kategori_barang',
         'kondisi_barang',
         'deskripsi_barang',
         'jurusan_id'
@@ -28,8 +26,18 @@ class Barang extends Model
         return $this->belongsTo(Jurusan::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'jurusan_id');
+    }
+
     public function peminjaman()
     {
-        return $this->hasMany(Peminjaman::class);
+        return $this->hasMany(Peminjaman::class, 'barang_id');
+    }
+
+    public function requestPerbaikanBarang()
+    {
+        return $this->hasMany(RequestPerbaikanBarang::class);
     }
 }

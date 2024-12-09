@@ -1,5 +1,5 @@
-<div class="modal fade" id="editRequestPerbaikanBarangModal" tabindex="-1" aria-labelledby="editRequestPerbaikanBarangModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="editRequestPerbaikanBarangModal" tabindex="-1"
+    aria-labelledby="editRequestPerbaikanBarangModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,6 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <form id="editRequestPerbaikanBarangForm" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -16,25 +17,15 @@
                         <select class="form-control" name="barang_id" id="edit_barang_id" required>
                             <option value="">Pilih Barang</option>
                             @foreach ($barangs as $barang)
-                                <option value="{{ $barang->id }}">{{ $barang->nama_barang }}</option>
+                                <option value="{{ $barang->id }}">{{ $barang->nama_barang }} -
+                                    {{ $barang->kode_barang }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="user_id" class="form-label">Nama Peminta</label>
-                        <select class="form-control" id="edit_user_id" name="user_id" required>
-                            <option value="">Pilih Nama Peminta</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_request" class="form-label">Tanggal</label>
-                        <input type="date" class="form-control" id="edit_tanggal_request" name="tanggal_request" required>
+                        <input type="date" class="form-control" id="edit_tanggal_request" name="tanggal_request"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label for="deskripsi_kerusakan" class="form-label">Deskripsi Kerusakan</label>
@@ -42,7 +33,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn text-white" style="background-color: #042456">Simpan Perubahan</button>
+                        <button type="submit" class="btn text-white" style="background-color: #042456">Simpan
+                            Perubahan</button>
                     </div>
                 </form>
             </div>

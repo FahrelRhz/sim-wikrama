@@ -1,5 +1,5 @@
-<div class="modal fade" id="tambahRequestPerbaikanBarangModal" tabindex="-1" aria-labelledby="tambahRequestPerbaikanBarangModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="tambahRequestPerbaikanBarangModal" tabindex="-1"
+    aria-labelledby="tambahRequestPerbaikanBarangModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,32 +11,23 @@
                     @csrf
                     <div class="mb-3">
                         <label for="barang_id" class="form-label">Barang</label>
-                        <select class="form-control" name="barang_id" id="barang_id" required>
+                        <select class="form-control @error('barang_id') is-invalid @enderror" name="barang_id" id="barang_id" required>
                             <option value="">Pilih Barang</option>
                             @foreach ($barangs as $barang)
-                                <option value="{{ $barang->id }}"
-                                    {{ old('barang_id') == $barang->id ? 'selected' : '' }}>
-                                    {{ $barang->nama_barang }}
+                                <option value="{{ $barang->id }}" {{ old('barang_id') == $barang->id ? 'selected' : '' }}>
+                                    {{ $barang->nama_barang }} - {{ $barang->kode_barang }}
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="user_id" class="form-label">Nama Peminta</label>
-                        <select class="form-control" id="user_id" name="user_id" required>
-                            <option value="">Pilih Nama Peminta</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}"
-                                    {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <div class="text-danger">{{ $message }}</div>
+                    
+                        <!-- Menampilkan pesan error jika ada -->
+                        @error('barang_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     
+                    
+
                     <div class="mb-3">
                         <label for="tanggal_request" class="form-label">Tanggal</label>
                         <input type="date" class="form-control" id="tanggal_request" name="tanggal_request" required>

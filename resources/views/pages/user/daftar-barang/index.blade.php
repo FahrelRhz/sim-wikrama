@@ -24,8 +24,6 @@
                                         <th>Kode Barang</th>
                                         <th>Nama Barang</th>
                                         <th>Merk Barang</th>
-                                        <th>Kategori Barang</th>
-                                        <th>Jumlah Barang</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,14 +53,6 @@
         {
             data: 'merk_barang',
             name: 'merk_barang'
-        },
-        {
-            data: 'kategori_barang',
-            name: 'kategori_barang'
-        },
-        {
-            data: 'jumlah_barang',
-            name: 'jumlah_barang'
         },
         {
             data: 'actions',
@@ -132,8 +122,6 @@
                 $('#namaBarang').text(data.nama_barang);
                 $('#merkBarang').text(data.merk_barang);
                 $('#sumberDana').text(data.sumber_dana);
-                $('#jumlahBarang').text(data.jumlah_barang);
-                $('#kategoriBarang').text(data.kategori_barang);
                 $('#kondisiBarang').text(data.kondisi_barang);
                 $('#deskripsiBarang').text(data.deskripsi_barang);
                 $('#tanggalPengadaan').text(data.tanggal_pengadaan);
@@ -152,8 +140,6 @@
         var nama_barang = $(this).data('nama_barang');
         var merk_barang = $(this).data('merk_barang');
         var sumber_dana = $(this).data('sumber_dana');
-        var jumlah_barang = $(this).data('jumlah_barang');
-        var kategori_barang = $(this).data('kategori_barang');
         var kondisi_barang = $(this).data('kondisi_barang');
         var deskripsi_barang = $(this).data('deskripsi_barang');
         var tanggal_pengadaan = $(this).data('tanggal_pengadaan');
@@ -163,8 +149,6 @@
         $('#show_nama_barang').text(nama_barang);
         $('#show_merk_barang').text(merk_barang);
         $('#show_sumber_dana').text(sumber_dana);
-        $('#show_jumlah_barang').text(jumlah_barang);
-        $('#show_kategori_barang').text(kategori_barang);
         $('#show_kondisi_barang').text(kondisi_barang);
         $('#show_deskripsi_barang').text(deskripsi_barang);
         $('#show_tanggal_pengadaan').text(tanggal_pengadaan);

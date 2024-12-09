@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-2">
     </div>
-    
+
 
     <div class="col-md-10">
         <div class="container">
@@ -29,7 +29,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Barang</th>
-                                        <th>Nama Peminta</th>
+                                        {{-- <th>Nama Peminta</th> --}}
                                         <th>Tanggal Permintaan</th>
                                         <th>Alasan Permintaan</th>
                                         <th></th>
@@ -53,10 +53,10 @@
             data: 'barang',
             name: 'barang'
         },
-        {
-            data: 'user',
-            name: 'user'
-        },
+        // {
+        //     data: 'user',
+        //     name: 'user'
+        // },
         {
             data: 'tanggal_permintaan',
             name: 'tanggal_permintaan'
@@ -91,8 +91,6 @@
 
         $('#editPermintaanModal').modal('show');
     });
-
-
 </script>
 <script>
     @if (session('success'))

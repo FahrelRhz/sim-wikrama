@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\DaftarUserController;
+use App\Http\Controllers\admin\PermintaanBarangsController;
 use App\Http\Controllers\admin\RequestPerbaikanBarangsController;
 use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\user\DaftarBarangController;
@@ -40,6 +41,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/daftar-user/{id}/edit', [DaftarUserController::class, 'edit'])->name('admin.daftar-user.edit');
         Route::put('/daftar-user/{id}', [DaftarUserController::class, 'update'])->name('admin.daftar-user.update');
         Route::delete('/daftar-user/{id}', [DaftarUserController::class, 'destroy'])->name('admin.daftar-user.destroy');
+
+        //permintaan barang 
+        Route::get('/permintaan-barang', [PermintaanBarangsController::class, 'index'])->name('admin.permintaan-barang.index');
+        Route::get('/permintaan-barang/{id}/edit', [PermintaanBarangsController::class, 'edit'])->name('admin.permintaan-barang.edit');
+        Route::put('/permintaan-barang/{id}', [PermintaanBarangsController::class, 'update'])->name('admin.permintaan-barang.update');
+        Route::delete('/permintaan-barang/{id}', [PermintaanBarangsController::class, 'destroy'])->name('admin.permintaan-barang.destroy');
 
         //perbaikan barang
         Route::get('/request-perbaikan-barang', [RequestPerbaikanBarangsController::class, 'index'])->name('admin.request-perbaikan-barang.index');

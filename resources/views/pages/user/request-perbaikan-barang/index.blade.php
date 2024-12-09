@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-2">
     </div>
-    
+
 
     <div class="col-md-10">
         <div class="container">
@@ -18,6 +18,15 @@
 
                         <div class="table-responsive">
                             <div class="">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
                                 <a href="{{ route('user.request-perbaikan-barang.create') }}" class="btn text-white"
                                     style="background-color: #042456" data-bs-toggle="modal"
@@ -29,7 +38,6 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Barang</th>
-                                        <th>Nama Peminta</th>
                                         <th>Tanggal Permintaan</th>
                                         <th>Deskripsi Kerusakan</th>
                                         <th>Status</th>
@@ -52,10 +60,6 @@
     var table = initializeDataTable('#myTable', "{{ route('user.request-perbaikan-barang.index') }}", [{
             data: 'barang',
             name: 'barang'
-        },
-        {
-            data: 'user',
-            name: 'user'
         },
         {
             data: 'tanggal_request',
@@ -82,7 +86,7 @@
                     btnStyle = 'background-color: #d4edda; color: #155724;';
                     statusText = 'Selesai';
                 } else {
-                    btnStyle = 'background-color: #e2e3e5; color: #383d41;'; 
+                    btnStyle = 'background-color: #e2e3e5; color: #383d41;';
                     statusText = 'Tidak Diketahui';
                 }
 
@@ -100,31 +104,29 @@
 
 
     $(document).on('click', '.edit-button', function() {
-    // Ambil data dari tombol edit yang diklik
-    var id = $(this).data('id');
-    var barang_id = $(this).data('barang-id');
-    var user_id = $(this).data('user-id');
-    var tanggal_request = $(this).data('tanggal-request');
-    var deskripsi_kerusakan = $(this).data('deskripsi-kerusakan');
+        // Ambil data dari tombol edit yang diklik
+        var id = $(this).data('id');
+        var barang_id = $(this).data('barang-id');
+        var user_id = $(this).data('user-id');
+        var tanggal_request = $(this).data('tanggal-request');
+        var deskripsi_kerusakan = $(this).data('deskripsi-kerusakan');
 
-    // Set action form dengan URL yang tepat
-    $('#editRequestPerbaikanBarangForm').attr('action', "/user/request-perbaikan-barang/" + id);
+        // Set action form dengan URL yang tepat
+        $('#editRequestPerbaikanBarangForm').attr('action', "/user/request-perbaikan-barang/" + id);
 
-    // Isi nilai input di dalam modal dengan data yang diambil
-    $('#edit_barang_id').val(barang_id);
-    $('#edit_user_id').val(user_id);
-    $('#edit_tanggal_request').val(tanggal_request);
-    $('#edit_deskripsi_kerusakan').val(deskripsi_kerusakan);
+        // Isi nilai input di dalam modal dengan data yang diambil
+        $('#edit_barang_id').val(barang_id);
+        $('#edit_user_id').val(user_id);
+        $('#edit_tanggal_request').val(tanggal_request);
+        $('#edit_deskripsi_kerusakan').val(deskripsi_kerusakan);
 
-    // Tampilkan modal
-    $('#editRequestPerbaikanBarangModal').modal('show');
-});
-
-
-
+        // Tampilkan modal
+        $('#editRequestPerbaikanBarangModal').modal('show');
+    });
 </script>
 <script>
     @if (session('success'))
+
         Swal.fire({
             icon: 'success',
             title: 'Berhasil',
@@ -133,6 +135,20 @@
             timer: 2000
         });
     @endif
+
+    @if (session('error'))
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: "{{ session('error') }}",
+            showConfirmButton: true
+        });
+    @endif
+
+
+
+
 
     function deleteRequestPerbaikanBarang(id) {
         Swal.fire({
@@ -146,7 +162,8 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('user.request-perbaikan-barang.delete', ':id') }}'.replace(':id', id),
+                    url: '{{ route('user.request-perbaikan-barang.delete', ':id') }}'.replace(':id',
+                        id),
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"

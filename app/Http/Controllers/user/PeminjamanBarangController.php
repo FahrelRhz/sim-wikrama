@@ -92,68 +92,99 @@ class PeminjamanBarangController extends Controller
 
     public function index(Request $request)
     {
+        // Dapatkan user yang sedang login
+        $user = Auth::user();
+
+        // Ambil ID jurusan dari user
+        $jurusanId = $user->jurusan_id;
+
         if ($request->ajax()) {
-            $peminjamans = Peminjaman::with(['barang'])->select(['id', 'siswa', 'barang_id', 'tanggal_pinjam', 'tanggal_kembali', 'status_pinjam']);
+            // Ambil data peminjaman sesuai jurusan user
+            $peminjamans = Peminjaman::with(['barang'])
+                ->whereHas('barang', function ($query) use ($jurusanId) {
+                    $query->where('jurusan_id', $jurusanId);
+                })
+                ->select(['id', 'siswa', 'barang_id', 'tanggal_pinjam', 'tanggal_kembali', 'ruangan_peminjam', 'status_pinjam']);
+
             return DataTables::of($peminjamans)
                 ->addIndexColumn()
                 ->addColumn('siswa', function ($peminjaman) {
                     return $peminjaman->siswa ?? '-';
                 })
                 ->addColumn('barang', function ($peminjaman) {
-                    return $peminjaman->barang->nama_barang ?? '-';
+                    return $peminjaman->barang
+                        ? $peminjaman->barang->nama_barang . ' - ' . $peminjaman->barang->kode_barang
+                        : '-';
                 })
                 ->addColumn('actions', function ($peminjaman) {
                     return '<a href="#" class="bi bi-card-checklist edit-button" 
-                            data-id="' . $peminjaman->id . '" 
-                            data-tanggal_pinjam="' . $peminjaman->tanggal_pinjam . '"
-                            data-tanggal_kembali="' . $peminjaman->tanggal_kembali . '"
-                            data-status_pinjam="' . $peminjaman->status_pinjam . '"
-                        ></a>';
+                        data-id="' . $peminjaman->id . '" 
+                        data-tanggal_pinjam="' . $peminjaman->tanggal_pinjam . '"
+                        data-tanggal_kembali="' . $peminjaman->tanggal_kembali . '"
+                        data-ruangan_peminjam="' . $peminjaman->ruangan_peminjam . '"
+                        data-status_pinjam="' . $peminjaman->status_pinjam . '"
+                    ></a>';
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
 
-        $barangs = Barang::all();
+        // Kirim semua barang ke view (opsional)
+        $barangs = Barang::where('jurusan_id', $jurusanId)->get();
 
         return view('pages.user.peminjaman-barang.index', compact('barangs'));
     }
 
 
+
     public function create(Request $request)
     {
-        $barangs = Barang::all();
+        // Ambil barang yang tidak dipinjam
+        $barangs = Barang::whereDoesntHave('peminjaman', function ($query) {
+            $query->where('status_pinjam', 'dipinjam');
+        })->get();
+
         return view('pages.user.peminjaman-barang.create', compact('barangs'));
     }
 
-    // PeminjamanController.php
 
     public function store(Request $request)
     {
-        // Validasi input
         $validatedData = $request->validate([
             'siswa' => 'required|string',
             'barang_id' => 'required|exists:barang,id',
             'tanggal_pinjam' => 'required|date',
             'tanggal_kembali' => 'nullable|date',
+            'ruangan_peminjam' => 'required|string',
             'status_pinjam' => 'required|in:kembali,dipinjam',
         ]);
 
         Log::info('Data yang diterima: ', $validatedData);
 
         try {
-            // Menyimpan data ke database
+            $barangDipinjam = Peminjaman::where('barang_id', $validatedData['barang_id'])
+                ->where('status_pinjam', 'dipinjam')
+                ->exists();
+
+            if ($barangDipinjam) {
+                Log::warning('Barang ini sedang dipinjam:', ['barang_id' => $validatedData['barang_id']]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Barang ini sedang dipinjam.'
+                ], 422);
+            }
+
             $peminjaman = Peminjaman::create([
                 'siswa' => $validatedData['siswa'],
                 'barang_id' => $validatedData['barang_id'],
                 'tanggal_pinjam' => $validatedData['tanggal_pinjam'],
                 'tanggal_kembali' => $validatedData['tanggal_kembali'] ?? null,
+                'ruangan_peminjam' => $validatedData['ruangan_peminjam'],
                 'status_pinjam' => $validatedData['status_pinjam'],
             ]);
 
             Log::info('Data berhasil disimpan:', ['id' => $peminjaman->id]);
 
-            // Mengembalikan response jika berhasil
             return response()->json([
                 'success' => true,
                 'data' => $peminjaman
@@ -161,7 +192,6 @@ class PeminjamanBarangController extends Controller
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan peminjaman: ', ['error' => $e->getMessage()]);
 
-            // Menangani kesalahan jika terjadi
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
@@ -169,29 +199,38 @@ class PeminjamanBarangController extends Controller
         }
     }
 
-
     public function edit($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
         $siswas = Siswa::all();
         $barangs = Barang::all();
-        return view('pages.user.peminjaman-barang.edit', compact('siswas', 'barangs'));
+        return view('pages.user.peminjaman-barang.edit', compact('siswas', 'barangs'))
+            ->withInput($peminjaman->toArray());
     }
 
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            "tanggal_pinjam" => "required|date",
-            "tanggal_kembali" => "nullable|date",
-            "status_pinjam" => "required",
-        ]);
+        $rules = [
+            'tanggal_pinjam' => 'required|date',
+            'status_pinjam' => 'required',
+            'ruangan_peminjam' => 'required|string',
+        ];
+
+        if ($request->status_pinjam === 'kembali') {
+            $rules['tanggal_kembali'] = 'required|date';
+        } else {
+            $rules['tanggal_kembali'] = 'nullable|date';
+        }
+
+        $request->validate($rules);
 
         $peminjaman = Peminjaman::findOrFail($id);
 
         $dataToUpdate = [
             'tanggal_pinjam' => $request->tanggal_pinjam,
-            'status_pinjam' => $request->status_pinjam
+            'status_pinjam' => $request->status_pinjam,
+            'ruangan_peminjam' => $request->ruangan_peminjam,
         ];
 
         if ($request->status_pinjam === 'dipinjam') {
@@ -204,6 +243,9 @@ class PeminjamanBarangController extends Controller
 
         return redirect()->route('user.peminjaman-barang.index')->with('success', 'Daftar Peminjam berhasil diperbarui.');
     }
+
+
+
 
     public function destroy($id)
     {

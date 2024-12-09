@@ -1,5 +1,6 @@
 <!-- Modal Edit Permintaan -->
-<div class="modal fade" id="editPermintaanModal" tabindex="-1" aria-labelledby="editPermintaanModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPermintaanModal" tabindex="-1" aria-labelledby="editPermintaanModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,9 +20,9 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Nama Peminta -->
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="edit_user_id" class="form-label">Nama Peminta</label>
                         <select class="form-control" id="edit_user_id" name="user_id" required>
                             <option value="">Pilih Nama Peminta</option>
@@ -32,17 +33,18 @@
                         @error('user_id')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
-                    
+                    </div> --}}
+
                     <!-- Tanggal Permintaan -->
                     <div class="mb-3">
                         <label for="edit_tanggal_permintaan" class="form-label">Tanggal Permintaan</label>
-                        <input type="date" class="form-control" id="edit_tanggal_permintaan" name="tanggal_permintaan" required>
+                        <input type="date" class="form-control" id="edit_tanggal_permintaan"
+                            name="tanggal_permintaan" required>
                         @error('tanggal_permintaan')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Alasan Permintaan -->
                     <div class="mb-3">
                         <label for="edit_alasan_permintaan" class="form-label">Alasan Permintaan</label>

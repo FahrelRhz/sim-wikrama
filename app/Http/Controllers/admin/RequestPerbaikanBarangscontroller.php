@@ -18,7 +18,9 @@ class RequestPerbaikanBarangsController extends Controller
             return DataTables::of($requestPerbaikanBarang)
                 ->addIndexColumn()
                 ->addColumn('barang', function ($requestPerbaikanBarang) {
-                    return $requestPerbaikanBarang->barang->nama_barang ?? '-';
+                    return $requestPerbaikanBarang->barang
+                    ? $requestPerbaikanBarang->barang->nama_barang . ' - ' . $requestPerbaikanBarang->barang->kode_barang
+                    : '-';
                 })
                 ->addColumn('user', function ($requestPerbaikanBarang) {
                     return $requestPerbaikanBarang->user->name ?? '-';

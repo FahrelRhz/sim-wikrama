@@ -12,7 +12,8 @@
                     @method('PUT')
                     <div class="mb-3">
                         <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                        <input type="date" class="form-control" id="edit_tanggal_pinjam" name="tanggal_pinjam" required>
+                        <input type="date" class="form-control" id="edit_tanggal_pinjam" name="tanggal_pinjam"
+                            value="{{ old('tanggal_pinjam') }}" required>
                         @error('tanggal_pinjam')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -20,22 +21,36 @@
 
                     <div class="mb-3">
                         <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
-                        <input type="date" class="form-control" id="edit_tanggal_kembali" name="tanggal_kembali" required>
+                        <input type="date" class="form-control" id="edit_tanggal_kembali" name="tanggal_kembali"
+                            value="{{ old('tanggal_kembali') }}">
                         @error('tanggal_kembali')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="status_pinjam" class="form-label">Status</label>
-                        <select class="form-control" id="edit_status_pinjam" name="status_pinjam" required>
-                            <option value="dipinjam">Dipinjam</option>
-                            <option value="kembali">Kembali</option>
+                        <label for="ruangan_peminjam" class="form-label">Ruangan Peminjam</label>
+                        <input type="text" class="form-control" id="edit_ruangan_peminjam" name="ruangan_peminjam"
+                            value="{{ old('ruangan_peminjam') }}" required>
+                        @error('ruangan_peminjam')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="status_pinjam" class="form-label">Status Pinjam</label>
+                        <select class="form-control" id="status_pinjam" name="status_pinjam" required>
+                            <option value="dipinjam" {{ old('status_pinjam') == 'dipinjam' ? 'selected' : '' }}>Dipinjam
+                            </option>
+                            <option value="kembali" {{ old('status_pinjam') == 'kembali' ? 'selected' : '' }}>Kembali
+                            </option>
                         </select>
                         @error('status_pinjam')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+
+
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -46,3 +61,28 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusPinjam = document.getElementById('status_pinjam');
+        const tanggalKembali = document.getElementById('edit_tanggal_kembali');
+
+        // Function to update required attribute
+        function updateTanggalKembaliRequirement() {
+            if (statusPinjam.value === 'kembali') {
+                tanggalKembali.setAttribute('required', 'required');
+            } else {
+                tanggalKembali.removeAttribute('required');
+            }
+        }
+
+        // Initial check when the page loads
+        updateTanggalKembaliRequirement();
+
+        // Listen for changes on the status select field
+        statusPinjam.addEventListener('change', function() {
+            updateTanggalKembaliRequirement();
+        });
+    });
+</script>

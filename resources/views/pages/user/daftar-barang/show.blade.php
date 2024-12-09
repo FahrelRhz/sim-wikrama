@@ -16,12 +16,8 @@
                         <p id="show_merk_barang"></p>
                         <h5 class="fw-bold">Sumber Dana: </h5>
                         <p id="show_sumber_dana"></p>
-                        <h5 class="fw-bold">Jumlah Barang: </h5>
-                        <p id="show_jumlah_barang"></p>
                     </div>
                     <div class="col-md-6">
-                        <h5 class="fw-bold">Kategori Barang: </h5>
-                        <p id="show_kategori_barang"></p>
                         <h5 class="fw-bold">Kondisi Barang: </h5>
                         <p id="show_kondisi_barang"></p>
                         <h5 class="fw-bold">Deskripsi Barang: </h5>

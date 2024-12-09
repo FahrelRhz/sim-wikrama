@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-start mt-4">
-    <h4 class="fw-bold mb-4">DAFTAR BARANG</h4>
+    <h4 class="fw-bold mb-4">DAFTAR BARANG - {{ $user_name->name }}</h4>
 </div>
 
 <div class="row g-4">

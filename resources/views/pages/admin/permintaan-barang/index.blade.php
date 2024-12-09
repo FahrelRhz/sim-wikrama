@@ -2,13 +2,7 @@
 
 @include('partials.datatable')
 
-@include('pages.admin.request-perbaikan-barang.edit')
-
-{{-- <style>
-    .btn {
-        background-color: #e0d100;
-    }
-</style> --}}
+@include('pages.admin.permintaan-barang.edit')
 
 
 <div class="row">
@@ -21,17 +15,21 @@
             <div class="row">
                 <div class="card mb-4 mt-4">
                     <div class="card-body">
-                        <h5 class="mb-4">Permintaan Perbaikan Barang</h5>
+                        <h5 class="mb-4">Permintaan</h5>
 
                         <div class="table-responsive">
+                            <div class="">
+
+                            </div>
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Barang</th>
                                         <th>Nama Peminta</th>
                                         <th>Tanggal Permintaan</th>
-                                        <th>Deskripsi Kerusakan</th>
+                                        <th>Alasan Permintaan</th>
                                         <th>Status</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,7 +46,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    var table = initializeDataTable('#myTable', "{{ route('admin.request-perbaikan-barang.index') }}", [{
+    var table = initializeDataTable('#myTable', "{{ route('admin.permintaan-barang.index') }}", [{
             data: 'barang',
             name: 'barang'
         },
@@ -57,12 +55,12 @@
             name: 'user'
         },
         {
-            data: 'tanggal_request',
-            name: 'tanggal_request'
+            data: 'tanggal_permintaan',
+            name: 'tanggal_permintaan'
         },
         {
-            data: 'deskripsi_kerusakan',
-            name: 'deskripsi_kerusakan'
+            data: 'alasan_permintaan',
+            name: 'alasan_permintaan'
         },
         {
             data: 'status',
@@ -74,21 +72,17 @@
                 if (data === 'Pending') {
                     btnStyle = 'background-color: #f8d7da; color: #721c24;';
                     statusText = 'Pending';
-                } else if (data === 'Dalam Perbaikan') {
-                    btnStyle = 'background-color: #fff4b1; color: #a67c00;';
-                    statusText = 'Dalam Perbaikan';
-                } else if (data === 'Selesai') {
+                } else if (data === 'ACC') {
                     btnStyle = 'background-color: #d4edda; color: #155724;';
                     statusText = 'Selesai';
                 } else {
-                    btnStyle = 'background-color: #e2e3e5; color: #383d41;';
+                    btnStyle = 'background-color: #f1f1f1; color: #000;';
                     statusText = 'Tidak Diketahui';
                 }
 
                 return '<button class="btn btn-sm" style="' + btnStyle + '">' + statusText + '</button>';
             }
         },
-
 
         {
             data: 'actions',
@@ -98,29 +92,28 @@
         }
 
     ]);
-
-
-    $(document).on('click', '.edit-button', function() {
-        var id = $(this).data('id');
-        var barang_id = $(this).data('barang-id');
-        var user_id = $(this).data('user-id');
-        var status = $(this).data('status')
-        var tanggal_request = $(this).data('tanggal-request');
-        var deskripsi_kerusakan = $(this).data('deskripsi-kerusakan');
-
-        $('#editRequestPerbaikanBarangForm').attr('action', "/admin/request-perbaikan-barang/" + id);
-
-        $('#edit_barang_id').val(barang_id);
-        $('#edit_user_id').val(user_id);
-        $('#status').val(status);
-        $('#edit_tanggal_request').val(tanggal_request);
-        $('#edit_deskripsi_kerusakan').val(deskripsi_kerusakan);
-
-
-        $('#editRequestPerbaikanBarangModal').modal('show');
-    });
 </script>
 <script>
+    $(document).on('click', '.edit-button', function() {
+        var id = $(this).data('id');
+        var barang = $(this).data('barang');
+        var user_id = $(this).data('user-id');
+        var tanggal_permintaan = $(this).data('tanggal-permintaan');
+        var alasan_permintaan = $(this).data('alasan-permintaan');
+        var status = $(this).data('status')
+
+        $('#editPermintaanBarangForm').attr('action', "/admin/permintaan-barang/" + id);
+
+        $('#edit_barang').val(barang);
+        $('#edit_user_id').val(user_id);
+        $('#edit_tanggal_permintaan').val(tanggal_permintaan);
+        $('#edit_alasan_permintaan').val(alasan_permintaan);
+        $('#status').val(status);
+
+
+        $('#editPermintaanBarangModal').modal('show');
+    });
+
     @if (session('success'))
         Swal.fire({
             icon: 'success',
@@ -131,7 +124,7 @@
         });
     @endif
 
-    function deleteRequestPerbaikanBarang(id) {
+    function deletePermintaan(id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Data yang sudah dihapus tidak bisa dikembalikan!",
@@ -143,8 +136,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('admin.request-perbaikan-barang.destroy', ':id') }}'.replace(':id',
-                        id),
+                    url: '{{ route('admin.permintaan-barang.destroy', ':id') }}'.replace(':id', id),
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"

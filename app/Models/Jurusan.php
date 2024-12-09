@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 
@@ -29,9 +29,4 @@ class Jurusan extends Model
     {
         return $this->hasMany(Siswa::class);
     }
-
 }
-
-
-
-?>

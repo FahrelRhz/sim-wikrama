@@ -63,24 +63,6 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="jumlah_barang" class="form-label">Jumlah Barang</label>
-                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang"
-                                    value="{{ old('jumlah_barang', $barang->jumlah_barang) }}" required>
-                                @error('jumlah_barang')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="kategori_barang" class="form-label">Kategori Barang</label>
-                                <input type="text" class="form-control" id="kategori_barang" name="kategori_barang"
-                                    value="{{ old('kategori_barang', $barang->kategori_barang) }}" required>
-                                @error('kategori_barang')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi Barang</label>
                                 <input type="text" class="form-control" id="kondisi_barang" name="kondisi_barang"
                                     value="{{ old('kondisi_barang', $barang->kondisi_barang) }}" required>

@@ -43,30 +43,14 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="sumber_dana" class="form-label">Sumber Dana</label>
                                 <input type="text" class="form-control" id="sumber_dana" name="sumber_dana"
                                     value="{{ old('sumber_dana') }}" required>
                                 @error('sumber_dana')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="jumlah_barang" class="form-label">Jumlah Barang</label>
-                                <input type="text" class="form-control" id="jumlah_barang" name="jumlah_barang"
-                                    value="{{ old('jumlah_barang') }}" required>
-                                @error('jumlah_barang')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="kategori_barang" class="form-label">Kategori Barang</label>
-                                <input type="text" class="form-control" id="kategori_barang" name="kategori_barang"
-                                    value="{{ old('kategori_barang') }}" required>
-                                @error('kategori_barang')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>

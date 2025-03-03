@@ -9,9 +9,9 @@
                 <div class="d-flex align-items-center">
                     <i class="p-3 rounded bi bi-arrow-down-left-circle-fill me-2 icon-background"></i>
                     <div>
-                        <h5 class="card-title mb-1">Dipinjamkan</h5>
+                        <h5 class="card-title mb-1">Jumlah Barang</h5>
                         <p class="card-text me-2">
-                            <span class="count">4</span>
+                            <span class="count">{{ $jml_barang }}</span>
                             <span class="count-text">Barang</span>
                         </p>
                     </div>
@@ -27,7 +27,7 @@
                     <div>
                         <h5 class="card-title mb-1">Dalam Peminjaman</h5>
                         <p class="card-text me-2">
-                            <span class="count">24</span>
+                            <span class="count">{{ $jml_dipinjam }}</span>
                             <span class="count-text">Barang</span>
                         </p>
                     </div>
@@ -43,7 +43,7 @@
                     <div>
                         <h5 class="card-title mb-1">Dikembalikan</h5>
                         <p class="card-text me-2">
-                            <span class="count">15</span>
+                            <span class="count">{{ $jml_kembali }}</span>
                             <span class="count-text">Barang</span>
                         </p>
                     </div>
@@ -59,7 +59,7 @@
                     <div>
                         <h5 class="card-title mb-1">Barang Rusak</h5>
                         <p class="card-text me-2">
-                            <span class="count">80</span>
+                            <span class="count">{{ $jml_rusak }}</span>
                             <span class="count-text">Barang</span>
                         </p>
                     </div>
@@ -82,25 +82,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>John Doe</td>
-                    <td>Handphone</td>
-                    <td class="bg-success-subtle fw-bold">Kembali</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Bude</td>
-                    <td>Gudeg</td>
-                    <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Sitit</td>
-                    <td>Jet</td>
-                    <td class="bg-danger-subtle fw-bold">Belum Kembali</td>
-                </tr>
-            </tbody>
+                @foreach ($status_terbaru as $index => $status)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $status->siswa ?? 'Tidak Diketahui' }}</td>
+                        <td>{{ $status->barang->nama_barang ?? 'Tidak Diketahui' }}</td>
+                        <td class="{{ $status->status == 'kembali' ? 'bg-success-subtle' : 'bg-danger-subtle' }} fw-bold">
+                            {{ $status->status == 'kembali' ? 'Sudah Kembali' : 'Dipinjam' }}
+                        </td>                        
+                    </tr>
+                @endforeach
+            </tbody>            
         </table>
     </div>
 </div>
@@ -123,7 +115,7 @@
     <div class="sidebar-profile">
         <img src="https://via.placeholder.com/80" alt="Profile Picture" class="img-fluid rounded-circle">
         <h6>{{ $user_name->name }}</h6>
-    </div>    
+    </div>
 
     <div class="sidebar-welcome">
         Welcome {{ $user_name->name }}!

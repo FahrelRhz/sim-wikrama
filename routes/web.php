@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\BarangSekaliPakaiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\DaftarUserController;
@@ -30,9 +31,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
     Route::middleware('admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('pages.admin.dashboard.index');
-        });
+        Route::get('/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
 
         //daftar user
         Route::get('/daftar-user', [DaftarUserController::class, 'index'])->name('admin.daftar-user.index');
@@ -53,6 +52,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/request-perbaikan-barang/{id}/edit', [RequestPerbaikanBarangsController::class, 'edit'])->name('admin.request-perbaikan-barang.edit');
         Route::put('/request-perbaikan-barang/{id}', [RequestPerbaikanBarangsController::class, 'update'])->name('admin.request-perbaikan-barang.update');
         Route::delete('/request-perbaikan-barang/{id}', [RequestPerbaikanBarangsController::class, 'destroy'])->name('admin.request-perbaikan-barang.destroy');
+
+        Route::get('/barang-sekali-pakai', [BarangSekaliPakaiController::class, 'index'])->name('admin.barang-sekali-pakai.index');
+        Route::get('/barang-sekali-pakai/create', [BarangSekaliPakaiController::class, 'create'])->name('admin.barang-sekali-pakai.create');
+        Route::post('/barang-sekali-pakai', [BarangSekaliPakaiController::class, 'store'])->name('admin.barang-sekali-pakai.store');
+        Route::get('/barang-sekali-pakai/{id}/edit', [BarangSekaliPakaiController::class, 'edit'])->name('admin.barang-sekali-pakai.edit');
+        Route::put('/barang-sekali-pakai/{id}', [BarangSekaliPakaiController::class, 'update'])->name('admin.barang-sekali-pakai.update');
+        Route::delete('/barang-sekali-pakai/{id}', [BarangSekaliPakaiController::class, 'destroy'])->name('admin.barang-sekali-pakai.destroy');
 
     });
 });
@@ -92,6 +98,7 @@ Route::prefix('user')->group(function () {
         Route::get('/peminjaman-barang/{id}/edit', [PeminjamanBarangController::class, 'edit'])->name('user.peminjaman-barang.edit');
         Route::put('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'update'])->name('user.peminjaman-barang.update');
         Route::delete('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('user.peminjaman-barang.destroy');
+        Route::get('/download-pdf', [PeminjamanBarangController::class, 'downloadPdf'])->name('download.pdf');
 
         // Permintaan Barang
         Route::get('/permintaan-barang', [PermintaanBarangController::class, 'index'])->name('user.permintaan-barang.index');

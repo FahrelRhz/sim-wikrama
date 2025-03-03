@@ -29,10 +29,23 @@
                                     </div>
                                 @endif
 
-                                <a href="{{ route('user.peminjaman-barang.create') }}" class="btn text-white"
-                                    style="background-color: #042456" data-bs-toggle="modal"
-                                    data-bs-target="#tambahPeminjamModal">Tambah Peminjaman</a>
+                                <div class="flex-column">
+                                    <a href="{{ route('user.peminjaman-barang.create') }}" class="btn text-white"
+                                        style="background-color: #042456" data-bs-toggle="modal"
+                                        data-bs-target="#tambahPeminjamModal">Tambah Peminjaman</a>
+
+                                    <form action="{{ route('download.pdf') }}" method="GET" class="d-inline">
+                                        <label for="date">Pilih Tanggal:</label>
+                                        <input type="date" id="date" name="date"
+                                            max="{{ now()->toDateString() }}" value="{{ now()->toDateString() }}">
+                                        <button type="submit" class="btn text-white" style="background-color: #9d0000">
+                                            Download <i class="bi bi-file-earmark-pdf-fill"></i>
+                                        </button>
+                                    </form>
+
+                                </div>
                                 @include('pages.user.peminjaman-barang.create')
+
 
 
                             </div>
@@ -146,7 +159,7 @@
                 url: '{{ route('peminjaman.fetch') }}',
                 type: 'GET',
                 success: function(response) {
-                    $('#loading').addClass('d-none'); 
+                    $('#loading').addClass('d-none');
                     if (response.success) {
                         response.data.forEach(function(siswa) {
                             $('#siswa').append('<option value="' + siswa.name +
@@ -161,7 +174,7 @@
                 },
                 error: function(xhr) {
                     console.error('Error fetching data:', xhr.responseText);
-                    $('#loading').addClass('d-none'); 
+                    $('#loading').addClass('d-none');
                 }
             });
         });
@@ -179,18 +192,18 @@
                     if (response.success) {
                         localStorage.setItem('status', 'success');
                         localStorage.setItem('message', 'Peminjaman berhasil disimpan.');
-                        window.location.reload(); 
+                        window.location.reload();
                     } else {
                         localStorage.setItem('status', 'error');
                         localStorage.setItem('message', response.message);
-                        window.location.reload(); 
+                        window.location.reload();
                     }
                 },
                 error: function(xhr) {
                     localStorage.setItem('status', 'error');
                     localStorage.setItem('message',
                         'Barang sedang dipinjam.');
-                    window.location.reload(); 
+                    window.location.reload();
                 },
             });
         });
@@ -206,7 +219,7 @@
                         text: message,
                         icon: 'success',
                         showConfirmButton: false,
-                        timer: 2000 
+                        timer: 2000
                     });
                 } else if (status === 'error') {
                     Swal.fire({
@@ -214,7 +227,7 @@
                         text: message,
                         icon: 'error',
                         showConfirmButton: false,
-                        timer: 2000 
+                        timer: 2000
                     });
                 }
 

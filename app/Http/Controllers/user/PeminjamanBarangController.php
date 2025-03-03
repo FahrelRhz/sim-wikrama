@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\user;
 
-use GuzzleHttp\Client;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Peminjaman;
-use App\Models\Jurusan;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Barang;
+use Carbon\Carbon;
 use App\Models\Siswa;
+use App\Models\Barang;
+use GuzzleHttp\Client;
+use App\Models\Jurusan;
+use App\Models\Peminjaman;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Log;
-
 
 class PeminjamanBarangController extends Controller
 {
@@ -208,7 +209,6 @@ class PeminjamanBarangController extends Controller
             ->withInput($peminjaman->toArray());
     }
 
-
     public function update(Request $request, $id)
     {
         $rules = [
@@ -244,9 +244,6 @@ class PeminjamanBarangController extends Controller
         return redirect()->route('user.peminjaman-barang.index')->with('success', 'Daftar Peminjam berhasil diperbarui.');
     }
 
-
-
-
     public function destroy($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
@@ -254,4 +251,30 @@ class PeminjamanBarangController extends Controller
 
         return response()->json(['success' => 'Daftar Peminjam berhasil dihapus.']);
     }
+
+    public function downloadPdf(Request $request)
+    {
+        $user = Auth::user();
+        $jurusanId = $user->jurusan_id;
+    
+        // Ambil tanggal dari request atau default ke hari ini
+        $date = $request->input('date', now()->toDateString());
+    
+        // Ambil data peminjaman berdasarkan tanggal yang dipilih
+        $peminjamans = Peminjaman::with('barang')
+            ->whereHas('barang', function ($query) use ($jurusanId) {
+                $query->where('jurusan_id', $jurusanId);
+            })
+            ->whereDate('tanggal_pinjam', $date) // Hanya data pada tanggal yang dipilih
+            ->get();
+    
+        \Log::info('Peminjaman data:', $peminjamans->toArray());
+    
+        $pdf = Pdf::loadView('pages.user.peminjaman-barang.pdf', [
+            'peminjamans' => $peminjamans,
+            'date' => $date,
+        ]);
+    
+        return $pdf->download("laporan-peminjaman-barang-{$date}.pdf");
+    }    
 }

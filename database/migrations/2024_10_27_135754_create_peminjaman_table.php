@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('barang_id'); 
             $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali')->nullable();
-            $table->integer('durasi_pinjam')->nullable();
+            $table->string('ruangan_peminjam')->nullable();
             $table->enum('status_pinjam', ['dipinjam', 'kembali']);
             $table->timestamps();
         });

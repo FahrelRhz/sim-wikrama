@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('kategori_barang');
             $table->string('kondisi_barang');
             $table->text('deskripsi_barang')->nullable();
-            $table->unsignedBigInteger('jurusan_id'); 
+            $table->unsignedBigInteger('jurusan_id');   
             $table->timestamps();
         });
     }

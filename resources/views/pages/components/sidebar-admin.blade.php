@@ -31,5 +31,11 @@
                 <span class="d-sm-inline nav-text">Perbaikan</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.barang-sekali-pakai.index') }}" class="nav-link">
+                <i class="bi bi-tools me-2"></i>
+                <span class="d-sm-inline nav-text">Barang Sekali Pakai</span>
+            </a>
+        </li>
     </ul>
 </div>

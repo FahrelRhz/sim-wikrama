@@ -190,7 +190,6 @@
             }
 
             .chart-container {
-                margin-top: -55px;
                 width: 100%;
                 max-width: 400px;
                 justify-content: center;
@@ -209,42 +208,72 @@
     </div>
 
     <script>
+        const dates = @json($dates);
+        const perbaikan = @json($perbaikan);
+        const permintaan = @json($permintaan);
+        const barang_sekali_pakai = @json($barang_sekali_pakai);
+    
         const ctx = document.getElementById('myBarChart').getContext('2d');
         const myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                datasets: [{
-                    label: 'Dipinjamkan',
-                    data: [10, 12, 15, 8, 12, 10, 8],
-                    backgroundColor: '#042456',
-                    hoverOffset: 4
-                }, {
-                    label: 'Dalam Peminjaman',
-                    data: [8, 10, 12, 15, 8, 12, 10],
-                    backgroundColor: '#0d6efd',
-                    hoverOffset: 4
-                }, {
-                    label: 'Dikembalikan',
-                    data: [8, 10, 12, 15, 8, 12, 10],
-                    backgroundColor: '#0dcaf0',
-                    hoverOffset: 4
-
-                }, {
-                    label: 'Barang Rusak',
-                    data: [8, 10, 12, 15, 8, 12, 10],
-                    backgroundColor: '#7CF5FF',
-                    hoverOffset: 4
-                }]
+                labels: dates,  // Tanggal sebagai sumbu X
+                datasets: [
+                    {
+                        label: 'Perbaikan',
+                        data: perbaikan,
+                        backgroundColor: '#0d6efd',
+                        hoverOffset: 4
+                    },
+                    {
+                        label: 'Permintaan',
+                        data: permintaan,
+                        backgroundColor: '#0dcaf0',
+                        hoverOffset: 4
+                    },
+                    {
+                        label: 'Barang Sekali Pakai',
+                        data: barang_sekali_pakai,
+                        backgroundColor: '#7CF5FF',
+                        hoverOffset: 4
+                    }
+                ]
             },
             options: {
+                responsive: true,
                 plugins: {
                     legend: {
                         display: true
                     }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
         });
+
+        function openSidebar() {
+            document.getElementById('right-sidebar').classList.add('sidebar-open');
+        }
+
+        function closeSidebar() {
+            document.getElementById('right-sidebar').classList.remove('sidebar-open');
+        }
+
+        function displayDate() {
+            const dateElement = document.getElementById('sidebar-date');
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+            dateElement.innerHTML = formattedDate;
+        }
+
+        displayDate();
     </script>
 
     <script>

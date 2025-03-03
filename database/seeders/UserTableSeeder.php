@@ -18,49 +18,49 @@ class UserTableSeeder extends Seeder
                 'name' => 'Kaprog PPLG',
                 'email' => 'kaprogpplg@gmail.com',
                 'password' => bcrypt('kaprogpplg'),
-                'jurusan' => 'PPLG',
+                'jurusan_id' => '1',
                 'email_verified_at' => now()
             ],
             [
                 'name' => 'Kaprog TJKT',
                 'email' => 'kaprogtjkt@gmail.com',
                 'password' => bcrypt('kaprogtjkt'),
-                'jurusan' => 'TJKT',
+                'jurusan_id' => '3',
                 'email_verified_at' => now()
             ],
             [
                 'name' => 'Kaprog DKV',
                 'email' => 'kaprogdkv@gmail.com',
                 'password' => bcrypt('kaprogdkv'),
-                'jurusan' => 'DKV',
+                'jurusan_id' => '2',
                 'email_verified_at' => now()
             ],
             [
                 'name' => 'Kaprog MPLB',
                 'email' => 'kaprogmplb@gmail.com',
                 'password' => bcrypt('kaprogmplb'),
-                'jurusan' => 'MPLB',
+                'jurusan_id' => '4',
                 'email_verified_at' => now()
             ],
             [
                 'name' => 'Kaprog PMN',
                 'email' => 'kaprogpmn@gmail.com',
                 'password' => bcrypt('kaprogpmn'),
-                'jurusan' => 'PMN',
+                'jurusan_id' => '5',
                 'email_verified_at' => now()
             ],
             [
                 'name' => 'Kaprog KLN',
                 'email' => 'kaprogkln@gmail.com',
                 'password' => bcrypt('kaprogkln'),
-                'jurusan' => 'DKV',
+                'jurusan_id' => '6',
                 'email_verified_at' => now()
             ],
             [
                 'name' => 'Kaprog HTL',
                 'email' => 'kaproghtl@gmail.com',
                 'password' => bcrypt('kaproghtl'),
-                'jurusan' => 'HTL',
+                'jurusan_id' => '7',
                 'email_verified_at' => now()
             ],
         ];

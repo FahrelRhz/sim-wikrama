@@ -200,42 +200,57 @@
     </div>
 
     <script>
+        const dates = @json($dates);
+        const barang = @json($barang);
+        const dipinjam = @json($dipinjam);
+        const kembali = @json($kembali);
+        const rusak = @json($rusak);
+    
         const ctx = document.getElementById('myBarChart').getContext('2d');
         const myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                labels: dates,  // Tanggal sebagai sumbu X
                 datasets: [
                     {
-                        label: 'Dipinjamkan',
-                        data: [10, 12, 15, 8, 12, 10, 8],
+                        label: 'Barang',
+                        data: barang,
                         backgroundColor: '#042456',
                         hoverOffset: 4
                     },
                     {
-                        label: 'Dalam Peminjaman',
-                        data: [8, 10, 12, 15, 8, 12, 10],
+                        label: 'Dipinjam',
+                        data: dipinjam,
                         backgroundColor: '#0d6efd',
                         hoverOffset: 4
                     },
                     {
                         label: 'Dikembalikan',
-                        data: [8, 10, 12, 15, 8, 12, 10],
+                        data: kembali,
                         backgroundColor: '#0dcaf0',
                         hoverOffset: 4
                     },
                     {
                         label: 'Barang Rusak',
-                        data: [8, 10, 12, 15, 8, 12, 10],
+                        data: rusak,
                         backgroundColor: '#7CF5FF',
                         hoverOffset: 4
                     }
                 ]
             },
             options: {
+                responsive: true,
                 plugins: {
                     legend: {
                         display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }

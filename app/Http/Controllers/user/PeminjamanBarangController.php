@@ -256,10 +256,10 @@ class PeminjamanBarangController extends Controller
     {
         $user = Auth::user();
         $jurusanId = $user->jurusan_id;
-    
+
         // Ambil tanggal dari request atau default ke hari ini
         $date = $request->input('date', now()->toDateString());
-    
+
         // Ambil data peminjaman berdasarkan tanggal yang dipilih
         $peminjamans = Peminjaman::with('barang')
             ->whereHas('barang', function ($query) use ($jurusanId) {
@@ -267,14 +267,14 @@ class PeminjamanBarangController extends Controller
             })
             ->whereDate('tanggal_pinjam', $date) // Hanya data pada tanggal yang dipilih
             ->get();
-    
+
         \Log::info('Peminjaman data:', $peminjamans->toArray());
-    
+
         $pdf = Pdf::loadView('pages.user.peminjaman-barang.pdf', [
             'peminjamans' => $peminjamans,
             'date' => $date,
         ]);
-    
+
         return $pdf->download("laporan-peminjaman-barang-{$date}.pdf");
-    }    
+    }
 }

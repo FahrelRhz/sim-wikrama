@@ -15,4 +15,9 @@ class BarangSekaliPakai extends Model
         'nama_barang',
         'jml_barang',
     ];
+
+    public function peminjamanSekaliPakai()
+    {
+        return $this->hasMany(PeminjamanSekaliPakai::class, 'barang_sekali_pakai_id', 'id');
+    }
 }

@@ -71,13 +71,13 @@
                 var btnStyle;
                 var statusText;
 
-                if (data === 'Pending') {
+                if (data === 'pending') {
                     btnStyle = 'background-color: #f8d7da; color: #721c24;';
                     statusText = 'Pending';
-                } else if (data === 'Dalam Perbaikan') {
+                } else if (data === 'dalam perbaikan') {
                     btnStyle = 'background-color: #fff4b1; color: #a67c00;';
                     statusText = 'Dalam Perbaikan';
-                } else if (data === 'Selesai') {
+                } else if (data === 'selesai') {
                     btnStyle = 'background-color: #d4edda; color: #155724;';
                     statusText = 'Selesai';
                 } else {

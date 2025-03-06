@@ -69,12 +69,12 @@
                 var btnStyle;
                 var statusText;
 
-                if (data === 'Pending') {
+                if (data === 'pending') {
                     btnStyle = 'background-color: #f8d7da; color: #721c24;';
                     statusText = 'Pending';
-                } else if (data === 'ACC') {
+                } else if (data === 'acc') {
                     btnStyle = 'background-color: #d4edda; color: #155724;';
-                    statusText = 'Selesai';
+                    statusText = 'ACC';
                 } else {
                     btnStyle = 'background-color: #f1f1f1; color: #000;';
                     statusText = 'Tidak Diketahui';

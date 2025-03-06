@@ -50,19 +50,19 @@ class PermintaanBarangsController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'status' => 'required',
-    ]);
+    {
+        $request->validate([
+            'status' => 'required',
+        ]);
 
-    $permintaanBarang = Permintaan::findOrFail($id);
+        $permintaanBarang = Permintaan::findOrFail($id);
 
-    $permintaanBarang->status = $request->input('status');
-    $permintaanBarang->save();
+        $permintaanBarang->status = $request->input('status');
+        $permintaanBarang->save();
 
-    return redirect()->route('admin.permintaan-barang.index')
-        ->with('success', 'Status permintaan berhasil diubah!');
-}
+        return redirect()->route('admin.permintaan-barang.index')
+            ->with('success', 'Status permintaan berhasil diubah!');
+    }
 
 
 

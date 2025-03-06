@@ -20,6 +20,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('admin.peminjaman-sekali-pakai.index') }}" class="nav-link">
+                <i class="bi bi-clock-history me-2"></i>
+                <span class="d-sm-inline nav-text">Peminjaman</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('admin.permintaan-barang.index') }}" class="nav-link">
                 <i class="bi bi-laptop me-2"></i>
                 <span class="d-sm-inline nav-text">Permintaan</span>
@@ -33,8 +39,8 @@
         </li>
         <li class="nav-item">
             <a href="{{ route('admin.barang-sekali-pakai.index') }}" class="nav-link">
-                <i class="bi bi-tools me-2"></i>
-                <span class="d-sm-inline nav-text">Barang Sekali Pakai</span>
+                <i class="bi bi-pen me-2"></i>
+                <span class="d-sm-inline nav-text">Barang Habis Pakai</span>
             </a>
         </li>
     </ul>

@@ -15,36 +15,38 @@ class PermintaanBarangController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            // Mendapatkan jurusan user yang login
             $userJurusanId = Auth::user()->jurusan_id;
 
-            // Mengambil data permintaan sesuai dengan jurusan user yang login
             $permintaans = Permintaan::with(['user'])
                 ->whereHas('user', function ($query) use ($userJurusanId) {
                     $query->where('jurusan_id', $userJurusanId);
                 })
-                ->select(['id', 'barang', 'user_id', 'tanggal_permintaan', 'alasan_permintaan']);
+                ->select(['id', 'barang', 'user_id', 'tanggal_permintaan', 'alasan_permintaan', 'status']);
 
             return DataTables::of($permintaans)
                 ->addIndexColumn()
                 ->addColumn('user', function ($row) {
                     return $row->user->name ?? '-';
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->status;
+                })
                 ->addColumn('actions', function ($row) {
                     $editBtn = '<a href="#" class="bi bi-card-checklist btn mx-1 btn-info edit-button" 
-                            data-id="' . $row->id . '" 
-                            data-barang="' . $row->barang . '"
-                            data-user-id="' . $row->user_id . '"
-                            data-tanggal-permintaan="' . $row->tanggal_permintaan . '"
-                            data-alasan-permintaan="' . $row->alasan_permintaan . '"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#editPermintaanModal">
-                    </a>';
+                        data-id="' . $row->id . '" 
+                        data-barang="' . $row->barang . '"
+                        data-user-id="' . $row->user_id . '"
+                        data-tanggal-permintaan="' . $row->tanggal_permintaan . '"
+                        data-alasan-permintaan="' . $row->alasan_permintaan . '"
+                        data-status="' . $row->status . '"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editPermintaanModal">
+                </a>';
                     $deleteBtn = '<a class="bi bi-trash btn btn-danger" data-id="' . $row->id . '" onclick="deletePermintaan(' . $row->id . ')"></a>';
 
                     return $editBtn . $deleteBtn;
                 })
-                ->rawColumns(['actions'])
+                ->rawColumns(['actions', 'status'])
                 ->make(true);
         }
 
@@ -53,6 +55,7 @@ class PermintaanBarangController extends Controller
 
         return view('pages.user.permintaan-barang.index', compact('users', 'isModal'));
     }
+
 
 
     public function create()
@@ -104,7 +107,7 @@ class PermintaanBarangController extends Controller
         ]);
 
         $permintaan = Permintaan::where('id', $id)
-            ->where('user_id', Auth::id()) 
+            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         $permintaan->update([

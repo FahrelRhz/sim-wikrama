@@ -6,12 +6,14 @@ use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\DaftarUserController;
 use App\Http\Controllers\admin\PermintaanBarangsController;
 use App\Http\Controllers\admin\RequestPerbaikanBarangsController;
+use App\Http\Controllers\admin\PeminjamanSekaliPakaiController;
 use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\user\DaftarBarangController;
 use App\Http\Controllers\user\DaftarSiswaController;
 use App\Http\Controllers\user\PeminjamanBarangController;
 use App\Http\Controllers\user\PermintaanBarangController;
 use App\Http\Controllers\user\RequestPerbaikanBarangController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -53,12 +55,23 @@ Route::prefix('admin')->group(function () {
         Route::put('/request-perbaikan-barang/{id}', [RequestPerbaikanBarangsController::class, 'update'])->name('admin.request-perbaikan-barang.update');
         Route::delete('/request-perbaikan-barang/{id}', [RequestPerbaikanBarangsController::class, 'destroy'])->name('admin.request-perbaikan-barang.destroy');
 
+        //Barang Sekali Pakai
         Route::get('/barang-sekali-pakai', [BarangSekaliPakaiController::class, 'index'])->name('admin.barang-sekali-pakai.index');
         Route::get('/barang-sekali-pakai/create', [BarangSekaliPakaiController::class, 'create'])->name('admin.barang-sekali-pakai.create');
         Route::post('/barang-sekali-pakai', [BarangSekaliPakaiController::class, 'store'])->name('admin.barang-sekali-pakai.store');
         Route::get('/barang-sekali-pakai/{id}/edit', [BarangSekaliPakaiController::class, 'edit'])->name('admin.barang-sekali-pakai.edit');
         Route::put('/barang-sekali-pakai/{id}', [BarangSekaliPakaiController::class, 'update'])->name('admin.barang-sekali-pakai.update');
         Route::delete('/barang-sekali-pakai/{id}', [BarangSekaliPakaiController::class, 'destroy'])->name('admin.barang-sekali-pakai.destroy');
+
+        //Peminjaman Barang Sekali Pakai
+        Route::get('/peminjaman-sekali-pakai', [PeminjamanSekaliPakaiController::class, 'index'])->name('admin.peminjaman-sekali-pakai.index');
+        Route::get('/peminjaman-sekali-pakai/create', [PeminjamanSekaliPakaiController::class, 'create'])->name('admin.peminjaman-sekali-pakai.create');
+        Route::post('/peminjaman-sekali-pakai', [PeminjamanSekaliPakaiController::class, 'store'])->name('admin.peminjaman-sekali-pakai.store');
+        Route::get('/peminjaman-sekali-pakai/{id}/edit', [PeminjamanSekaliPakaiController::class, 'edit'])->name('admin.peminjaman-sekali-pakai.edit');
+        Route::put('/peminjaman-sekali-pakai/{id}', [PeminjamanSekaliPakaiController::class, 'update'])->name('admin.peminjaman-sekali-pakai.update');
+        Route::delete('/peminjaman-sekali-pakai/{id}', [PeminjamanSekaliPakaiController::class, 'destroy'])->name('admin.peminjaman-sekali-pakai.destroy');
+        
+
 
     });
 });

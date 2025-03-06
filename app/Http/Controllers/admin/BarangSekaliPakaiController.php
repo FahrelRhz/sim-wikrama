@@ -29,7 +29,8 @@ class BarangSekaliPakaiController extends Controller
         return view('pages.admin.barang-sekali-pakai.index');
     }
 
-    public function create() {
+    public function create()
+    {
         $barang_sekali_pakais = BarangSekaliPakai::all();
         return view('pages.admin.barang-sekali-pakai.create', compact('barang_sekali_pakais'));
     }
@@ -49,7 +50,8 @@ class BarangSekaliPakaiController extends Controller
         return redirect()->route('admin.barang-sekali-pakai.index')->with('success', 'Barang berhasil ditambahkan.');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $barang_sekali_pakais = BarangSekaliPakai::findOrFail($id);
         return view('pages.admin.barang-sekali-pakai.edit', compact('barang_sekali_pakais'));
     }

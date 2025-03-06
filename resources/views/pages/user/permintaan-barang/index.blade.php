@@ -32,6 +32,7 @@
                                         {{-- <th>Nama Peminta</th> --}}
                                         <th>Tanggal Permintaan</th>
                                         <th>Alasan Permintaan</th>
+                                        <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -64,6 +65,27 @@
         {
             data: 'alasan_permintaan',
             name: 'alasan_permintaan'
+        },
+        {
+            data: 'status',
+            name: 'status',
+            render: function(data, type, row) {
+                var btnStyle;
+                var statusText;
+
+                if (data === 'pending') {
+                    btnStyle = 'background-color: #f8d7da; color: #721c24;';
+                    statusText = 'Pending';
+                } else if (data === 'acc') {
+                    btnStyle = 'background-color: #d4edda; color: #155724;';
+                    statusText = 'ACC';
+                } else {
+                    btnStyle = 'background-color: #f1f1f1; color: #000;';
+                    statusText = 'Tidak Diketahui';
+                }
+
+                return '<button class="btn btn-sm" style="' + btnStyle + '">' + statusText + '</button>';
+            }
         },
         {
             data: 'actions',

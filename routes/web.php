@@ -100,13 +100,12 @@ Route::prefix('user')->group(function () {
         Route::delete('/daftar-barang/{id}', [DaftarBarangController::class, 'destroy'])->name('user.daftar-barang.destroy');
 
         // Daftar Siswa
-        Route::get('/daftar-siswa', [DaftarSiswaController::class, 'index'])->name('user.daftar-siswa.index');
-        Route::get('/fetch', [DaftarSiswaController::class, 'fetchDataSiswa'])->name('user.fetch');
+        // Route::get('/peminjaman/fetch', [DaftarSiswaController::class, 'getSpreadsheetData'])->name('daftar_siswa.fetch');
 
         //peminjaman barang
         Route::get('/peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('user.peminjaman-barang.index');
         Route::get('/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])->name('user.peminjaman-barang.create');
-        Route::get('/peminjaman/fetch', [PeminjamanBarangController::class, 'fetchDataSiswa'])->name('peminjaman.fetch');
+        Route::get('/peminjaman/fetch', [DaftarSiswaController::class, 'getSpreadsheetData'])->name('daftar_siswa.fetch');
         Route::post('/peminjaman-barang', [PeminjamanBarangController::class, 'store'])->name('user.peminjaman-barang.store');
         Route::get('/peminjaman-barang/{id}/edit', [PeminjamanBarangController::class, 'edit'])->name('user.peminjaman-barang.edit');
         Route::put('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'update'])->name('user.peminjaman-barang.update');

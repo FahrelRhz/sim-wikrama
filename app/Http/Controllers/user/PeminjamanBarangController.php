@@ -19,78 +19,6 @@ use GuzzleHttp\Exception\RequestException;
 class PeminjamanBarangController extends Controller
 {
 
-    private $client;
-    public function __construct()
-    {
-        $this->client = new Client();
-    }
-
-    public function fetchDataSiswa(Request $request)
-    {
-        try {
-            $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmlzIjpudWxsLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBob3RvX3Byb2ZpbGUiOm51bGwsInJvbGUiOm51bGwsImtlbGFzIjpudWxsLCJyb21iZWwiOm51bGwsInJheW9uIjpudWxsLCJqdXJ1c2FuIjpudWxsLCJpYXQiOjE3MzEzMzYxMjN9.oKqf3se7FM7k6K2i9dEF6fflMvhJVuOadPqifqiGtwE'; // token API Anda
-
-            $user = Auth::user();
-            $jurusanId = $user->jurusan_id;
-
-            $jurusan = Jurusan::find($jurusanId);
-            if (!$jurusan) {
-                return response()->json(['error' => 'Jurusan tidak ditemukan'], 404);
-            }
-            $namaJurusan = $jurusan->nama_jurusan;
-
-            // Ambil data siswa dari API
-            $response = $this->client->request('GET', 'https://api-ra.smkwikrama.sch.id/api/user/get-siswa', [
-                'headers' => [
-                    'api-token' => $token,
-                ]
-            ]);
-
-            $siswaData = json_decode($response->getBody(), true)['data'];
-
-            // Filter siswa berdasarkan jurusan yang login
-            $filteredSiswaData = array_filter($siswaData, function ($siswa) use ($namaJurusan) {
-                return isset($siswa['jurusan']) && $siswa['jurusan'] === $namaJurusan;
-            });
-
-            // Jika ada pencarian, filter berdasarkan nilai pencarian
-            $searchValue = $request->input('search.value', '');
-            if (!empty($searchValue)) {
-                $filteredSiswaData = array_filter($filteredSiswaData, function ($siswa) use ($searchValue) {
-                    return strpos(strtolower($siswa['nis']), strtolower($searchValue)) !== false ||
-                        strpos(strtolower($siswa['name']), strtolower($searchValue)) !== false ||
-                        strpos(strtolower($siswa['rayon']), strtolower($searchValue)) !== false;
-                });
-            }
-
-            // Pagination (jika diperlukan)
-            $start = $request->input('start', 0);
-            $length = $request->input('length', count($filteredSiswaData));  // Ambil semua data
-            $paginatedData = array_slice($filteredSiswaData, $start, $length);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil mengambil data siswa',
-                'data' => array_map(function ($siswa) {
-                    return [
-                        'name' => $siswa['name'],
-                        'nis' => $siswa['nis'],
-                        'rayon' => $siswa['rayon'],
-                        // Tambahkan data lain yang dibutuhkan
-                    ];
-                }, $paginatedData),
-                'recordsTotal' => count($siswaData),
-                'recordsFiltered' => count($filteredSiswaData),
-            ]);
-        } catch (RequestException $e) {
-            \Log::error('API Error', [
-                'message' => $e->getMessage(),
-                'response' => $e->hasResponse() ? (string) $e->getResponse()->getBody() : null,
-            ]);
-            return response()->json(['error' => 'Data tidak dapat diambil'], 500);
-        }
-    }
-
     public function index(Request $request)
     {
         // Dapatkan user yang sedang login
@@ -257,24 +185,28 @@ class PeminjamanBarangController extends Controller
         $user = Auth::user();
         $jurusanId = $user->jurusan_id;
 
-        // Ambil tanggal dari request atau default ke hari ini
+        // Ambil tanggal dari request atau default ke bulan & tahun ini
         $date = $request->input('date', now()->toDateString());
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
 
-        // Ambil data peminjaman berdasarkan tanggal yang dipilih
+        // Ambil data peminjaman berdasarkan bulan & tahun yang dipilih
         $peminjamans = Peminjaman::with('barang')
             ->whereHas('barang', function ($query) use ($jurusanId) {
                 $query->where('jurusan_id', $jurusanId);
             })
-            ->whereDate('tanggal_pinjam', $date) // Hanya data pada tanggal yang dipilih
+            ->whereYear('tanggal_pinjam', $year)
+            ->whereMonth('tanggal_pinjam', $month)
             ->get();
 
         \Log::info('Peminjaman data:', $peminjamans->toArray());
 
         $pdf = Pdf::loadView('pages.user.peminjaman-barang.pdf', [
             'peminjamans' => $peminjamans,
-            'date' => $date,
+            'date' => "{$year}-{$month}",
         ]);
 
-        return $pdf->download("laporan-peminjaman-barang-{$date}.pdf");
+        return $pdf->download("laporan-peminjaman-barang-{$year}-{$month}.pdf");
     }
+
 }

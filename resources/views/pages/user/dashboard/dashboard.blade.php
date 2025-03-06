@@ -1,4 +1,4 @@
-@extends('pages.components.app')
+@extends('pages.components.sidebar')
 
 @section('content')
     <style>
@@ -8,7 +8,8 @@
             border-spacing: 10px 14px;
         }
 
-        th, td {
+        th,
+        td {
             text-align: center;
         }
 
@@ -62,142 +63,116 @@
             background-color: #fff;
             color: #042456;
         }
-
-        .right-sidebar {
-            width: 250px;
-            position: fixed;
-            top: 20px;
-            right: -300px;
-            bottom: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            z-index: 1000;
-            transition: right 0.5s ease;
-            border-radius: 20px;
-        }
-
-        .sidebar-open {
-            right: 0;
-        }
-
-        .sidebar-date {
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #042456;
-        }
-
-        .sidebar-profile {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-profile img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
-        .sidebar-profile h6 {
-            margin-bottom: 5px;
-        }
-
-        .sidebar-welcome {
-            font-weight: bold;
-            margin-bottom: 40px;
-            color: #042456;
-        }
-
-        .sidebar-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .sidebar-icon {
-            background-color: #042456;
-            color: white;
-            padding: 15px;
-            font-size: 18px;
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }
-
-        .sidebar-icon:hover {
-            background-color: #fff;
-            cursor: pointer;
-            color: #042456;
-        }
-
-        .sidebar-bottom-text {
-            margin-top: auto;
-            font-size: 18px;
-            color: gray;
-        }
-
-        .close-sidebar {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            color: #042456;
-        }
-
-        .user-button {
-            position: fixed;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #042456;
-            color: white;
-            padding: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        @media (max-width: 750px) {
-            .table-chart-container {
-                flex-direction: column;
-            }
-
-            h5.table-title {
-                text-align: center;
-            }
-
-            th, td {
-                font-size: 15px;
-            }
-
-            td.bg-danger-subtle,
-            td.bg-success-subtle {
-                font-size: 10px;
-            }
-
-            .chart-container {
-                width: 100%;
-                max-width: 400px;
-                justify-content: center;
-                align-items: center;
-                display: flex;
-                flex-direction: column;
-            }
-        }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="container">
+        <div class="d-flex justify-content-start mt-4">
+            <h4 class="fw-bold mb-4">DAFTAR BARANG - {{ $user->name }}</h4>
+        </div>
 
-    @include('pages.user.dashboard.dashboard-content')
-    
-    <div class="container-fluid">
-        @yield('content')
+        <div class="row g-4 fs-5">
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="p-3 rounded bi bi-arrow-down-left-circle-fill me-2 icon-background"></i>
+                            <div>
+                                <h5 class="card-title mb-1">Jumlah Barang</h5>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_barang }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="p-3 rounded bi bi-hourglass-split me-2 icon-background"></i>
+                            <div>
+                                <h5 class="card-title mb-1">Sedang Dipinjam</h5>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_dipinjam }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="p-3 rounded bi bi-check-circle-fill me-2 icon-background"></i>
+                            <div>
+                                <h5 class="card-title mb-1">Dikembalikan</h5>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_kembali }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="p-3 rounded bi bi-shield-slash-fill me-2 icon-background"></i>
+                            <div>
+                                <h5 class="card-title mb-1">Barang Rusak</h5>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_rusak }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="table-title mt-5">Status Terbaru</h5>
+        <div class="table-chart-container fs-6 text-center">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Peminjam</th>
+                            <th>Daftar Barang</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($status_terbaru as $index => $status)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $status->siswa ?? 'Tidak Diketahui' }}</td>
+                                <td>{{ $status->barang->nama_barang ?? 'Tidak Diketahui' }}</td>
+                                <td
+                                    class="{{ $status->status_pinjam == 'kembali' ? 'bg-success-subtle' : 'bg-danger-subtle' }} fw-bold">
+                                    {{ $status->status_pinjam == 'kembali' ? 'Kembali' : 'Dipinjam' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {{-- Grafik --}}
+        <div class="chart-container" style="height: 250px">
+            <h5>Kategori Barang Pinjaman</h5>
+            <canvas id="myBarChart" style="width: 100%; height: 100%;"></canvas>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         const dates = @json($dates);
@@ -205,14 +180,13 @@
         const dipinjam = @json($dipinjam);
         const kembali = @json($kembali);
         const rusak = @json($rusak);
-    
+
         const ctx = document.getElementById('myBarChart').getContext('2d');
         const myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: dates,  // Tanggal sebagai sumbu X
-                datasets: [
-                    {
+                labels: dates, // Tanggal sebagai sumbu X
+                datasets: [{
                         label: 'Barang',
                         data: barang,
                         backgroundColor: '#042456',
@@ -267,7 +241,12 @@
         function displayDate() {
             const dateElement = document.getElementById('sidebar-date');
             const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
             const formattedDate = now.toLocaleDateString('en-US', options);
             dateElement.innerHTML = formattedDate;
         }

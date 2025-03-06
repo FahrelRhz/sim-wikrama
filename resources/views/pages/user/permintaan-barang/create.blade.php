@@ -14,26 +14,6 @@
                         <input type="text" class="form-control" id="barang" name="barang" required>
                     </div>
 
-                    {{-- <div class="mb-3">
-                        <label for="user_id" class="form-label">Nama Peminta</label>
-                        <select class="form-control @error('user_id') is-invalid @enderror" name="user_id"
-                            id="user_id" required>
-                            <option value="">Pilih Nama Peminta</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        @error('user_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> --}}
-
-
-
-
                     <div class="mb-3">
                         <label for="tanggalPermintaan" class="form-label">Tanggal Permintaan</label>
                         <input type="date" class="form-control" id="tanggalPermintaan" name="tanggal_permintaan"

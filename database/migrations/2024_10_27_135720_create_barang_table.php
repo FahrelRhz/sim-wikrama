@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('merk_barang')->nullable();
             $table->date('tanggal_pengadaan');
             $table->string('sumber_dana')->nullable();
-            $table->integer('jumlah_barang');
-            $table->string('kategori_barang');
             $table->string('kondisi_barang');
             $table->text('deskripsi_barang')->nullable();
             $table->unsignedBigInteger('jurusan_id');   

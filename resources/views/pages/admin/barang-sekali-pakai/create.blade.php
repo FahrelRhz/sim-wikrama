@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-2">
-        @extends('pages.components.app-admin')
+        @extends('pages.components.sidebar-admin')
     </div>
 
     <div class="col-md-10">

@@ -4,12 +4,36 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\PeminjamanSekaliPakai;
 use App\Models\BarangSekaliPakai;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
+use App\Models\PeminjamanSekaliPakai;
 
 class PeminjamanSekaliPakaiController extends Controller
 {
+
+    public function getSpreadsheetData()
+    {
+        $csvUrl = "https://docs.google.com/spreadsheets/d/1L9jnY5Dhk17gthF9kwsLYwAAcv9U1a1SGyyiqcj1dgI/gviz/tq?tqx=out:csv";
+        $response = Http::get($csvUrl);
+    
+        if ($response->failed()) {
+            return response()->json(['error' => 'Gagal mengambil data dari Google Spreadsheet'], 500);
+        }
+    
+        $rows = array_map("str_getcsv", explode("\n", trim($response->body())));
+        array_shift($rows);
+    
+        $pegawai = [];
+        foreach ($rows as $row) {
+            if (isset($row[1])) {
+                $pegawai[] = trim($row[1]);
+            }
+        }
+    
+        return $pegawai;
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -19,7 +43,7 @@ class PeminjamanSekaliPakaiController extends Controller
             return DataTables::of($peminjamans)
                 ->addIndexColumn()
                 ->addColumn('nama_barang', function ($row) {
-                    return $row->barangSekaliPakai->nama_barang ?? '-'; 
+                    return $row->barangSekaliPakai->nama_barang ?? '-';
                 })
                 ->addColumn('jml_barang', function ($row) {
                     return $row->barangSekaliPakai->jml_barang ?? 0; // Menampilkan jumlah barang atau 0 jika null
@@ -38,7 +62,9 @@ class PeminjamanSekaliPakaiController extends Controller
     public function create()
     {
         $barang_sekali_pakai = BarangSekaliPakai::all();
-        return view('pages.admin.peminjaman-sekali-pakai.create', compact('barang_sekali_pakai'));
+        $nama_peminjam = $this->getSpreadsheetData(); // Ambil data peminjam dari spreadsheet
+    
+        return view('pages.admin.peminjaman-sekali-pakai.create', compact('barang_sekali_pakai', 'nama_peminjam'));
     }
 
     public function store(Request $request)

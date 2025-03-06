@@ -1,4 +1,4 @@
-@extends('pages.components.app-admin')
+@extends('pages.components.sidebar-admin')
 
 @section('content')
     <style>
@@ -63,163 +63,99 @@
             background-color: #fff;
             color: #042456;
         }
-
-        .right-sidebar {
-            width: 250px;
-            position: fixed;
-            top: 20px;
-            right: -300px;
-            bottom: 20px;
-            background-color: rgb(255, 255, 255);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            z-index: 1000;
-            transition: right 0.5s ease;
-            border-radius: 20px;
-        }
-
-        .sidebar-open {
-            right: 0;
-        }
-
-        .sidebar-date {
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #042456;
-        }
-
-        .sidebar-profile {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-profile img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
-        .sidebar-profile h6 {
-            margin-bottom: 5px;
-        }
-
-        .sidebar-welcome {
-            font-weight: bold;
-            margin-bottom: 40px;
-            color: #042456;
-        }
-
-        .sidebar-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .sidebar-icon {
-            background-color: #042456;
-            color: white;
-            padding: 15px;
-            font-size: 18px;
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }
-
-        .sidebar-icon:hover {
-            background-color: rgb(255, 255, 255);
-            cursor: pointer;
-            color: #042456;
-        }
-
-        .sidebar-bottom-text {
-            margin-top: auto;
-            font-size: 18px;
-            color: gray;
-        }
-
-        .close-sidebar {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            color: #042456;
-        }
-
-        .user-button {
-            position: fixed;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #042456;
-            color: white;
-            padding: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        @media (max-width: 750px) {
-            .table-chart-container {
-                flex-direction: column;
-            }
-
-            h5.table-title {
-                text-align: center;
-            }
-
-            th,
-            td {
-                font-size: 15px;
-            }
-
-            table {
-                width: 100%;
-                max-width: 100%;
-                overflow-x: auto;
-                margin-bottom: 75px;
-            }
-
-            td.bg-danger-subtle,
-            td.bg-success-subtle {
-                font-size: 10px;
-            }
-
-            .chart-container {
-                width: 100%;
-                max-width: 400px;
-                justify-content: center;
-                align-items: center;
-                display: flex;
-                flex-direction: column;
-            }
-        }
     </style>
+    <div class="container">
+        <div class="d-flex justify-content-start mt-4">
+            <h4 class="fw-bold mb-4">DAFTAR BARANG - ADMIN</h4>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-fill p-3 rounded me-2 icon-background"></i>
+                            <div>
+                                <h6 class="card-title mb-1">Jumlah User</h6>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_users }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="p-3 rounded bi bi-tools me-2 icon-background"></i>
+                            <div>
+                                <h6 class="card-title mb-1">Jumlah Perbaikan</h6>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_perbaikan }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="p-3 rounded bi bi-box-arrow-in-up-left me-2 icon-background"></i>
+                            <div>
+                                <h6 class="card-title mb-1">Jumlah Permintaan</h6>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_permintaan }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="p-3 rounded bi bi-1-circle-fill me-2 icon-background"></i>
+                            <div>
+                                <h6 class="card-title mb-1">Barang Sekali Pakai</h6>
+                                <p class="card-text me-2">
+                                    <span class="count">{{ $jml_sekali_pakai }}</span>
+                                    <span class="count-text">Barang</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    @include('pages.admin.dashboard.dashboard-content')
-    <div class="container-fluid">
-        @yield('content')
+        {{-- Grafik --}}
+        <div class="chart-container mt-5" style="height: 400px">
+            <h6>Kategori Barang Pinjaman</h6>
+            <canvas id="myBarChart" style="width: 100%; height: 100%;"></canvas>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const dates = @json($dates);
         const perbaikan = @json($perbaikan);
         const permintaan = @json($permintaan);
         const barang_sekali_pakai = @json($barang_sekali_pakai);
-    
+
         const ctx = document.getElementById('myBarChart').getContext('2d');
         const myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: dates,  // Tanggal sebagai sumbu X
-                datasets: [
-                    {
+                labels: dates, // Tanggal sebagai sumbu X
+                datasets: [{
                         label: 'Perbaikan',
                         data: perbaikan,
                         backgroundColor: '#0d6efd',
@@ -256,50 +192,5 @@
                 }
             }
         });
-
-        function openSidebar() {
-            document.getElementById('right-sidebar').classList.add('sidebar-open');
-        }
-
-        function closeSidebar() {
-            document.getElementById('right-sidebar').classList.remove('sidebar-open');
-        }
-
-        function displayDate() {
-            const dateElement = document.getElementById('sidebar-date');
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = now.toLocaleDateString('en-US', options);
-            dateElement.innerHTML = formattedDate;
-        }
-
-        displayDate();
-    </script>
-
-    <script>
-        function openSidebar() {
-            document.getElementById('right-sidebar').classList.add('sidebar-open');
-        }
-
-        function closeSidebar() {
-            document.getElementById('right-sidebar').classList.remove('sidebar-open');
-        }
-
-        function displayDate() {
-            const dateElement = document.getElementById('sidebar-date');
-            const now = new Date();
-
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
-            const formattedDate = now.toLocaleDateString('en-US', options);
-
-            dateElement.innerHTML = formattedDate;
-        }
-
-        displayDate();
     </script>
 @endsection

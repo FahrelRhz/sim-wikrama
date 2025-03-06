@@ -67,13 +67,28 @@ class UserAuthController extends Controller
 
     public function dashboard()
     {
-        $user_name = Auth::user();
+        $user = Auth::user();
+        $jurusan_id = $user->jurusan_id; // Ambil jurusan pengguna yang sedang login
     
-        $jml_barang = Barang::count();
-        $jml_dipinjam = Peminjaman::count();
-        $jml_kembali = Peminjaman::where('status_pinjam', 'kembali')->count();
-        $jml_rusak = Permintaan::count();
-        $status_terbaru = Peminjaman::latest()->take(3)->get();
+        // Hitung jumlah barang berdasarkan jurusan pengguna
+        $jml_barang = Barang::where('jurusan_id', $jurusan_id)->count();
+    
+        // Hitung jumlah peminjaman berdasarkan jurusan pengguna
+        $jml_dipinjam = Peminjaman::whereHas('barang', function ($query) use ($jurusan_id) {
+            $query->where('jurusan_id', $jurusan_id);
+        })->where('status_pinjam', 'dipinjam')->count();
+    
+        $jml_kembali = Peminjaman::whereHas('barang', function ($query) use ($jurusan_id) {
+            $query->where('jurusan_id', $jurusan_id);
+        })->where('status_pinjam', 'kembali')->count();
+    
+        // Hitung jumlah permintaan berdasarkan user yang login
+        $jml_rusak = Permintaan::where('user_id', $user->id)->count();
+    
+        // Ambil 3 status peminjaman terbaru berdasarkan jurusan
+        $status_terbaru = Peminjaman::whereHas('barang', function ($query) use ($jurusan_id) {
+            $query->where('jurusan_id', $jurusan_id);
+        })->latest()->take(3)->get();
     
         // Ambil tanggal 5 hari terakhir
         $lastFiveDays = \Carbon\Carbon::now()->subDays(5)->toDateString();
@@ -82,24 +97,32 @@ class UserAuthController extends Controller
             $dates[] = \Carbon\Carbon::now()->subDays(4 - $i)->toDateString();
         }
     
-
+        // Ambil jumlah peminjaman per tanggal berdasarkan jurusan pengguna
         $peminjaman_per_tanggal = Peminjaman::selectRaw('DATE(tanggal_pinjam) as tanggal, 
                                                         COUNT(*) as dipinjam, 
                                                         SUM(CASE WHEN status_pinjam = "kembali" THEN 1 ELSE 0 END) as kembali')
+            ->whereHas('barang', function ($query) use ($jurusan_id) {
+                $query->where('jurusan_id', $jurusan_id);
+            })
             ->where('tanggal_pinjam', '>=', $lastFiveDays)
             ->groupBy('tanggal')
             ->get();
     
+        // Ambil jumlah permintaan rusak per tanggal berdasarkan user login
         $rusak_per_tanggal = Permintaan::selectRaw('DATE(created_at) as tanggal, COUNT(*) as rusak')
+            ->where('user_id', $user->id)
             ->where('created_at', '>=', $lastFiveDays)
             ->groupBy('tanggal')
             ->get();
     
+        // Ambil jumlah barang per tanggal berdasarkan jurusan pengguna
         $barang_per_tanggal = Barang::selectRaw('DATE(created_at) as tanggal, COUNT(*) as barang')
+            ->where('jurusan_id', $jurusan_id)
             ->where('created_at', '>=', $lastFiveDays)
             ->groupBy('tanggal')
             ->get();
     
+        // Persiapkan data per tanggal
         $data_per_tanggal = [];
         foreach ($dates as $tanggal) {
             $data_per_tanggal[$tanggal] = [
@@ -110,7 +133,7 @@ class UserAuthController extends Controller
             ];
         }
     
-        // Masukkan data peminjaman, barang dan rusak ke dalam data_per_tanggal
+        // Masukkan data ke dalam data_per_tanggal
         foreach ($peminjaman_per_tanggal as $peminjaman) {
             $data_per_tanggal[$peminjaman->tanggal]['dipinjam'] = $peminjaman->dipinjam;
             $data_per_tanggal[$peminjaman->tanggal]['kembali'] = $peminjaman->kembali;
@@ -122,9 +145,10 @@ class UserAuthController extends Controller
             $data_per_tanggal[$rusak->tanggal]['rusak'] = $rusak->rusak;
         }
     
-        //sorting tanggal
+        // Urutkan tanggal
         ksort($data_per_tanggal);
     
+        // Siapkan data untuk chart
         $dates = array_keys($data_per_tanggal);
         $barang = array_column($data_per_tanggal, 'barang');
         $dipinjam = array_column($data_per_tanggal, 'dipinjam');
@@ -139,7 +163,7 @@ class UserAuthController extends Controller
         ];
     
         return view('pages.user.dashboard.dashboard', compact(
-            'user_name',
+            'user',
             'jml_barang',
             'jml_dipinjam',
             'jml_kembali',
@@ -152,6 +176,5 @@ class UserAuthController extends Controller
             'kembali',
             'rusak'
         ));
-    }
-    
+    }    
 }

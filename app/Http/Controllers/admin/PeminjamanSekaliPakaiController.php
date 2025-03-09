@@ -62,7 +62,7 @@ class PeminjamanSekaliPakaiController extends Controller
     public function create()
     {
         $barang_sekali_pakai = BarangSekaliPakai::all();
-        $nama_peminjam = $this->getSpreadsheetData(); // Ambil data peminjam dari spreadsheet
+        $nama_peminjam = $this->getSpreadsheetData();
     
         return view('pages.admin.peminjaman-sekali-pakai.create', compact('barang_sekali_pakai', 'nama_peminjam'));
     }
@@ -84,7 +84,9 @@ class PeminjamanSekaliPakaiController extends Controller
     {
         $peminjaman_sekali_pakai = PeminjamanSekaliPakai::findOrFail($id);
         $barang_sekali_pakai = BarangSekaliPakai::all();
-        return view('pages.admin.peminjaman-sekali-pakai.edit', compact('peminjaman_sekali_pakai', 'barang_sekali_pakai'));
+        $nama_peminjam = $this->getSpreadsheetData(); // Ambil data peminjam dari spreadsheet
+
+        return view('pages.admin.peminjaman-sekali-pakai.edit', compact('peminjaman_sekali_pakai', 'barang_sekali_pakai', 'nama_peminjam'));
     }
 
     public function update(Request $request, $id)

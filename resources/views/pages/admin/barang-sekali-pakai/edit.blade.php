@@ -1,43 +1,28 @@
-<div class="row">
-    <div class="col-md-2">
-        @extends('pages.components.sidebar-admin')
-    </div>
-
-    <div class="col-md-10">
-        <div class="card mb-4 mt-4">
-
-            <div class="card-body">
-                <h5 class="mb-4">Edit User</h5>
-                <form method="POST" action="{{ route('admin.barang-sekali-pakai.update', $barang_sekali_pakais->id) }}">
-                    @csrf
-                    @method('PUT')
-
-                    <div class="mb-3">
-                        <label for="nama_barang" class="form-label">Nama Barang</label>
-                        <input type="text" class="form-control" id="nama_barang" name="nama_barang"
-                            value="{{ old('nama_barang', $barang_sekali_pakais->nama_barang) }}" required>
-                        @error('nama_barang')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="jml_barang" class="form-label">Jumlah Barang</label>
-                        <input type="number" class="form-control" id="jml_barang" name="jml_barang"
-                            value="{{ old('jml_barang', $barang_sekali_pakais->jml_barang) }}" required>
-                        @error('jml_barang')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="">
-                        <button type="submit" class="btn mt-3 text-white"
-                            style="background-color: #042456">Update</button>
-                        <a href="{{ route('admin.barang-sekali-pakai.index') }}"
-                            class="btn btn-secondary mt-3 text-white">Kembali</a"></a>
-                    </div>
-                </form>
+<div class="modal fade" id="editBarangModal" tabindex="-1" aria-labelledby="editBarangModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBarangModalLabel">Edit Barang</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form id="editBarangForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit_nama_barang" class="form-label">Nama Barang</label>
+                        <input type="text" class="form-control" id="edit_nama_barang" name="nama_barang">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_jml_barang" class="form-label">Jumlah Barang</label>
+                        <input type="number" class="form-control" id="edit_jml_barang" name="jml_barang">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn text-white" style="background-color: #042456">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -105,7 +105,7 @@ Route::prefix('user')->group(function () {
         //peminjaman barang
         Route::get('/peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('user.peminjaman-barang.index');
         Route::get('/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])->name('user.peminjaman-barang.create');
-        Route::get('/peminjaman/fetch', [DaftarSiswaController::class, 'getSpreadsheetData'])->name('daftar_siswa.fetch');
+        Route::get('/peminjaman/fetch', [PeminjamanBarangController::class, 'getSpreadsheetData'])->name('daftar_siswa.fetch');
         Route::post('/peminjaman-barang', [PeminjamanBarangController::class, 'store'])->name('user.peminjaman-barang.store');
         Route::get('/peminjaman-barang/{id}/edit', [PeminjamanBarangController::class, 'edit'])->name('user.peminjaman-barang.edit');
         Route::put('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'update'])->name('user.peminjaman-barang.update');

@@ -9,7 +9,6 @@
         <div class="col-md-1">
         </div>
 
-
         <div class="col-md-10">
             <div class="container">
                 <div class="row">
@@ -19,12 +18,10 @@
 
                             <div class="table-responsive">
                                 <div class="">
-
                                     <a href="{{ route('user.permintaan-barang.create') }}" class="btn text-white"
                                         style="background-color: #042456" data-bs-toggle="modal"
                                         data-bs-target="#tambahPermintaanModal">Tambah Permintaan</a>
                                     @include('pages.user.permintaan-barang.create')
-
                                 </div>
                                 <table class="table table-striped table-bordered" id="myTable">
                                     <thead class="thead-dark">
@@ -91,8 +88,8 @@
             {
                 data: 'actions',
                 name: 'actions',
-                orderable: false,
-                searchable: false
+                orderable: true,
+                searchable: true
             }
 
         ]);

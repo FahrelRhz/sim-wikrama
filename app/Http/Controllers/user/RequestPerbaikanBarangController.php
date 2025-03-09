@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\user;
 
+use App\Models\User;
+use App\Models\Barang;
+use App\Models\Permintaan;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Barang;
-use App\Models\User;
 use App\Models\RequestPerbaikanBarang;
-use Illuminate\Http\Request;
-use App\Models\Permintaan;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class RequestPerbaikanBarangController extends Controller
 {
@@ -80,7 +81,7 @@ class RequestPerbaikanBarangController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'barang_id' => [
                 'required',
                 'exists:barang,id',
@@ -94,7 +95,11 @@ class RequestPerbaikanBarangController extends Controller
             'tanggal_request' => 'required|date',
             'deskripsi_kerusakan' => 'required',
         ]);
-
+    
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput()->with('validation_errors', $validator->errors()->all());
+        }
+    
         try {
             RequestPerbaikanBarang::create([
                 'barang_id' => $request->barang_id,
@@ -103,29 +108,14 @@ class RequestPerbaikanBarangController extends Controller
                 'deskripsi_kerusakan' => $request->deskripsi_kerusakan,
                 'status' => 'Pending',
             ]);
-
+    
             return redirect()->route('user.request-perbaikan-barang.index')
                 ->with('success', 'Request perbaikan sudah berhasil dikirim!');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
-
-    public function edit($id)
-    {
-        $requestPerbaikanBarang = RequestPerbaikanBarang::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
-
-        $userJurusanId = auth()->user()->jurusan_id;
-        $barangs = Barang::where('jurusan_id', $userJurusanId)->get();
-
-        return view('pages.user.request-perbaikan-barang.edit', compact('requestPerbaikanBarang', 'barangs'));
-    }
-
-
-
+    
 
     public function update(Request $request, $id)
     {

@@ -167,7 +167,7 @@
         <aside id="sidebar">
             <div class="d-flex">
                 <button class="toggle-btn" type="button">
-                    <img src="{{ asset('login/wikrama-logo.png') }}" style="height: 35px; width: 35px;">
+                    <img src="{{ asset('login/wikrama-logo.png') }}" style="width: 30px; height: 30px;">
                 </button>
                 <div class="sidebar-logo">
                     <a href="#">Inventaris</a>
@@ -249,7 +249,7 @@
 
         hamBurger.addEventListener("click", function() {
             document.querySelector("#sidebar").classList.toggle("expand");
-        }); 
+        });
     </script>
 </body>
 

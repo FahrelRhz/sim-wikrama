@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Barang;
 use App\Models\Jurusan;
 use App\Models\Peminjaman;
-use App\Models\Permintaan;
+use App\Models\RequestPerbaikanBarang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -83,7 +83,7 @@ class UserAuthController extends Controller
         })->where('status_pinjam', 'kembali')->count();
     
         // Hitung jumlah permintaan berdasarkan user yang login
-        $jml_rusak = Permintaan::where('user_id', $user->id)->count();
+        $jml_rusak = RequestPerbaikanBarang::where('user_id', $user->id)->count();
     
         // Ambil 3 status peminjaman terbaru berdasarkan jurusan
         $status_terbaru = Peminjaman::whereHas('barang', function ($query) use ($jurusan_id) {
@@ -100,18 +100,28 @@ class UserAuthController extends Controller
         // Ambil jumlah peminjaman per tanggal berdasarkan jurusan pengguna
         $peminjaman_per_tanggal = Peminjaman::selectRaw('DATE(tanggal_pinjam) as tanggal, 
                                                         COUNT(*) as dipinjam, 
-                                                        SUM(CASE WHEN status_pinjam = "kembali" THEN 1 ELSE 0 END) as kembali')
+                                                        SUM(CASE WHEN status_pinjam = "dipinjam" THEN 1 ELSE 0 END) as dipinjam')
             ->whereHas('barang', function ($query) use ($jurusan_id) {
                 $query->where('jurusan_id', $jurusan_id);
             })
             ->where('tanggal_pinjam', '>=', $lastFiveDays)
             ->groupBy('tanggal')
             ->get();
+
+        $kembali_per_tanggal = Peminjaman::selectRaw('DATE(tanggal_kembali) as tanggal, 
+                                                        COUNT(*) as kembali, 
+                                                        SUM(CASE WHEN status_pinjam = "kembali" THEN 1 ELSE 0 END) as kembali')
+            ->whereHas('barang', function ($query) use ($jurusan_id) {
+                $query->where('jurusan_id', $jurusan_id);
+            })
+            ->where('tanggal_kembali', '>=', $lastFiveDays)
+            ->groupBy('tanggal')
+            ->get();
     
         // Ambil jumlah permintaan rusak per tanggal berdasarkan user login
-        $rusak_per_tanggal = Permintaan::selectRaw('DATE(created_at) as tanggal, COUNT(*) as rusak')
+        $rusak_per_tanggal = RequestPerbaikanBarang::selectRaw('DATE(tanggal_request) as tanggal, COUNT(*) as rusak')
             ->where('user_id', $user->id)
-            ->where('created_at', '>=', $lastFiveDays)
+            ->where('tanggal_request', '>=', $lastFiveDays)
             ->groupBy('tanggal')
             ->get();
     
@@ -136,7 +146,9 @@ class UserAuthController extends Controller
         // Masukkan data ke dalam data_per_tanggal
         foreach ($peminjaman_per_tanggal as $peminjaman) {
             $data_per_tanggal[$peminjaman->tanggal]['dipinjam'] = $peminjaman->dipinjam;
-            $data_per_tanggal[$peminjaman->tanggal]['kembali'] = $peminjaman->kembali;
+        }
+        foreach ($kembali_per_tanggal as $pengembalian) {
+            $data_per_tanggal[$pengembalian->tanggal]['kembali'] = $pengembalian->kembali;
         }
         foreach ($barang_per_tanggal as $barang) {
             $data_per_tanggal[$barang->tanggal]['barang'] = $barang->barang;

@@ -6,7 +6,6 @@
 
 @section('content')
 
-
     <div class="row fs-6">
         <div class="col-md-1">
         </div>
@@ -21,7 +20,7 @@
                                 <div class="">
 
                                     @if ($errors->any())
-                                        <div class="alert alert-danger">
+                                        <div class="alert alert-danger">`
                                             <ul>
                                                 @foreach ($errors->all() as $error)
                                                     <li>{{ $error }}</li>
@@ -33,16 +32,14 @@
                                         <a href="{{ route('user.peminjaman-barang.create') }}" class="btn text-white"
                                             style="background-color: #042456" data-bs-toggle="modal"
                                             data-bs-target="#tambahPeminjamModal">Tambah Peminjaman</a>
-
                                         <form action="{{ route('download.pdf') }}" method="GET" class="d-inline">
                                             <label for="month">Pilih Tanggal:</label>
-                                            <input type="month" id="month" name="month"
-                                                max="{{ now()->format('Y-m') }}" value="{{ now()->format('Y-m') }}">
+                                            <input type="month" id="month" name="date"
+                                                max="{{ now()->format('m-Y') }}" value="{{ now()->format('m-Y') }}">
                                             <button type="submit" class="btn text-white" style="background-color: #9d0000">
                                                 Download <i class="bi bi-file-earmark-pdf-fill"></i>
                                             </button>
                                         </form>
-
                                     </div>
                                     @include('pages.user.peminjaman-barang.create')
                                 </div>
@@ -50,6 +47,8 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Siswa</th>
+                                            <th>Rombel</th>
+                                            <th>Rayon</th>
                                             <th>Barang</th>
                                             <th>Ruangan Peminjam</th>
                                             <th>Tanggal Pinjam</th>
@@ -74,6 +73,14 @@
         var table = initializeDataTable('#myTable', "{{ route('user.peminjaman-barang.index') }}", [{
                 data: 'siswa',
                 name: 'siswa'
+            },
+            {
+                data: 'rombel',
+                name: 'rombel'
+            },
+            {
+                data: 'rayon',
+                name: 'rayon'
             },
             {
                 data: 'barang',
@@ -121,7 +128,6 @@
 
         ]);
 
-
         $(document).on('click', '.edit-button', function() {
             var id = $(this).data('id');
             var siswa = $(this).data('siswa');
@@ -147,37 +153,77 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#tambahPeminjamModal').on('show.bs.modal', function() {
-                $('#loading').removeClass('d-none');
-                $('#siswa').empty();
-                $('#siswa').append('<option value="">Pilih Nama Siswa</option>');
+            $(document).ready(function() {
+                var siswaData = {}; // Objek untuk menyimpan data siswa
 
-                $.ajax({
-                    url: '{{ route('daftar_siswa.fetch') }}',
-                    type: 'GET',
-                    success: function(response) {
-                        // console.log(response);
-                        $('#loading').addClass('d-none');
-                        $('#siswa').empty().append('<option value="">Pilih Siswa</option>');
+                $('#tambahPeminjamModal').on('show.bs.modal', function() {
+                    $('#loading').removeClass('d-none');
+                    $('#siswa').empty();
+                    $('#siswa').append('<option value="">Pilih Nama Siswa</option>');
 
-                        if (response) {
-                            response.siswa.forEach(function(siswa, index) {
-                                $('#siswa').append('<option value="' + siswa.nama +
-                                    '">' + siswa.nama + '</option>');
-                            });
+                    $.ajax({
+                        url: '{{ route('daftar_siswa.fetch') }}',
+                        type: 'GET',
+                        success: function(response) {
+                            $('#loading').addClass('d-none');
+                            $('#siswa').empty().append(
+                                '<option value="">Pilih Siswa</option>');
 
-                        } else {
-                            $('#siswa').append(
-                                '<option value="" disabled>Tidak ada siswa tersedia</option>'
-                            );
+                            if (response && response.siswa) {
+                                response.siswa.forEach(function(siswa) {
+                                    siswaData[siswa.nama] =
+                                        siswa;
+                                    $('#siswa').append('<option value="' + siswa
+                                        .nama + '">' + siswa.nama +
+                                        '</option>');
+                                });
+                            } else {
+                                $('#siswa').append(
+                                    '<option value="" disabled>Tidak ada siswa tersedia</option>'
+                                );
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error('Error fetching data:', xhr.responseText);
+                            $('#loading').addClass('d-none');
                         }
-                    },
-                    error: function(xhr) {
-                        console.error('Error fetching data:', xhr.responseText);
-                        $('#loading').addClass('d-none');
+                    });
+                });
+                $('#siswa').on('change', function() {
+                    var siswaNama = $(this).val();
+                    var siswaRombel = $(this).val();
+                    var siswaRayon = $(this).val();
+
+                    if (siswaNama) {
+                        $.ajax({
+                            url: '{{ route('daftar_siswa.fetch') }}',
+                            type: 'GET',
+                            data: {
+                                nama: siswaNama
+
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    $('#rombel').val(response
+                                        .rombel);
+                                    $('#rayon').val(response.rayon);
+                                } else {
+                                    $('#rombel').val('');
+                                    $('#rayon').val('');
+                                }
+                            },
+                            error: function(xhr) {
+                                console.error('Gagal mengambil data:', xhr
+                                    .responseText);
+                            }
+                        });
+                    } else {
+                        $('#rombel').val('');
+                        $('#rayon').val('');
                     }
                 });
             });
+
 
             $('#createPeminjamanForm').on('submit', function(e) {
                 e.preventDefault();
@@ -200,13 +246,20 @@
                         }
                     },
                     error: function(xhr) {
+                        var errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+
+                        // Cek apakah response memiliki JSON yang berisi message
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
                         localStorage.setItem('status', 'error');
-                        localStorage.setItem('message',
-                            'Barang sedang dipinjam.');
+                        localStorage.setItem('message', errorMessage);
                         window.location.reload();
                     },
                 });
             });
+
 
             $(document).ready(function() {
                 if (localStorage.getItem('status')) {

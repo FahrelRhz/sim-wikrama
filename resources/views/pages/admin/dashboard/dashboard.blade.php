@@ -65,7 +65,10 @@
         }
     </style>
     <div class="container">
-        <div class="d-flex justify-content-start mt-4">
+        <div class="fs-6 mt-4">
+            <a href="#" class="text-secondary">/ Dashboard</a>
+        </div>
+        <div class="d-flex justify-content-start mt-2">
             <h4 class="fw-bold mb-4">DAFTAR BARANG - ADMIN</h4>
         </div>
 
@@ -149,6 +152,10 @@
         const perbaikan = @json($perbaikan);
         const permintaan = @json($permintaan);
         const barang_sekali_pakai = @json($barang_sekali_pakai);
+
+        console.log(barang_sekali_pakai);
+        console.log(permintaan);
+        
 
         const ctx = document.getElementById('myBarChart').getContext('2d');
         const myBarChart = new Chart(ctx, {

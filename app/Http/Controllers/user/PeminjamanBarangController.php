@@ -14,31 +14,100 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
-use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Http;
 
 class PeminjamanBarangController extends Controller
 {
 
+    public function getSpreadsheetData()
+    {
+        $csvUrl = "https://docs.google.com/spreadsheets/d/1s1gkoXOJ3YDeKSPRtavD4SivjEtDeE0lj_bdhfDsvzM/gviz/tq?tqx=out:csv";
+        $response = Http::get($csvUrl);
+
+        if ($response->failed()) {
+            return response()->json(['error' => 'Gagal mengambil data dari Google Spreadsheet'], 500);
+        }
+
+        $rows = array_map("str_getcsv", explode("\n", trim($response->body())));
+        array_shift($rows);
+
+        $user = auth()->user();
+
+        if (!$user || !$user->jurusan_id) {
+            return response()->json(['error' => 'User tidak memiliki jurusan'], 400);
+        }
+
+        $userJurusan = Jurusan::find($user->jurusan_id);
+
+        if (!$userJurusan) {
+            return response()->json(['error' => 'Jurusan tidak ditemukan'], 400);
+        }
+
+        $namaJurusan = strtoupper(trim($userJurusan->nama_jurusan));
+
+        $siswa = [];
+        $rombelList = [];
+        $rayonList = [];
+
+        foreach ($rows as $row) {
+            if (count($row) < 4)
+                continue;
+
+            $rombel = trim($row[2]);
+            $rayon = trim($row[3]);
+            $jurusanSiswa = strtoupper(trim(explode(' ', preg_replace('/[^A-Za-z0-9 ]/', '', $rombel))[0]));
+
+            if (strpos($jurusanSiswa, $namaJurusan) !== false) {
+                $siswa[] = [
+                    'no' => trim($row[0]),
+                    'nama' => trim($row[1]),
+                    'rayon' => $rayon,
+                    'rombel' => $rombel,
+                    'jurusan' => $jurusanSiswa,
+                ];
+            }
+
+            if (!in_array($rayon, $rayonList)) {
+                $rayonList[] = $rayon;
+            }
+
+            if (!in_array($rombel, $rombelList)) {
+                $rombelList[] = $rombel;
+            }
+        }
+
+        return response()->json([
+            'rayon' => $rayonList,
+            'rombel' => $rombelList,
+            'siswa' => $siswa
+        ]);
+    }
+
     public function index(Request $request)
     {
-        // Dapatkan user yang sedang login
         $user = Auth::user();
-
-        // Ambil ID jurusan dari user
         $jurusanId = $user->jurusan_id;
 
+        // Ambil data siswa dari Google Spreadsheet
+        $siswaData = $this->getSpreadsheetData()->original;
+
         if ($request->ajax()) {
-            // Ambil data peminjaman sesuai jurusan user
             $peminjamans = Peminjaman::with(['barang'])
                 ->whereHas('barang', function ($query) use ($jurusanId) {
                     $query->where('jurusan_id', $jurusanId);
                 })
-                ->select(['id', 'siswa', 'barang_id', 'tanggal_pinjam', 'tanggal_kembali', 'ruangan_peminjam', 'status_pinjam']);
+                ->select(['id', 'siswa', 'rombel', 'rayon', 'barang_id', 'tanggal_pinjam', 'tanggal_kembali', 'ruangan_peminjam', 'status_pinjam']);
 
             return DataTables::of($peminjamans)
                 ->addIndexColumn()
-                ->addColumn('siswa', function ($peminjaman) {
-                    return $peminjaman->siswa ?? '-';
+                ->addColumn('siswa', function ($peminjaman) use ($siswaData) {
+                    return collect($siswaData['siswa'])->firstWhere('nama', $peminjaman->siswa)['nama'] ?? '-';
+                })
+                ->addColumn('rombel', function ($peminjaman) use ($siswaData) {
+                    return collect($siswaData['siswa'])->firstWhere('nama', $peminjaman->siswa)['rombel'] ?? '-';
+                })
+                ->addColumn('rayon', function ($peminjaman) use ($siswaData) {
+                    return collect($siswaData['siswa'])->firstWhere('nama', $peminjaman->siswa)['rayon'] ?? '-';
                 })
                 ->addColumn('barang', function ($peminjaman) {
                     return $peminjaman->barang
@@ -58,12 +127,9 @@ class PeminjamanBarangController extends Controller
                 ->make(true);
         }
 
-        // Kirim semua barang ke view (opsional)
         $barangs = Barang::where('jurusan_id', $jurusanId)->get();
-
         return view('pages.user.peminjaman-barang.index', compact('barangs'));
     }
-
 
 
     public function create(Request $request)
@@ -91,16 +157,22 @@ class PeminjamanBarangController extends Controller
         Log::info('Data yang diterima: ', $validatedData);
 
         try {
-            $barangDipinjam = Peminjaman::where('barang_id', $validatedData['barang_id'])
-                ->where('status_pinjam', 'dipinjam')
-                ->exists();
+            $barangTerakhir = Peminjaman::where('barang_id', $validatedData['barang_id'])
+                ->orderBy('id', 'desc')
+                ->first();
 
-            if ($barangDipinjam) {
-                Log::warning('Barang ini sedang dipinjam:', ['barang_id' => $validatedData['barang_id']]);
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Barang ini sedang dipinjam.'
-                ], 422);
+            if ($barangTerakhir) {
+                Log::info('Status terakhir barang:', [
+                    'barang_id' => $validatedData['barang_id'],
+                    'status' => $barangTerakhir->status_pinjam
+                ]);
+
+                if ($barangTerakhir->status_pinjam === 'dipinjam') {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Barang ini masih dipinjam dan belum dikembalikan.'
+                    ], 422);
+                }
             }
 
             $peminjaman = Peminjaman::create([
@@ -185,18 +257,16 @@ class PeminjamanBarangController extends Controller
         $user = Auth::user();
         $jurusanId = $user->jurusan_id;
 
-        // Ambil tanggal dari request atau default ke bulan & tahun ini
-        $date = $request->input('date', now()->toDateString());
-        $year = date('Y', strtotime($date));
-        $month = date('m', strtotime($date));
+        // Ambil tanggal yang dipilih dari request, default ke bulan & tahun ini jika kosong
+        $date = $request->input('date', now()->format('Y-m'));
+        [$year, $month] = explode('-', $date); // Pisahkan tahun & bulan
 
-        // Ambil data peminjaman berdasarkan bulan & tahun yang dipilih
         $peminjamans = Peminjaman::with('barang')
             ->whereHas('barang', function ($query) use ($jurusanId) {
                 $query->where('jurusan_id', $jurusanId);
             })
-            ->whereYear('tanggal_pinjam', $year)
-            ->whereMonth('tanggal_pinjam', $month)
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
             ->get();
 
         \Log::info('Peminjaman data:', $peminjamans->toArray());
@@ -208,5 +278,4 @@ class PeminjamanBarangController extends Controller
 
         return $pdf->download("laporan-peminjaman-barang-{$year}-{$month}.pdf");
     }
-
 }

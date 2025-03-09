@@ -1,4 +1,4 @@
-<div class="modal fade" id="showBarangModal" tabindex="-1" aria-labelledby="showBarangModalLabel" aria-hidden="true">
+<div class="modal fade fs-6" id="showBarangModal" tabindex="-1" aria-labelledby="showBarangModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

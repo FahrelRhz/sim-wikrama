@@ -15,11 +15,14 @@ class BarangSekaliPakaiController extends Controller
             $users = BarangSekaliPakai::all();
             return DataTables::of($users)
                 ->addIndexColumn()
-                // ->addColumn('jurusan', function ($user) {
-                //     return $user->jurusan->nama_jurusan ?? '-';
-                // })
                 ->addColumn('actions', function ($row) {
-                    $editBtn = '<a href="' . route('admin.barang-sekali-pakai.edit', $row->id) . '" class="btn btn-warning btn-sm me-2">Edit</a>';
+                    $editBtn = '<a href="#" class="btn btn-sm mb-1 mx-1 btn-info edit-button" 
+                        data-id="' . $row->id . '" 
+                        data-nama_barang="' . $row->nama_barang . '"
+                        data-jml-barang="' . $row->jml_barang . '"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editBarangModal">Edit
+                </a>';
                     $deleteBtn = '<button class="btn btn-danger btn-sm mb-1" data-id="' . $row->id . '" onclick="deleteBarang(' . $row->id . ')">Delete</button>';
                     return $editBtn . $deleteBtn;
                 })
@@ -39,15 +42,22 @@ class BarangSekaliPakaiController extends Controller
     {
         $request->validate([
             'nama_barang' => 'required|string|max:255',
-            'jml_barang' => 'required|int|max:10',
+            'jml_barang' => 'required|int|min:1',
         ]);
-
-        $barang_sekali_pakai = BarangSekaliPakai::create([
-            'nama_barang' => $request->nama_barang,
-            'jml_barang' => $request->jml_barang,
-        ]);
-
-        return redirect()->route('admin.barang-sekali-pakai.index')->with('success', 'Barang berhasil ditambahkan.');
+    
+        $barang = BarangSekaliPakai::where('nama_barang', $request->nama_barang)->first();
+    
+        if ($barang) {
+            $barang->increment('jml_barang', $request->jml_barang);
+            return redirect()->route('admin.barang-sekali-pakai.index')->with('success', 'Stok barang berhasil diperbarui.');
+        } else {
+            BarangSekaliPakai::create([
+                'nama_barang' => $request->nama_barang,
+                'jml_barang' => $request->jml_barang,
+            ]);
+    
+            return redirect()->route('admin.barang-sekali-pakai.index')->with('success', 'Barang berhasil ditambahkan.');
+        }
     }
 
     public function edit($id)

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('siswa'); 
+            $table->string('rombel'); 
+            $table->string('rayon'); 
             $table->unsignedBigInteger('barang_id'); 
             $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali')->nullable();

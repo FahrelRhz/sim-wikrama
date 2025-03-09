@@ -13,6 +13,8 @@ class Peminjaman extends Model
 
     protected $fillable = [
         'siswa',
+        'rombel',
+        'rayon',
         'barang_id',
         'tanggal_pinjam',
         'tanggal_kembali',

@@ -2,6 +2,8 @@
 
 @include('partials.datatable')
 
+@include('pages.admin.barang-sekali-pakai.edit')
+
 @section('content')
     <div class="row fs-6">
         <div class="col-md-1">
@@ -17,8 +19,10 @@
                             <div class="table-responsive">
                                 <div class="">
                                     <a href="{{ route('admin.barang-sekali-pakai.create') }}" class="btn text-white"
-                                        style="background-color: #042456">Tambah Barang
+                                        style="background-color: #042456" data-bs-toggle="modal"
+                                        data-bs-target="#tambahBarangModal">Tambah Barang
                                     </a>
+                                    @include('pages.admin.barang-sekali-pakai.create')
                                 </div>
                                 <table class="table table-striped table-bordered" id="myTable">
                                     <thead class="thead-dark">
@@ -51,10 +55,21 @@
             {
                 data: 'actions',
                 name: 'actions',
-                orderable: false,
-                searchable: false
+                orderable: true,
+                searchable: true
             }
         ]);
+
+        $(document).on('click', '.edit-button', function() {
+            var id = $(this).data('id');
+            var nama_barang = $(this).data('nama_barang');
+            var jml_barang = $(this).data('jml_barang');
+
+            $('#editBarangForm').attr('action', "/admin/barang-sekali-pakai/" + id);
+            $('#edit_nama_barang').val(nama_barang);
+            $('#edit_jml_barang').val(jml_barang);
+            $('#editBarangModal').modal('show');
+        });
 
         window.deleteBarang = function(id) {
             if (confirm('Are you sure you want to delete this items?')) {

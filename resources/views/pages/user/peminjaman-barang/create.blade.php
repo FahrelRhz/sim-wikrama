@@ -15,7 +15,7 @@
                             <option value="">Pilih Siswa</option>
                         </select>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="barang_id" class="form-label">Nama Barang</label>
                         <select class="form-control" id="barang_id" name="barang_id" required>

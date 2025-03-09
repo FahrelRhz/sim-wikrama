@@ -137,7 +137,7 @@
             </div>
         </div>
 
-        <h5 class="table-title mt-5">Status Terbaru</h5>
+        <h5 class="table-title mt-3">Status Terbaru</h5>
         <div class="table-chart-container fs-6 text-center">
             <div class="col">
                 <table class="table">
@@ -176,22 +176,25 @@
 
     <script>
         const dates = @json($dates);
-        const barang = @json($barang);
+        // const barang = @json($barang);
         const dipinjam = @json($dipinjam);
         const kembali = @json($kembali);
         const rusak = @json($rusak);
+
+        console.log(kembali);
 
         const ctx = document.getElementById('myBarChart').getContext('2d');
         const myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: dates, // Tanggal sebagai sumbu X
-                datasets: [{
-                        label: 'Barang',
-                        data: barang,
-                        backgroundColor: '#042456',
-                        hoverOffset: 4
-                    },
+                datasets: [
+                    // {
+                    //     label: 'Barang',
+                    //     data: barang,
+                    //     backgroundColor: '#042456',
+                    //     hoverOffset: 4
+                    // },
                     {
                         label: 'Dipinjam',
                         data: dipinjam,

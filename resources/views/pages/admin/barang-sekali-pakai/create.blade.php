@@ -1,15 +1,13 @@
-<div class="row">
-    <div class="col-md-2">
-        @extends('pages.components.sidebar-admin')
-    </div>
-
-    <div class="col-md-10">
-        <div class="card mb-4 mt-4">
-            <div class="card-body">
-                <h5 class="mb-4">Tambah Barang</h5>
-                <form method="POST" action="{{ route('admin.barang-sekali-pakai.store') }}">
+<div class="modal fade" id="tambahBarangModal" tabindex="-1" aria-labelledby="tambahBarangModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tambahBarangModalLabel">Tambah Barang</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createPeminjamanForm">
                     @csrf
-
                     <div class="mb-3">
                         <label for="nama_barang" class="form-label">Nama Barang</label>
                         <input type="text" class="form-control" id="nama_barang" name="nama_barang"
@@ -27,12 +25,9 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <div class="">
-                        <button type="submit" class="btn mt-3 text-white"
-                            style="background-color: #042456">Simpan</button>
-                        <a href="{{ route('admin.barang-sekali-pakai.index') }}"
-                            class="btn btn-secondary mt-3 text-white">Kembali</a"></a>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn text-white" style="background-color: #042456">Simpan</button>
                     </div>
                 </form>
             </div>

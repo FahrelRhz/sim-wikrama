@@ -61,15 +61,15 @@ class AdminAuthController extends Controller
         }
 
 
-        $perbaikan_per_tanggal = RequestPerbaikanBarang::selectRaw('DATE(created_at) as tanggal, 
+        $perbaikan_per_tanggal = RequestPerbaikanBarang::selectRaw('DATE(tanggal_request) as tanggal, 
                                                         COUNT(*) as perbaikan, 
-                                                        SUM(CASE WHEN status = "dalam_perbaikan" THEN 1 ELSE 0 END) as perbaikan')
-            ->where('created_at', '>=', $lastFiveDays)
+                                                        SUM(CASE WHEN status = "dalam perbaikan" THEN 1 ELSE 0 END) as perbaikan')
+            ->where('tanggal_request', '>=', $lastFiveDays)
             ->groupBy('tanggal')
             ->get();
 
-        $permintaan_per_tanggal = Permintaan::selectRaw('DATE(created_at) as tanggal, COUNT(*) as permintaan')
-            ->where('created_at', '>=', $lastFiveDays)
+        $permintaan_per_tanggal = Permintaan::selectRaw('DATE(tanggal_permintaan) as tanggal, COUNT(*) as permintaan')
+            ->where('tanggal_permintaan', '>=', $lastFiveDays)
             ->groupBy('tanggal')
             ->get();
 
@@ -84,7 +84,7 @@ class AdminAuthController extends Controller
             $data_per_tanggal[$tanggal] = [
                 'perbaikan' => 0,
                 'permintaan' => 0,
-                'sekali_pakai' => 0,
+                'barang_sekali_pakai' => 0,
             ];
         }
 
@@ -96,7 +96,7 @@ class AdminAuthController extends Controller
             $data_per_tanggal[$permintaan->tanggal]['permintaan'] = $permintaan->permintaan;
         }
         foreach ($sekali_pakai_per_tanggal as $barang_sekali_pakai) {
-            $data_per_tanggal[$barang_sekali_pakai->tanggal]['sekali_pakai'] = $barang_sekali_pakai->barang_sekali_pakai;
+            $data_per_tanggal[$barang_sekali_pakai->tanggal]['barang_sekali_pakai'] = $barang_sekali_pakai->barang_sekali_pakai;
         }
 
         //sorting tanggal
@@ -105,7 +105,7 @@ class AdminAuthController extends Controller
         $dates = array_keys($data_per_tanggal);
         $perbaikan = array_column($data_per_tanggal, 'perbaikan');
         $permintaan = array_column($data_per_tanggal, 'permintaan');
-        $barang_sekali_pakai = array_column($data_per_tanggal, 'sekali_pakai');
+        $barang_sekali_pakai = array_column($data_per_tanggal, 'barang_sekali_pakai');
 
         $chart_data = [
             'perbaikan' => $jml_perbaikan,

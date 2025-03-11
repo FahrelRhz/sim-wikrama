@@ -44,9 +44,9 @@ class BarangSekaliPakaiController extends Controller
             'nama_barang' => 'required|string|max:255',
             'jml_barang' => 'required|int|min:1',
         ]);
-    
+
         $barang = BarangSekaliPakai::where('nama_barang', $request->nama_barang)->first();
-    
+
         if ($barang) {
             $barang->increment('jml_barang', $request->jml_barang);
             return redirect()->route('admin.barang-sekali-pakai.index')->with('success', 'Stok barang berhasil diperbarui.');
@@ -55,7 +55,7 @@ class BarangSekaliPakaiController extends Controller
                 'nama_barang' => $request->nama_barang,
                 'jml_barang' => $request->jml_barang,
             ]);
-    
+
             return redirect()->route('admin.barang-sekali-pakai.index')->with('success', 'Barang berhasil ditambahkan.');
         }
     }
@@ -70,7 +70,7 @@ class BarangSekaliPakaiController extends Controller
     {
         $request->validate([
             'nama_barang' => 'required|string|max:255',
-            'jml_barang' => 'required|int|max:10',
+            'jml_barang' => 'required|integer',
         ]);
 
         $barang_sekali_pakai = BarangSekaliPakai::findOrFail($id);
@@ -81,6 +81,7 @@ class BarangSekaliPakaiController extends Controller
 
         return redirect()->route('admin.barang-sekali-pakai.index')->with('success', 'Barang berhasil diperbarui.');
     }
+
 
     public function destroy($id)
     {

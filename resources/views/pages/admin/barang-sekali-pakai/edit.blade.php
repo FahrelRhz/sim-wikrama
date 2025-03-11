@@ -1,4 +1,4 @@
-{{-- <div class="modal fade" id="editBarangModal" tabindex="-1" aria-labelledby="editBarangModalLabel" aria-hidden="true">
+<div class="modal fade" id="editBarangModal" tabindex="-1" aria-labelledby="editBarangModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,7 +15,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="edit_jml_barang" class="form-label">Jumlah Barang</label>
-                        <input type="number" class="form-control" id="edit_jml_barang" name="jml_barang">
+                        <input type="number" class="form-control" id="edit_jml_barang" name="jml_barang" >
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -25,4 +25,4 @@
             </form>
         </div>
     </div>
-</div> --}}
+</div>

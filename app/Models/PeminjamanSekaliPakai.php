@@ -15,6 +15,7 @@ class PeminjamanSekaliPakai extends Model
         'barang_sekali_pakai_id',
         'nama_peminjam',
         'jml_barang',
+        'keperluan',
         'tanggal_pinjam',
     ];
 

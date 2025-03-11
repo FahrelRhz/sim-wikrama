@@ -16,6 +16,22 @@ class BarangSekaliPakai extends Model
         'jml_barang',
     ];
 
+    public function kurangiStok($jumlah)
+    {
+        if ($this->jml_barang < $jumlah) {
+            throw new \Exception("Jumlah barang tidak mencukupi.");
+        }
+
+        $this->jml_barang -= $jumlah;
+        $this->save();
+    }
+
+    public function kembalikanStok($jumlah)
+    {
+        $this->jml_barang += $jumlah;
+        $this->save();
+    }
+
     public function peminjamanSekaliPakai()
     {
         return $this->hasMany(PeminjamanSekaliPakai::class, 'barang_sekali_pakai_id', 'id');

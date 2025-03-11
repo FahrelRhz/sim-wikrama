@@ -189,16 +189,18 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+                        data-bs-target="#multi1" aria-expanded="false" aria-controls="multi1">
                         <i class="bi bi-box"></i>
                         <span>Alat & Barang</span>
                     </a>
-                    <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <ul id="multi1" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
                             <a href="{{ route('admin.alat-barang.index') }}" class="sidebar-link">
                                 Stok Barang
                             </a>
-                            <a href="" class="sidebar-link">
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">
                                 Peminjaman Barang
                             </a>
                         </li>
@@ -206,21 +208,24 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+                        data-bs-target="#multi2" aria-expanded="false" aria-controls="multi2">
                         <i class="bi bi-pencil"></i>
                         <span>Barang Habis Pakai</span>
                     </a>
-                    <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <ul id="multi2" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
                             <a href="{{ route('admin.barang-sekali-pakai.index') }}" class="sidebar-link">
                                 Stok Barang
                             </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a href="{{ route('admin.peminjaman-sekali-pakai.index') }}" class="sidebar-link">
                                 Peminjaman Barang
                             </a>
                         </li>
                     </ul>
                 </li>
+                
                 <li class="sidebar-item">
                     <a href="{{ route('admin.permintaan-barang.index') }}" class="sidebar-link">
                         <i class="bi bi-box-arrow-in-up-left"></i>

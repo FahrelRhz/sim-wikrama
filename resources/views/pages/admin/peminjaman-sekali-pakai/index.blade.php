@@ -26,6 +26,7 @@
                                             <th>Nama Peminjam</th>
                                             <th>Nama Barang</th>
                                             <th>Jumlah Barang</th>
+                                            <th>Keperluan</th>
                                             <th>Tanggal Pinjam</th>
                                             <th>Action</th>
                                         </tr>
@@ -54,6 +55,10 @@
             {
                 data: 'jml_barang',
                 name: 'jml_barang'
+            },
+            {
+                data: 'keperluan',
+                name: 'keperluan'
             },
             {
                 data: 'tanggal_pinjam',

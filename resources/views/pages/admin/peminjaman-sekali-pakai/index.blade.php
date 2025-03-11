@@ -17,7 +17,7 @@
                             <div class="table-responsive">
                                 <div class="">
                                     <a href="{{ route('admin.peminjaman-sekali-pakai.create') }}" class="btn text-white"
-                                        style="background-color: #042456">Tambah Barang
+                                        style="background-color: #042456">Tambah Peminta
                                     </a>
                                 </div>
                                 <table class="table table-striped table-bordered" id="myTable">

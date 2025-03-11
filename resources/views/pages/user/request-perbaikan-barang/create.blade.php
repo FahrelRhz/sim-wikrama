@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('user.request-perbaikan-barang.store') }}">
+                <form method="POST" action="{{ route('user.request-perbaikan-barang.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="barang_id" class="form-label">Barang</label>
@@ -25,8 +25,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    
-                    
 
                     <div class="mb-3">
                         <label for="tanggal_request" class="form-label">Tanggal</label>
@@ -35,6 +33,10 @@
                     <div class="mb-3">
                         <label for="deskripsi_kerusakan" class="form-label">Deskripsi Kerusakan</label>
                         <textarea class="form-control" id="deskripsi_kerusakan" name="deskripsi_kerusakan" required>{{ old('deskripsi_kerusakan') }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gambar" class="form-label">Bukti Kerusakan</label>
+                        <input type="file" class="form-control" id="gambar" name="gambar" accept="image/" required></input>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

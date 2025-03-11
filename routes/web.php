@@ -72,22 +72,27 @@ Route::prefix('admin')->group(function () {
         Route::get('/peminjaman-sekali-pakai/{id}/edit', [PeminjamanSekaliPakaiController::class, 'edit'])->name('admin.peminjaman-sekali-pakai.edit');
         Route::put('/peminjaman-sekali-pakai/{id}', [PeminjamanSekaliPakaiController::class, 'update'])->name('admin.peminjaman-sekali-pakai.update');
         Route::delete('/peminjaman-sekali-pakai/{id}', [PeminjamanSekaliPakaiController::class, 'destroy'])->name('admin.peminjaman-sekali-pakai.destroy');
+        Route::get('peminjaman-sekali-pakai/download-pdf', [PeminjamanSekaliPakaiController::class, 'downloadPdf'])->name('admin.peminjaman-sekali-pakai.pdf');
 
         //Alat dan Barang
         Route::get('/alat-barang', [AlatBarangController::class, 'index'])->name('admin.alat-barang.index');
         Route::get('/alat-barang/create', [AlatBarangController::class, 'create'])->name('admin.alat-barang.create');
         Route::post('/alat-barang', [AlatBarangController::class, 'store'])->name('admin.alat-barang.store');
-        // Route::get('/alat-barang/{id}/edit', [AlatBarangController::class, 'edit'])->name('admin.alat-barang.edit');
-        // Route::put('/alat-barang/{id}', [AlatBarangController::class, 'update'])->name('admin.alat-barang.update');
+        Route::get('/alat-barang/{id}/edit', [AlatBarangController::class, 'edit'])->name('admin.alat-barang.edit');
+        Route::put('/alat-barang/{id}', [AlatBarangController::class, 'update'])->name('admin.alat-barang.update');
         Route::delete('/alat-barang/{id}', [AlatBarangController::class, 'destroy'])->name('admin.alat-barang.destroy');
-
+        
         //Peminjaman Alat dan Barang
         Route::get('/peminjaman-alat-barang', [PeminjamanAlatBarangController::class, 'index'])->name('admin.peminjaman-alat-barang.index');
-        // Route::get('/peminjaman-alat-barang/create', [PeminjamanAlatBarangController::class, 'create'])->name('admin.peminjaman-alat-barang.create');
-        // Route::post('/peminjaman-alat-barang', [PeminjamanAlatBarangController::class, 'store'])->name('admin.peminjaman-alat-barang.store');
-        // Route::get('/peminjaman-alat-barang/{id}/edit', [PeminjamanAlatBarangController::class, 'edit'])->name('admin.peminjaman-alat-barang.edit');
-        // Route::put('/peminjaman-alat-barang/{id}', [PeminjamanAlatBarangController::class, 'update'])->name('admin.peminjaman-alat-barang.update');
-        // Route::delete('/peminjaman-alat-barang/{id}', [PeminjamanAlatBarangController::class, 'destroy'])->name('admin.peminjaman-alat-barang.destroy');
+        Route::get('/peminjaman-alat-barang/fetch', [PeminjamanAlatBarangController::class, 'getSpreadSheetData'])->name('admin.daftar-peminjam.fetch');
+        Route::get('/peminjaman-alat-barang', [PeminjamanAlatBarangController::class, 'index'])->name('admin.peminjaman-alat-barang.index');
+        Route::get('/peminjaman-alat-barang/create', [PeminjamanAlatBarangController::class, 'createBarangs'])->name('admin.peminjaman-alat-barang.create');
+        Route::post('/peminjaman-alat-barang', [PeminjamanAlatBarangController::class, 'store'])->name('admin.peminjaman-alat-barang.store');
+        Route::get('/peminjaman-alat-barang/{id}/edit', [PeminjamanAlatBarangController::class, 'edit'])->name('admin.peminjaman-alat-barang.edit');
+        Route::put('/peminjaman-alat-barang/{id}', [PeminjamanAlatBarangController::class, 'update'])->name('admin.peminjaman-alat-barang.update');
+        Route::delete('/peminjaman-alat-barang/{id}', [PeminjamanAlatBarangController::class, 'destroy'])->name('admin.peminjaman-alat-barang.destroy');
+        Route::get('peminjaman-alat-barang/download-pdf', [PeminjamanAlatBarangController::class, 'downloadPdf'])->name('admin.peminjaman-alat-barang.pdf');
+
     });
 });
 
@@ -125,7 +130,7 @@ Route::prefix('user')->group(function () {
         Route::get('/peminjaman-barang/{id}/edit', [PeminjamanBarangController::class, 'edit'])->name('user.peminjaman-barang.edit');
         Route::put('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'update'])->name('user.peminjaman-barang.update');
         Route::delete('/peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('user.peminjaman-barang.destroy');
-        Route::get('/download-pdf', [PeminjamanBarangController::class, 'downloadPdf'])->name('download.pdf');
+        Route::get('peminjaman-barang/download-pdf', [PeminjamanBarangController::class, 'downloadPdf'])->name('user.peminjaman-barang.pdf');
 
         // Permintaan Barang
         Route::get('/permintaan-barang', [PermintaanBarangController::class, 'index'])->name('user.permintaan-barang.index');

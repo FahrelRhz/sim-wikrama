@@ -200,7 +200,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                            <a href="{{ route('admin.peminjaman-alat-barang.index') }}" class="sidebar-link">
                                 Peminjaman Barang
                             </a>
                         </li>

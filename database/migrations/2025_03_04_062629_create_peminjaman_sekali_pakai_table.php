@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('barang_sekali_pakai_id'); 
             $table->string('nama_peminjam');
+            $table->integer('jml_barang');
+            $table->string('keperluan');
             $table->date('tanggal_pinjam');
             $table->timestamps();
         });

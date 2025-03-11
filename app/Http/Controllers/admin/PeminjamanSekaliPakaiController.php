@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
 use App\Models\BarangSekaliPakai;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use App\Models\PeminjamanSekaliPakai;
@@ -50,7 +52,7 @@ class PeminjamanSekaliPakaiController extends Controller
                 })
                 ->addColumn('actions', function ($row) {
                     $editBtn = '<a href="' . route('admin.peminjaman-sekali-pakai.edit', $row->id) . '" class="btn btn-warning btn-sm me-2">Edit</a>';
-                    $deleteBtn = '<button class="btn btn-danger btn-sm mb-1" data-id="' . $row->id . '" onclick="deletePeminjaman(' . $row->id . ')">Delete</button>';
+                    $deleteBtn = '<button class="btn btn-danger btn-sm mb-1" data-id="' . $row->id . '" onclick="deletePeminjaman(' . $row->id . ')">Hapus</button>';
                     return $editBtn . $deleteBtn;
                 })
                 ->rawColumns(['actions'])
@@ -58,7 +60,6 @@ class PeminjamanSekaliPakaiController extends Controller
         }
         return view('pages.admin.peminjaman-sekali-pakai.index');
     }
-
 
     public function create()
     {
@@ -69,41 +70,39 @@ class PeminjamanSekaliPakaiController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'barang_sekali_pakai_id' => 'required|exists:barang_sekali_pakai,id',
-        'nama_peminjam' => 'required|string|max:255',
-        'jml_barang' => 'required|integer|min:1',
-        'keperluan' => 'required|string|max:255',
-        'tanggal_pinjam' => 'required|date',
-    ]);
+    {
+        $request->validate([
+            'barang_sekali_pakai_id' => 'required|exists:barang_sekali_pakai,id',
+            'nama_peminjam' => 'required|string|max:255',
+            'jml_barang' => 'required|integer|min:1',
+            'keperluan' => 'required|string|max:255',
+            'tanggal_pinjam' => 'required|date',
+        ]);
 
-    $barang = BarangSekaliPakai::findOrFail($request->barang_sekali_pakai_id);
+        $barang = BarangSekaliPakai::findOrFail($request->barang_sekali_pakai_id);
 
-    // Validasi jumlah barang
-    if ($request->jml_barang > $barang->jml_barang) {
-        return redirect()->back()->withErrors([
-            'error' => 'Jumlah barang yang diminta melebihi stok yang tersedia.',
-        ])->withInput();
+        // Validasi jumlah barang
+        if ($request->jml_barang > $barang->jml_barang) {
+            return redirect()->back()->withErrors([
+                'error' => 'Jumlah barang yang diminta melebihi stok yang tersedia.',
+            ])->withInput();
+        }
+
+        if ($request->jml_barang <= 0) {
+            return redirect()->back()->withErrors([
+                'error' => 'Jumlah barang yang diminta harus lebih dari 0.',
+            ])->withInput();
+        }
+
+        // Kurangi stok barang
+        $barang->jml_barang -= $request->jml_barang;
+        $barang->save();
+
+        // Buat data peminjaman
+        PeminjamanSekaliPakai::create($request->all());
+
+        return redirect()->route('admin.peminjaman-sekali-pakai.index')->with('success', 'Peminjaman berhasil ditambahkan.');
     }
-
-    if ($request->jml_barang <= 0) {
-        return redirect()->back()->withErrors([
-            'error' => 'Jumlah barang yang diminta harus lebih dari 0.',
-        ])->withInput();
-    }
-
-    // Kurangi stok barang
-    $barang->jml_barang -= $request->jml_barang;
-    $barang->save();
-
-    // Buat data peminjaman
-    PeminjamanSekaliPakai::create($request->all());
-
-    return redirect()->route('admin.peminjaman-sekali-pakai.index')->with('success', 'Peminjaman berhasil ditambahkan.');
-}
-
-
 
     public function edit($id)
     {
@@ -115,60 +114,58 @@ class PeminjamanSekaliPakaiController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $validated = $request->validate([
-        'barang_sekali_pakai_id' => 'required|exists:barang_sekali_pakai,id',
-        'jml_barang' => 'required|integer|min:1',
-        'keperluan' => 'required|string',
-        'tanggal_pinjam' => 'required|date',
-    ]);
+    {
+        $validated = $request->validate([
+            'barang_sekali_pakai_id' => 'required|exists:barang_sekali_pakai,id',
+            'jml_barang' => 'required|integer|min:1',
+            'keperluan' => 'required|string',
+            'tanggal_pinjam' => 'required|date',
+        ]);
 
-    $peminjaman = PeminjamanSekaliPakai::findOrFail($id);
-    $barangLama = BarangSekaliPakai::findOrFail($peminjaman->barang_sekali_pakai_id);
+        $peminjaman = PeminjamanSekaliPakai::findOrFail($id);
+        $barangLama = BarangSekaliPakai::findOrFail($peminjaman->barang_sekali_pakai_id);
 
-    // Kembalikan stok barang lama
-    $barangLama->jml_barang += $peminjaman->jml_barang;
-    $barangLama->save();
-
-    $barangBaru = BarangSekaliPakai::findOrFail($validated['barang_sekali_pakai_id']);
-
-    // Validasi jumlah barang baru
-    if ($validated['jml_barang'] > $barangBaru->jml_barang) {
-        // Kembalikan stok barang lama jika validasi gagal
-        $barangLama->jml_barang -= $peminjaman->jml_barang;
+        // Kembalikan stok barang lama
+        $barangLama->jml_barang += $peminjaman->jml_barang;
         $barangLama->save();
 
-        return redirect()->back()->withErrors([
-            'error' => 'Jumlah barang yang diminta melebihi stok yang tersedia.',
-        ])->withInput();
+        $barangBaru = BarangSekaliPakai::findOrFail($validated['barang_sekali_pakai_id']);
+
+        // Validasi jumlah barang baru
+        if ($validated['jml_barang'] > $barangBaru->jml_barang) {
+            // Kembalikan stok barang lama jika validasi gagal
+            $barangLama->jml_barang -= $peminjaman->jml_barang;
+            $barangLama->save();
+
+            return redirect()->back()->withErrors([
+                'error' => 'Jumlah barang yang diminta melebihi stok yang tersedia.',
+            ])->withInput();
+        }
+
+        if ($validated['jml_barang'] <= 0) {
+            // Kembalikan stok barang lama jika validasi gagal
+            $barangLama->jml_barang -= $peminjaman->jml_barang;
+            $barangLama->save();
+
+            return redirect()->back()->withErrors([
+                'error' => 'Jumlah barang yang diminta harus lebih dari 0.',
+            ])->withInput();
+        }
+
+        // Kurangi stok barang baru
+        $barangBaru->jml_barang -= $validated['jml_barang'];
+        $barangBaru->save();
+
+        // Update data peminjaman
+        $peminjaman->update([
+            'barang_sekali_pakai_id' => $validated['barang_sekali_pakai_id'],
+            'jml_barang' => $validated['jml_barang'],
+            'keperluan' => $validated['keperluan'],
+            'tanggal_pinjam' => $validated['tanggal_pinjam'],
+        ]);
+
+        return redirect()->route('admin.peminjaman-sekali-pakai.index')->with('success', 'Peminjaman berhasil diperbarui.');
     }
-
-    if ($validated['jml_barang'] <= 0) {
-        // Kembalikan stok barang lama jika validasi gagal
-        $barangLama->jml_barang -= $peminjaman->jml_barang;
-        $barangLama->save();
-
-        return redirect()->back()->withErrors([
-            'error' => 'Jumlah barang yang diminta harus lebih dari 0.',
-        ])->withInput();
-    }
-
-    // Kurangi stok barang baru
-    $barangBaru->jml_barang -= $validated['jml_barang'];
-    $barangBaru->save();
-
-    // Update data peminjaman
-    $peminjaman->update([
-        'barang_sekali_pakai_id' => $validated['barang_sekali_pakai_id'],
-        'jml_barang' => $validated['jml_barang'],
-        'keperluan' => $validated['keperluan'],
-        'tanggal_pinjam' => $validated['tanggal_pinjam'],
-    ]);
-
-    return redirect()->route('admin.peminjaman-sekali-pakai.index')->with('success', 'Peminjaman berhasil diperbarui.');
-}
-
-
 
     public function destroy($id)
     {
@@ -184,5 +181,24 @@ class PeminjamanSekaliPakaiController extends Controller
         $peminjaman->delete();
 
         return response()->json(['success' => 'Peminjaman berhasil dihapus.']);
+    }
+
+    public function downloadPdf(Request $request)
+    {
+        $month = $request->input('month', now()->format('m'));
+
+        $peminjamans = PeminjamanSekaliPakai::with('barangSekaliPakai')
+            ->whereMonth('created_at', $month)
+            ->get();
+
+        Log::info('PeminjamanSekaliPakai data:', $peminjamans->toArray());
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pages.admin.peminjaman-sekali-pakai.pdf', [
+            'peminjamans' => $peminjamans,
+            'month' => $month,
+        ]);
+
+        return $pdf->download("laporan-peminjaman-sekali-pakai-{$month}.pdf");
     }
 }

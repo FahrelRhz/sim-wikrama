@@ -19,6 +19,14 @@
                                     <a href="{{ route('admin.peminjaman-sekali-pakai.create') }}" class="btn text-white"
                                         style="background-color: #042456">Tambah Peminta
                                     </a>
+                                    <form action="{{ route('admin.peminjaman-sekali-pakai.pdf') }}" method="GET" class="d-inline">
+                                        <label for="month">Pilih Tanggal:</label>
+                                        <input type="month" id="month" name="date"
+                                            max="{{ now()->format('m-Y') }}" value="{{ now()->format('m-Y') }}">
+                                        <button type="submit" class="btn text-white" style="background-color: #9d0000">
+                                            Download <i class="bi bi-file-earmark-pdf-fill"></i>
+                                        </button>
+                                    </form>
                                 </div>
                                 <table class="table table-striped table-bordered" id="myTable">
                                     <thead class="thead-dark">
@@ -28,7 +36,7 @@
                                             <th>Jumlah Barang</th>
                                             <th>Keperluan</th>
                                             <th>Tanggal Pinjam</th>
-                                            <th>Action</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>

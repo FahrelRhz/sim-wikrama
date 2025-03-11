@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="row">
                     <div class="card mb-4 mt-4">
-                        <div class="card-body">
+                        <div class="card-body"> 
                             <h5 class="mb-4">Daftar Barang Habis Pakai</h5>
 
                             <div class="table-responsive">

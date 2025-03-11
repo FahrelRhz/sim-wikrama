@@ -16,7 +16,7 @@ class BarangSekaliPakaiController extends Controller
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('actions', function ($row) {
-                    $editBtn = '<a href="#" class="btn btn-sm mb-1 mx-1 btn-info edit-button" 
+                    $editBtn = '<a href="#" class="btn btn-sm mb-1 mx-1 btn-warning edit-button" 
                         data-id="' . $row->id . '" 
                         data-nama_barang="' . $row->nama_barang . '"
                         data-jml-barang="' . $row->jml_barang . '"

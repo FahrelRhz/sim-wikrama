@@ -14,7 +14,7 @@ class RequestPerbaikanBarangsController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $requestPerbaikanBarang = RequestPerbaikanBarang::with(['user', 'barang'])->select(['id', 'barang_id', 'user_id', 'tanggal_request', 'status', 'deskripsi_kerusakan']);
+            $requestPerbaikanBarang = RequestPerbaikanBarang::with(['user', 'barang'])->select(['id', 'barang', 'user_id', 'tanggal_request', 'status', 'deskripsi_kerusakan']);
             return DataTables::of($requestPerbaikanBarang)
                 ->addIndexColumn()
                 ->addColumn('barang', function ($requestPerbaikanBarang) {

@@ -31,6 +31,12 @@
                         <label for="deskripsi_kerusakan" class="form-label">Deskripsi Kerusakan</label>
                         <textarea class="form-control" name="deskripsi_kerusakan" id="edit_deskripsi_kerusakan"required></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="edit_bukti_kerusakan" class="form-label">Bukti Kerusakan</label>
+                        <br>
+                        <img id="preview_edit_bukti_kerusakan" src="" alt="Bukti Kerusakan" class="img-thumbnail mb-2" width="200">
+                        <input type="file" class="form-control" name="bukti_kerusakan" id="edit_bukti_kerusakan" accept="image/*">
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn text-white" style="background-color: #042456">Simpan

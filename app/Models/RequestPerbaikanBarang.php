@@ -13,6 +13,7 @@ class RequestPerbaikanBarang extends Model
         'barang_id',
         'user_id',
         'tanggal_request',
+        'gambar',
         'status',
         'deskripsi_kerusakan'
     ];

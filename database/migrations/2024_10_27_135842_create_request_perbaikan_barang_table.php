@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('barang_id'); 
             $table->unsignedBigInteger('user_id'); 
             $table->date('tanggal_request');
+            $table->string('gambar')->nullable()->change();
             $table->enum('status', ['pending', 'dalam perbaikan', 'selesai']);
             $table->text('deskripsi_kerusakan');
             $table->timestamps();

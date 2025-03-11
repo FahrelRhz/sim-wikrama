@@ -1,8 +1,8 @@
-@extends('pages.components.sidebar')
+@extends('pages.components.sidebar-admin')
 
 @include('partials.datatable')
 
-{{-- @include('pages.admin.peminjaman-alat-barang.edit') --}}
+@include('pages.admin.peminjaman-alat-barang.edit')
 
 @section('content')
 
@@ -29,11 +29,20 @@
                                         </div>
                                     @endif
                                     <div class="flex-column">
-                                        <a href="" class="btn text-white"
+                                        <a href="{{ route('admin.peminjaman-alat-barang.create') }}" class="btn text-white"
                                             style="background-color: #042456" data-bs-toggle="modal"
-                                            data-bs-target="#tambahPeminjamanAlatBarangModal">Tambah Peminjaman</a>
+                                            data-bs-target="#tambahPeminjamanAlatBarangModal">Tambah
+                                            Peminjaman</a>
+                                        <form action="{{ route('admin.peminjaman-alat-barang.pdf') }}" method="GET" class="d-inline">
+                                            <label for="month">Pilih Tanggal:</label>
+                                            <input type="month" id="month" name="date"
+                                                max="{{ now()->format('m-Y') }}" value="{{ now()->format('m-Y') }}">
+                                            <button type="submit" class="btn text-white" style="background-color: #9d0000">
+                                                Download <i class="bi bi-file-earmark-pdf-fill"></i>
+                                            </button>
+                                        </form>
                                     </div>
-                                    {{-- @include('pages.admin.peminjaman-alat-barang.create') --}}
+                                    @include('pages.admin.peminjaman-alat-barang.create')
                                 </div>
                                 <table class="table table-striped table-bordered" id="myTable">
                                     <thead class="thead-dark">
@@ -116,33 +125,114 @@
 
         ]);
 
-        // $(document).on('click', '.edit-button', function() {
-        //     var id = $(this).data('id');
-        //     var nama_peminjam = $(this).data('nama_peminjam');
-        //     var alat_barang_id = $(this).data('alat_barang_id');
-        //     var tanggal_pinjam = $(this).data('tanggal_pinjam');
-        //     var tanggal_kembali = $(this).data('tanggal_kembali');
-        //     var ruangan_peminjam = $(this).data('ruangan_peminjam');
-        //     var keperluan = $(this).data('keperluan');
-        //     var status_pinjam = $(this).data('status_pinjam');
+        $(document).on('click', '.edit-button', function() {
+            var id = $(this).data('id');
+            var nama_peminjam = $(this).data('nama_peminjam');
+            var alat_barang_id = $(this).data('alat_barang_id');
+            var tanggal_pinjam = $(this).data('tanggal_pinjam');
+            var tanggal_kembali = $(this).data('tanggal_kembali');
+            var ruangan_peminjam = $(this).data('ruangan_peminjam');
+            var keperluan = $(this).data('keperluan');
+            var status_pinjam = $(this).data('status_pinjam');
 
-        //     $('#editPeminjamanAlatBarangForm').attr('action', "{{ url('admin/peminjaman-alat-barang') }}/" + id);
+            $('#editPeminjamanAlatBarangForm').attr('action', "{{ url('admin/peminjaman-alat-barang') }}/" + id);
 
-        //     $('#edit_nama_peminjam').val(nama_peminjam);
-        //     $('#edit_alat_barang_id').val(alat_barang_id);
-        //     $('#edit_tanggal_pinjam').val(tanggal_pinjam);
-        //     $('#edit_tanggal_kembali').val(tanggal_kembali);
-        //     $('#edit_ruangan_peminjam').val(ruangan_peminjam);
-        //     $('#edit_keperluan').val(keperluan);
-        //     $('#edit_status_pinjam').val(status_pinjam);
+            $('#nama_peminjam').val(nama_peminjam);
+            $('#edit_alat_barang_id').val(alat_barang_id);
+            $('#edit_tanggal_pinjam').val(tanggal_pinjam);
+            $('#edit_tanggal_kembali').val(tanggal_kembali);
+            $('#edit_ruangan_peminjam').val(ruangan_peminjam);
+            $('#edit_keperluan').val(keperluan);
+            $('#edit_status_pinjam').val(status_pinjam);
 
-        //     $('#editPeminjamAlatBarangModal').modal('show');
-        // });
+            $('#editPeminjamanAlatBarangModal').modal('show');
+        });
     </script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        
+        $(document).ready(function() {
+            function fetchNamaPeminjam(target) {
+                $(target).empty().append('<option value="">Pilih Nama Peminjam</option>');
+
+                $.get('{{ route('admin.daftar-peminjam.fetch') }}', function(response) {
+                    if (Array.isArray(response) && response.length) {
+                        response.forEach(item => {
+                            $(target).append(
+                                `<option value="${item.nama_peminjam}">${item.nama_peminjam}</option>`
+                            );
+                        });
+                    } else {
+                        $(target).append('<option value="" disabled>Tidak ada nama peminjam</option>');
+                    }
+                }).fail(xhr => console.error('Error fetching data:', xhr.responseText));
+            }
+
+            $('#tambahPeminjamanAlatBarangModal').on('show.bs.modal', function() {
+                fetchNamaPeminjam('#nama_peminjam_tambah');
+            });
+
+            $('#editPeminjamanAlatBarangModal').on('show.bs.modal', function() {
+                fetchNamaPeminjam('#nama_peminjam_edit');
+            });
+
+            $('#createPeminjamanAlatBarangForm').submit(function(e) {
+                e.preventDefault();
+
+                $.post('{{ route('admin.peminjaman-alat-barang.store') }}', $(this).serialize())
+                    .done(function(response) {
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: response.message,
+                            icon: "success"
+                        }).then(() => location.reload());
+                    })
+                    .fail(function(xhr) {
+                        let errorMsg = "Terjadi kesalahan.";
+                        if (xhr.status === 422) {
+                            errorMsg = Object.values(xhr.responseJSON.errors).flat().join("\n");
+                        } else if (xhr.responseJSON?.message) {
+                            errorMsg = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: errorMsg,
+                            icon: "error"
+                        });
+                    });
+            });
+
+            if (localStorage.getItem('status')) {
+                Swal.fire({
+                    title: localStorage.getItem('status') === 'success' ? 'Berhasil!' : 'Gagal!',
+                    text: localStorage.getItem('message'),
+                    icon: localStorage.getItem('status'),
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                localStorage.removeItem('status');
+                localStorage.removeItem('message');
+            }
+
+            window.deletePeminjaman = function(id) {
+                if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                    $.ajax({
+                        url: `{{ route('admin.peminjaman-alat-barang.destroy', ':id') }}`.replace(':id',
+                            id),
+                        type: 'DELETE',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            table.ajax.reload(null, false);
+                            alert(response.success);
+                        },
+                        error: function(xhr) {
+                            alert('Error menghapus item: ' + xhr.responseText);
+                        }
+                    });
+                }
+            }
+        });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 @endsection

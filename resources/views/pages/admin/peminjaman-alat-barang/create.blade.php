@@ -1,28 +1,31 @@
-<div class="modal fade" id="tambahPeminjamanAlatBarangModal" tabindex="-1" aria-labelledby="tambahPeminjamanAlatModalLabel"
-    aria-hidden="true">
+
+<div class="modal fade" id="tambahPeminjamanAlatBarangModal" tabindex="-1"
+    aria-labelledby="tambahPeminjamanAlatBarangModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tambahPeminjamanAlatModalLabel">Tambah Peminjam Alat dan Barang</h5>
+                <h5 class="modal-title" id="tambahPeminjamanAlatBarangModalLabel">Tambah Peminjam Alat dan Barang</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="createPeminjamanAlatBarangForm">
                     @csrf
                     <div class="mb-3">
-                        <label for="siswa" class="form-label">Nama Peminjam</label>
-                        <input type="date" class="form-control" id="nama_peminjam" name="nama_peminjam" required>
+                        <label for="nama_peminjam" class="form-label">Nama Peminjam</label>
+                        <select class="form-control" id="nama_peminjam_tambah" name="nama_peminjam" required>
+                            <option value="">Pilih Nama Peminjam</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="alat_barang_id" class="form-label">Nama Barang</label>
                         <select class="form-control" id="alat_barang_id" name="alat_barang_id" required>
                             <option value="">Pilih Barang</option>
-                            @foreach ($alatBarangs as $barang)
+                            @foreach ($alat_barangs as $barang)
                                 <option value="{{ $barang->id }}">
                                     {{ $barang->barang_merk }}
                                 </option>
                             @endforeach
-                        </select>
+                        </select>                                              
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
@@ -34,8 +37,8 @@
                             required>
                     </div>
                     <div class="mb-3">
-                        <label for="ruangan_peminjam" class="form-label">Keperluan</label>
-                        <input type="text" class="form-control" id="ruangan_peminjam" name="ruangan_peminjam"
+                        <label for="keperluan" class="form-label">Keperluan</label>
+                        <input type="text" class="form-control" id="keperluan" name="keperluan"
                             required>
                     </div>
 

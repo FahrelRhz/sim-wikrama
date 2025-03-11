@@ -41,6 +41,7 @@
                                             <th>Barang</th>
                                             <th>Tanggal Permintaan</th>
                                             <th>Deskripsi Kerusakan</th>
+                                            <th>Bukti Kerusakan</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -69,6 +70,17 @@
             {
                 data: 'deskripsi_kerusakan',
                 name: 'deskripsi_kerusakan'
+            },
+            {
+                data: 'gambar',
+                name: 'gambar',
+                render: function(data, type, row) {
+                    if (data) {
+                        return `<img src="/storage/${data}" width="100" height="100" style="object-fit: cover; border-radius: 5px;">`;
+                    } else {
+                        return 'Tidak ada gambar';
+                    }
+                }
             },
             {
                 data: 'status',
@@ -104,25 +116,23 @@
         ]);
 
 
-        $(document).on('click', '.edit-button', function() {
-            // Ambil data dari tombol edit yang diklik
-            var id = $(this).data('id');
-            var barang_id = $(this).data('barang-id');
-            var user_id = $(this).data('user-id');
-            var tanggal_request = $(this).data('tanggal-request');
-            var deskripsi_kerusakan = $(this).data('deskripsi-kerusakan');
+        $(document).on("click", ".edit-button", function() {
+            let id = $(this).data("id");
+            let barang = $(this).data("barang-id");
+            let tanggal = $(this).data("tanggal-request");
+            let deskripsi = $(this).data("deskripsi-kerusakan");
+            let buktiKerusakan = $(this).data("bukti-kerusakan");
 
-            // Set action form dengan URL yang tepat
-            $('#editRequestPerbaikanBarangForm').attr('action', "/user/request-perbaikan-barang/" + id);
+            $("#edit_id").val(id);
+            $("#edit_barang").val(barang);
+            $("#edit_tanggal_request").val(tanggal);
+            $("#edit_deskripsi_kerusakan").val(deskripsi);
 
-            // Isi nilai input di dalam modal dengan data yang diambil
-            $('#edit_barang_id').val(barang_id);
-            $('#edit_user_id').val(user_id);
-            $('#edit_tanggal_request').val(tanggal_request);
-            $('#edit_deskripsi_kerusakan').val(deskripsi_kerusakan);
-
-            // Tampilkan modal
-            $('#editRequestPerbaikanBarangModal').modal('show');
+            if (buktiKerusakan) {
+                $("#preview_edit_bukti_kerusakan").attr("src", "/storage/" + buktiKerusakan).show();
+            } else {
+                $("#preview_edit_bukti_kerusakan").hide();
+            }
         });
     </script>
     <script>
@@ -188,16 +198,16 @@
         }
     </script>
     <script>
-        @if(session('validation_errors'))
+        @if (session('validation_errors'))
             Swal.fire({
                 icon: 'error',
                 title: 'Validasi Gagal!',
-                html: '<ul>@foreach(session("validation_errors") as $error) <li>{{ $error }}</li> @endforeach</ul>',
+                html: '<ul>@foreach (session('validation_errors') as $error) <li>{{ $error }}</li> @endforeach</ul>',
                 confirmButtonText: 'OK'
             });
         @endif
-    
-        @if(session('success'))
+
+        @if (session('success'))
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
@@ -206,8 +216,8 @@
                 timer: 2000
             });
         @endif
-    
-        @if(session('error'))
+
+        @if (session('error'))
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal!',
@@ -215,6 +225,6 @@
                 confirmButtonText: 'OK'
             });
         @endif
-    </script>    
+    </script>
 
 @endsection

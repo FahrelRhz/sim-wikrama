@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Peminjaman Barang</title>
+    <title>Laporan Peminjaman Alat atau Barang</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -45,7 +45,7 @@
 </head>
 
 <body>
-    <h1>Laporan Peminjaman Barang</h1>
+    <h1>Laporan Peminjaman Alat atau Barang</h1>
     <h2>Tanggal: {{ \Carbon\Carbon::now()->format('M Y') }}</h2>
     <p>Total Data: {{ $peminjamans->count() }}</p>
 
@@ -57,24 +57,26 @@
     <table class="table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
             <tr>
-                <th>Siswa</th>
-                <th>Barang</th>
-                <th>Ruangan Peminjam</th>
+                <th>Nama Peminjam</th>
+                <th>Alat atau Barang</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
+                <th>Ruangan Peminjam</th>
+                <th>Keperluan</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($peminjamans as $peminjaman)
                 <tr>
-                    <td>{{ $peminjaman->siswa }}</td>
+                    <td>{{ $peminjaman->nama_peminjam }}</td>
                     <td>
-                        {{ $peminjaman->barang ? $peminjaman->barang->nama_barang . ' - ' . $peminjaman->barang->kode_barang : '-' }}
+                        {{ $peminjaman->alat_barang_id ? $peminjaman->alat_barang->jenis . ' - ' . $peminjaman->alat_barang->barang_merk : '-' }}
                     </td>
-                    <td>{{ $peminjaman->ruangan_peminjam }}</td>
                     <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('Y M d') }}</td>
                     <td>{{ $peminjaman->tanggal_kembali ? \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->format('Y M d') : '-' }}
+                    <td>{{ $peminjaman->ruangan_peminjam }}</td>
+                    <td>{{ $peminjaman->keperluan }}</td>
                     </td>
                     <td>
                         @if ($peminjaman->status_pinjam === 'dipinjam')

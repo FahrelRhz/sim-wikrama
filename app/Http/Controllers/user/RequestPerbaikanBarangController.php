@@ -26,7 +26,7 @@ class RequestPerbaikanBarangController extends Controller
                 ->whereHas('barang', function ($query) use ($userJurusanId) {
                     $query->where('jurusan_id', $userJurusanId);
                 })
-                ->select(['id', 'barang_id', 'user_id', 'tanggal_request', 'status', 'deskripsi_kerusakan']);
+                ->select(['id', 'barang_id', 'user_id', 'tanggal_request', 'status', 'deskripsi_kerusakan', 'gambar']);
 
             return DataTables::of($requestPerbaikanBarang)
                 ->addIndexColumn()
@@ -63,9 +63,6 @@ class RequestPerbaikanBarangController extends Controller
         return view('pages.user.request-perbaikan-barang.index', compact('barangs', 'users', 'isModal'));
     }
 
-
-
-
     public function create()
     {
         $userJurusanId = auth()->user()->jurusan_id;
@@ -77,7 +74,6 @@ class RequestPerbaikanBarangController extends Controller
 
         return view('pages.user.request-perbaikan-barang.create', compact('barangs'));
     }
-
 
     public function store(Request $request)
     {
@@ -94,28 +90,35 @@ class RequestPerbaikanBarangController extends Controller
             ],
             'tanggal_request' => 'required|date',
             'deskripsi_kerusakan' => 'required',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput()->with('validation_errors', $validator->errors()->all());
         }
-    
+
         try {
+            $gambarPath = null;
+            if ($request->hasFile('gambar')) {
+                $gambarPath = $request->file('gambar')->store('bukti_kerusakan', 'public');
+                $data['gambar'] = $gambarPath;
+            }            
+
             RequestPerbaikanBarang::create([
                 'barang_id' => $request->barang_id,
                 'user_id' => auth()->id(),
                 'tanggal_request' => $request->tanggal_request,
                 'deskripsi_kerusakan' => $request->deskripsi_kerusakan,
                 'status' => 'Pending',
+                'gambar' => $gambarPath,
             ]);
-    
+
             return redirect()->route('user.request-perbaikan-barang.index')
                 ->with('success', 'Request perbaikan sudah berhasil dikirim!');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-    
 
     public function update(Request $request, $id)
     {
@@ -123,6 +126,7 @@ class RequestPerbaikanBarangController extends Controller
             'barang_id' => 'required|exists:barang,id',
             'tanggal_request' => 'required|date',
             'deskripsi_kerusakan' => 'required',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $requestPerbaikanBarang = RequestPerbaikanBarang::where('id', $id)
@@ -133,22 +137,38 @@ class RequestPerbaikanBarangController extends Controller
             return back()->withErrors(['status' => 'Barang ini sedang dalam proses perbaikan.']);
         }
 
+        // Handle gambar baru
+        if ($request->hasFile('gambar')) {
+            if ($requestPerbaikanBarang->gambar) {
+                \Storage::disk('public')->delete($requestPerbaikanBarang->gambar);
+            }
+            $gambarPath = $request->file('gambar')->store('uploads/bukti-kerusakan', 'public');
+            $requestPerbaikanBarang->gambar = $gambarPath;
+        }
+
         $requestPerbaikanBarang->update([
             'barang_id' => $request->barang_id,
             'tanggal_request' => $request->tanggal_request,
             'deskripsi_kerusakan' => $request->deskripsi_kerusakan,
+            'gambar' => $requestPerbaikanBarang->gambar, // Tetap simpan gambar jika tidak diupdate
         ]);
 
         return redirect()->route('user.request-perbaikan-barang.index')
             ->with('success', 'Permintaan berhasil diubah!');
     }
 
-
     public function destroy($id)
     {
         $requestPerbaikanBarang = RequestPerbaikanBarang::findOrFail($id);
+
+        // Hapus gambar dari storage jika ada
+        if ($requestPerbaikanBarang->gambar) {
+            \Storage::disk('public')->delete($requestPerbaikanBarang->gambar);
+        }
+
         $requestPerbaikanBarang->delete();
 
         return response()->json(['success' => 'Permintaan berhasil dihapus!']);
     }
+
 }

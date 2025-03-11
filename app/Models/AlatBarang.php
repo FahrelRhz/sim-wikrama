@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AlatBarang extends Model
 {
@@ -12,6 +12,7 @@ class AlatBarang extends Model
     protected $table = 'alat_barang';
 
     protected $fillable = [
+        'id',
         'jenis',
         'barang_merk',
         'volume',
@@ -21,5 +22,10 @@ class AlatBarang extends Model
         'keterangan',
         'link_siplah',
     ];
+
+    public function alat_barang()
+    {
+        return $this->hasMany(PeminjamanAlatBarang::class, 'alat_barang_id', 'id');
+    }
     
 }

@@ -20,12 +20,13 @@
                         <label for="barang_id" class="form-label">Nama Barang</label>
                         <select class="form-control" id="barang_id" name="barang_id" required>
                             <option value="">Pilih Barang</option>
-                            @foreach ($barangs as $barang)
+                            @foreach ($alat_barangs as $barang)
                                 <option value="{{ $barang->id }}">
                                     {{ $barang->nama_barang }} - {{ $barang->kode_barang }}
                                 </option>
                             @endforeach
                         </select>
+                        
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>

@@ -35,7 +35,7 @@
                                 <div class="mb-3">
                                     <label for="volume" class="form-label">Volume</label>
                                     <input type="number" class="form-control" id="volume" name="volume"
-                                        value="{{ old('volume') }}" min="1" required>
+                                        value="{{ old('volume') }}" required min="1" oninput="hitungJumlahHarga()">
                                     @error('volume')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -56,7 +56,7 @@
                                 <div class="mb-3">
                                     <label for="harga_satuan" class="form-label">Harga Satuan</label>
                                     <input type="text" class="form-control" id="harga_satuan" name="harga_satuan"
-                                        value="{{ old('harga_satuan') }}" required oninput="formatRupiah(this)">
+                                        value="{{ old('harga_satuan') }}" required oninput="hitungJumlahHarga()">
                                     @error('harga_satuan')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -66,11 +66,9 @@
                                 <div class="mb-3">
                                     <label for="jumlah_harga" class="form-label">Jumlah Harga</label>
                                     <input type="text" class="form-control" id="jumlah_harga" name="jumlah_harga"
-                                        value="{{ old('jumlah_harga') }}" required oninput="formatRupiah(this)">
-                                    @error('jumlah_harga')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                        value="{{ old('jumlah_harga') }}" readonly disabled>
                                 </div>
+
                                 <!-- Link SIPLah -->
                                 <div class="mb-3">
                                     <label for="link_siplah" class="form-label">Link SIPLah</label>
@@ -110,21 +108,38 @@
     </div>
 
     <script>
-        // Fungsi untuk memformat angka ke format Rupiah
-        function formatRupiah(input) {
-            let value = input.value.replace(/[^,\d]/g, ''); // Hanya angka yang diizinkan
-            let split = value.split(',');
-            let sisa = split[0].length % 3;
-            let rupiah = split[0].substr(0, sisa);
-            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+        document.addEventListener("DOMContentLoaded", function () {
+            const hargaSatuanInput = document.getElementById("harga_satuan");
+            hargaSatuanInput.addEventListener("input", function () {
+                this.value = formatRupiah(this.value);
+                hitungJumlahHarga();
+            });
+        });
     
-            // Tambahkan titik jika ada ribuan
+        function hitungJumlahHarga() {
+            let hargaSatuan = document.getElementById('harga_satuan').value.replace(/[^\d]/g, '');
+            let volume = document.getElementById('volume').value;
+    
+            hargaSatuan = hargaSatuan ? parseInt(hargaSatuan) : 0;
+            volume = volume ? parseInt(volume) : 1;
+    
+            let jumlahHarga = hargaSatuan * volume;
+            document.getElementById('jumlah_harga').value = formatRupiah(jumlahHarga.toString());
+        }
+    
+        function formatRupiah(angka) {
+            let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    
             if (ribuan) {
-                separator = sisa ? '.' : '';
+                let separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
             }
     
-            input.value = 'Rp.' + rupiah + (split[1] ? ',' + split[1] : '');
+            return 'Rp. ' + rupiah + (split[1] ? ',' + split[1] : '');
         }
     </script>
 @endsection

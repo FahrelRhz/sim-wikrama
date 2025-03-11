@@ -68,11 +68,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="jurusan_id" class="form-label">Jurusan</label>
-                                    <select class="form-control" id="jurusan_id" name="jurusan_id" required>
+                                    <select class="form-control" id="jurusan_id" name="jurusan_id" disabled>
                                         <option value="">Pilih Jurusan</option>
                                         @foreach ($jurusans as $jurusan)
                                             <option value="{{ $jurusan->id }}"
-                                                {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>
+                                                {{ (old('jurusan_id', $userJurusanId) == $jurusan->id) ? 'selected' : '' }}>
                                                 {{ $jurusan->nama_jurusan }}
                                             </option>
                                         @endforeach
@@ -80,7 +80,7 @@
                                     @error('jurusan_id')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
-                                </div>
+                                </div>                                
                                 <div class="mb-3">
                                     <label for="deskripsi_barang" class="form-label">Deskripsi Barang</label>
                                     <textarea class="form-control" id="deskripsi_barang" name="deskripsi_barang" required>{{ old('deskripsi_barang') }}</textarea>

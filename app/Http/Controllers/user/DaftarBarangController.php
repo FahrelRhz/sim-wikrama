@@ -48,8 +48,10 @@ class DaftarBarangController extends Controller
     public function create()
     {
         $jurusans = Jurusan::all();
-        return view('pages.user.daftar-barang.create', compact('jurusans'));
-    }
+        $userJurusanId = auth()->user()->jurusan_id;
+    
+        return view('pages.user.daftar-barang.create', compact('jurusans', 'userJurusanId'));
+    }    
 
     public function store(Request $request)
     {

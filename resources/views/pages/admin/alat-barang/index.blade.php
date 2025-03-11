@@ -2,8 +2,6 @@
 
 @include('partials.datatable')
 
-@include('pages.admin.alat-barang.edit')
-
 @section('content')
     <div class="row fs-6">
         <div class="col-md-1">

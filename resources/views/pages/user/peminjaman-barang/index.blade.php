@@ -32,7 +32,7 @@
                                         <a href="{{ route('user.peminjaman-barang.create') }}" class="btn text-white"
                                             style="background-color: #042456" data-bs-toggle="modal"
                                             data-bs-target="#tambahPeminjamModal">Tambah Peminjaman</a>
-                                        <form action="{{ route('download.pdf') }}" method="GET" class="d-inline">
+                                        <form action="{{ route('user.peminjaman-barang.pdf') }}" method="GET" class="d-inline">
                                             <label for="month">Pilih Tanggal:</label>
                                             <input type="month" id="month" name="date"
                                                 max="{{ now()->format('m-Y') }}" value="{{ now()->format('m-Y') }}">

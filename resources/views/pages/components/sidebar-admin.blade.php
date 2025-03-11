@@ -173,6 +173,7 @@
                     <a href="#">Inventaris</a>
                 </div>
             </div>
+
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
                     <a href="/admin/dashboard" class="sidebar-link">
@@ -189,7 +190,24 @@
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
-                        <i class="bi bi-pencil-fill"></i>
+                        <i class="bi bi-box"></i>
+                        <span>Alat & Barang</span>
+                    </a>
+                    <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="{{ route('admin.alat-barang.index') }}" class="sidebar-link">
+                                Stok Barang
+                            </a>
+                            <a href="" class="sidebar-link">
+                                Peminjaman Barang
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+                        <i class="bi bi-pencil"></i>
                         <span>Barang Habis Pakai</span>
                     </a>
                     <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -211,7 +229,7 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="{{ route('admin.request-perbaikan-barang.index') }}" class="sidebar-link">
-                        <i class="bi bi-gear-fill"></i>
+                        <i class="bi bi-gear"></i>
                         <span>Perbaikan</span>
                     </a>
                 </li>

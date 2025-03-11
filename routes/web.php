@@ -7,6 +7,8 @@ use App\Http\Controllers\admin\DaftarUserController;
 use App\Http\Controllers\admin\PermintaanBarangsController;
 use App\Http\Controllers\admin\RequestPerbaikanBarangsController;
 use App\Http\Controllers\admin\PeminjamanSekaliPakaiController;
+use App\Http\Controllers\admin\AlatBarangController;
+use App\Http\Controllers\admin\PeminjamanAlatBarangController;
 use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\user\DaftarBarangController;
 use App\Http\Controllers\user\DaftarSiswaController;
@@ -70,9 +72,22 @@ Route::prefix('admin')->group(function () {
         Route::get('/peminjaman-sekali-pakai/{id}/edit', [PeminjamanSekaliPakaiController::class, 'edit'])->name('admin.peminjaman-sekali-pakai.edit');
         Route::put('/peminjaman-sekali-pakai/{id}', [PeminjamanSekaliPakaiController::class, 'update'])->name('admin.peminjaman-sekali-pakai.update');
         Route::delete('/peminjaman-sekali-pakai/{id}', [PeminjamanSekaliPakaiController::class, 'destroy'])->name('admin.peminjaman-sekali-pakai.destroy');
-        
 
+        //Alat dan Barang
+        Route::get('/alat-barang', [AlatBarangController::class, 'index'])->name('admin.alat-barang.index');
+        Route::get('/alat-barang/create', [AlatBarangController::class, 'create'])->name('admin.alat-barang.create');
+        Route::post('/alat-barang', [AlatBarangController::class, 'store'])->name('admin.alat-barang.store');
+        // Route::get('/alat-barang/{id}/edit', [AlatBarangController::class, 'edit'])->name('admin.alat-barang.edit');
+        // Route::put('/alat-barang/{id}', [AlatBarangController::class, 'update'])->name('admin.alat-barang.update');
+        Route::delete('/alat-barang/{id}', [AlatBarangController::class, 'destroy'])->name('admin.alat-barang.destroy');
 
+        //Peminjaman Alat dan Barang
+        Route::get('/peminjaman-alat-barang', [PeminjamanAlatBarangController::class, 'index'])->name('admin.peminjaman-alat-barang.index');
+        // Route::get('/peminjaman-alat-barang/create', [PeminjamanAlatBarangController::class, 'create'])->name('admin.peminjaman-alat-barang.create');
+        // Route::post('/peminjaman-alat-barang', [PeminjamanAlatBarangController::class, 'store'])->name('admin.peminjaman-alat-barang.store');
+        // Route::get('/peminjaman-alat-barang/{id}/edit', [PeminjamanAlatBarangController::class, 'edit'])->name('admin.peminjaman-alat-barang.edit');
+        // Route::put('/peminjaman-alat-barang/{id}', [PeminjamanAlatBarangController::class, 'update'])->name('admin.peminjaman-alat-barang.update');
+        // Route::delete('/peminjaman-alat-barang/{id}', [PeminjamanAlatBarangController::class, 'destroy'])->name('admin.peminjaman-alat-barang.destroy');
     });
 });
 

@@ -19,9 +19,9 @@
                             <label for="nama_peminjam" class="form-label">Nama Peminjam</label>
                             <select class="form-control" id="nama_peminjam" name="nama_peminjam" required>
                                 <option value="">Pilih Nama Peminjam</option>
-                                @foreach($nama_peminjam as $peminjam)
-                                    <option value="{{ $peminjam }}" 
-                                        {{ (old('nama_peminjam', $data->nama_peminjam ?? '') == $peminjam) ? 'selected' : '' }}>
+                                @foreach ($nama_peminjam as $peminjam)
+                                    <option value="{{ $peminjam }}"
+                                        {{ old('nama_peminjam', $data->nama_peminjam ?? '') == $peminjam ? 'selected' : '' }}>
                                         {{ $peminjam }}
                                     </option>
                                 @endforeach
@@ -30,7 +30,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <!-- Dropdown Nama Barang -->
                         <div class="mb-3">
                             <label for="barang_sekali_pakai_id" class="form-label">Nama Barang</label>

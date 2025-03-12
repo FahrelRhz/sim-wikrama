@@ -24,6 +24,7 @@
                                             <th>Nama Peminta</th>
                                             <th>Tanggal Permintaan</th>
                                             <th>Deskripsi Kerusakan</th>
+                                            <th>Bukti Kerusakan</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -42,8 +43,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         var table = initializeDataTable('#myTable', "{{ route('admin.request-perbaikan-barang.index') }}", [{
-                data: 'barang',
-                name: 'barang'
+                data: 'barang_id',
+                name: 'barang_id'
             },
             {
                 data: 'user',
@@ -56,6 +57,17 @@
             {
                 data: 'deskripsi_kerusakan',
                 name: 'deskripsi_kerusakan'
+            },
+            {
+                data: 'gambar',
+                name: 'gambar',
+                render: function(data, type, row) {
+                    if (data) {
+                        return `<img src="/storage/${data}" width="100" height="100" style="object-fit: cover; border-radius: 5px;">`;
+                    } else {
+                        return 'Tidak ada gambar';
+                    }
+                }
             },
             {
                 data: 'status',

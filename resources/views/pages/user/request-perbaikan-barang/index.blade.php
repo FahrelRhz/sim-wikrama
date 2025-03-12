@@ -39,6 +39,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Barang</th>
+                                            <th>Nama Peminta</th>
                                             <th>Tanggal Permintaan</th>
                                             <th>Deskripsi Kerusakan</th>
                                             <th>Bukti Kerusakan</th>
@@ -62,6 +63,10 @@
         var table = initializeDataTable('#myTable', "{{ route('user.request-perbaikan-barang.index') }}", [{
                 data: 'barang',
                 name: 'barang'
+            },
+            {
+                data: 'user',
+                name: 'user'
             },
             {
                 data: 'tanggal_request',

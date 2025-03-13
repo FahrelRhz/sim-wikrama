@@ -34,8 +34,10 @@
                     <div class="mb-3">
                         <label for="edit_bukti_kerusakan" class="form-label">Bukti Kerusakan</label>
                         <br>
-                        <img id="preview_edit_bukti_kerusakan" src="" alt="Bukti Kerusakan" class="img-thumbnail mb-2" width="200">
-                        <input type="file" class="form-control" name="bukti_kerusakan" id="edit_bukti_kerusakan" accept="image/*">
+                        <img id="preview_edit_bukti_kerusakan" src="" alt="Bukti Kerusakan"
+                            class="img-thumbnail mb-2" width="200">
+                        <input type="file" class="form-control" name="bukti_kerusakan" id="edit_bukti_kerusakan"
+                            accept="image/*">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="card mb-4 mt-4">
                         <div class="card-body">
-                            <h5 class="mb-4">History Pinjaman</h5>
+                            <h5 class="mb-4">Daftar Peminjaman</h5>
                             <div class="table-responsive">
                                 <div class="">
 

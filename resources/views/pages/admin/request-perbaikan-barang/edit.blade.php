@@ -1,4 +1,5 @@
-<div class="modal fade" id="editRequestPerbaikanBarangModal" tabindex="-1" aria-labelledby="editRequestPerbaikanBarangModalLabel" aria-hidden="true">
+<div class="modal fade" id="editRequestPerbaikanBarangModal" tabindex="-1"
+    aria-labelledby="editRequestPerbaikanBarangModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,7 +20,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn text-white" style="background-color: #042456">Simpan Perubahan</button>
+                        <button type="submit" class="btn text-white" style="background-color: #042456">Simpan
+                            Perubahan</button>
                     </div>
                 </form>
             </div>

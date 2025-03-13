@@ -20,7 +20,7 @@
                         <label for="barang_id" class="form-label">Nama Barang</label>
                         <select class="form-control" id="barang_id" name="barang_id" required>
                             <option value="">Pilih Barang</option>
-                            @foreach ($alat_barangs as $barang)
+                            @foreach ($barangs as $barang)
                                 <option value="{{ $barang->id }}">
                                     {{ $barang->nama_barang }} - {{ $barang->kode_barang }}
                                 </option>

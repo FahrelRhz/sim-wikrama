@@ -7,19 +7,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('user.request-perbaikan-barang.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('user.request-perbaikan-barang.store') }}"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="barang_id" class="form-label">Barang</label>
-                        <select class="form-control @error('barang_id') is-invalid @enderror" name="barang_id" id="barang_id" required>
+                        <select class="form-control @error('barang_id') is-invalid @enderror" name="barang_id"
+                            id="barang_id" required>
                             <option value="">Pilih Barang</option>
                             @foreach ($barangs as $barang)
-                                <option value="{{ $barang->id }}" {{ old('barang_id') == $barang->id ? 'selected' : '' }}>
+                                <option value="{{ $barang->id }}"
+                                    {{ old('barang_id') == $barang->id ? 'selected' : '' }}>
                                     {{ $barang->nama_barang }} - {{ $barang->kode_barang }}
                                 </option>
                             @endforeach
                         </select>
-                    
+
                         <!-- Menampilkan pesan error jika ada -->
                         @error('barang_id')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -36,7 +39,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="gambar" class="form-label">Bukti Kerusakan</label>
-                        <input type="file" class="form-control" id="gambar" name="gambar" accept="image/" required></input>
+                        <input type="file" class="form-control" id="gambar" name="gambar" accept="image/"
+                            required></input>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

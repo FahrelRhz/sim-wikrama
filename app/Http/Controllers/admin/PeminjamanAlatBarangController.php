@@ -42,12 +42,12 @@ class PeminjamanAlatBarangController extends Controller
         $alat_barangs = AlatBarang::whereDoesntHave('alat_barang', function ($query) {
             $query->where('status_pinjam', 'dipinjam');
         })->get();
-    
+
         $nama_peminjam = $this->getSpreadsheetData();
-    
+
         if ($request->ajax()) {
             $peminjamans = PeminjamanAlatBarang::with('alat_barang');
-    
+
             return DataTables::of($peminjamans)
                 ->addIndexColumn()
                 ->addColumn('alat_barang_id', function ($row) {
@@ -55,17 +55,23 @@ class PeminjamanAlatBarangController extends Controller
                 })
                 ->addColumn('actions', function ($row) {
                     return '<div class="d-flex gap-2">
-                            <a href="#" class="btn btn-sm mb-1 mx-1 btn-warning edit-button" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#editPeminjamanAlatBarangModal">Edit
-                            </a>                                
-                            <button class="btn btn-danger btn-sm" data-id="' . $row->id . '" onclick="deletePeminjaman(' . $row->id . ')">Hapus</button>
+                                <a href="#" class="btn btn-sm mb-1 mx-1 btn-warning edit-button"
+                                    data-id="' . $row->id . '"
+
+                                    data-tanggal_pinjam="' . $row->tanggal_pinjam . '"
+                                    data-tanggal_kembali="' . $row->tanggal_kembali . '"
+
+                                    data-status_pinjam="' . $row->status_pinjam . '"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editPeminjamanAlatBarangModal">Edit
+                                </a>
                             </div>';
                 })
+
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-    
+
         return view('pages.admin.peminjaman-alat-barang.index', compact('alat_barangs', 'nama_peminjam'));
     }
 
@@ -87,7 +93,7 @@ class PeminjamanAlatBarangController extends Controller
             'ruangan_peminjam' => 'required|string',
             'keperluan' => 'required|string',
         ]);
-    
+
         try {
             PeminjamanAlatBarang::create($validatedData);
             return response()->json([
@@ -100,7 +106,7 @@ class PeminjamanAlatBarangController extends Controller
                 'message' => 'Terjadi kesalahan saat menyimpan data.'
             ], 500);
         }
-    }    
+    }
 
     public function edit($id)
     {
@@ -112,16 +118,18 @@ class PeminjamanAlatBarangController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_peminjam' => 'required|string|max:255',
-            'alat_barang_id' => 'required|exists:alat_barang,id',
             'tanggal_pinjam' => 'required|date',
             'tanggal_kembali' => 'nullable|date|after_or_equal:tanggal_pinjam',
-            'ruangan_peminjam' => 'nullable|string|max:255',
-            'keperluan' => 'required|string|max:1000',
             'status_pinjam' => 'required|in:dipinjam,kembali',
         ]);
 
         $peminjaman = PeminjamanAlatBarang::findOrFail($id);
+
+        // Jika status diubah menjadi "dipinjam", kosongkan tanggal_kembali
+        if ($request->status_pinjam === 'dipinjam') {
+            $request->merge(['tanggal_kembali' => null]);
+        }
+
         $peminjaman->update($request->all());
 
         return redirect()->route('admin.peminjaman-alat-barang.index')->with('success', 'Peminjaman berhasil diperbarui.');

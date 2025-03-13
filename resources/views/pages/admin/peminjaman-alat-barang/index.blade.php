@@ -33,7 +33,8 @@
                                             style="background-color: #042456" data-bs-toggle="modal"
                                             data-bs-target="#tambahPeminjamanAlatBarangModal">Tambah
                                             Peminjaman</a>
-                                        <form action="{{ route('admin.peminjaman-alat-barang.pdf') }}" method="GET" class="d-inline">
+                                        <form action="{{ route('admin.peminjaman-alat-barang.pdf') }}" method="GET"
+                                            class="d-inline">
                                             <label for="month">Pilih Tanggal:</label>
                                             <input type="month" id="month" name="date"
                                                 max="{{ now()->format('m-Y') }}" value="{{ now()->format('m-Y') }}">
@@ -127,24 +128,27 @@
 
         $(document).on('click', '.edit-button', function() {
             var id = $(this).data('id');
-            var nama_peminjam = $(this).data('nama_peminjam');
-            var alat_barang_id = $(this).data('alat_barang_id');
-            var tanggal_pinjam = $(this).data('tanggal_pinjam');
-            var tanggal_kembali = $(this).data('tanggal_kembali');
-            var ruangan_peminjam = $(this).data('ruangan_peminjam');
-            var keperluan = $(this).data('keperluan');
-            var status_pinjam = $(this).data('status_pinjam');
+            // var namaPeminjam = $(this).data('nama_peminjam');
+            // var alatBarangId = $(this).data('alat_barang_id');
+            var tanggalPinjam = $(this).data('tanggal_pinjam');
+            var tanggalKembali = $(this).data('tanggal_kembali');
+            // var ruanganPeminjam = $(this).data('ruangan_peminjam');
+            // var keperluan = $(this).data('keperluan');
+            var statusPinjam = $(this).data('status_pinjam');
 
+            // Set form action
             $('#editPeminjamanAlatBarangForm').attr('action', "{{ url('admin/peminjaman-alat-barang') }}/" + id);
 
-            $('#nama_peminjam').val(nama_peminjam);
-            $('#edit_alat_barang_id').val(alat_barang_id);
-            $('#edit_tanggal_pinjam').val(tanggal_pinjam);
-            $('#edit_tanggal_kembali').val(tanggal_kembali);
-            $('#edit_ruangan_peminjam').val(ruangan_peminjam);
-            $('#edit_keperluan').val(keperluan);
-            $('#edit_status_pinjam').val(status_pinjam);
+            // Isi data ke input form
+            // $('#edit_nama_peminjam').val(namaPeminjam);
+            // $('#edit_alat_barang_id').val(alatBarangId);
+            $('#edit_tanggal_pinjam').val(tanggalPinjam);
+            $('#edit_tanggal_kembali').val(tanggalKembali);
+            // $('#edit_ruangan_peminjam').val(ruanganPeminjam);
+            // $('#edit_keperluan').val(keperluan);
+            $('#edit_status_pinjam').val(statusPinjam);
 
+            // Tampilkan modal
             $('#editPeminjamanAlatBarangModal').modal('show');
         });
     </script>

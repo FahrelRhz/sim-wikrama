@@ -15,14 +15,14 @@ class RequestPerbaikanBarangsController extends Controller
     {
         if ($request->ajax()) {
             $requestPerbaikanBarang = RequestPerbaikanBarang::with(['user', 'barang'])
-            ->select(['id', 'barang_id', 'user_id', 'tanggal_request', 'status', 'deskripsi_kerusakan']);
-                    return DataTables::of($requestPerbaikanBarang)
+                ->select(['id', 'barang_id', 'user_id', 'tanggal_request', 'status', 'deskripsi_kerusakan']);
+            return DataTables::of($requestPerbaikanBarang)
                 ->addIndexColumn()
                 ->addColumn('barang_id', function ($requestPerbaikanBarang) {
-                    return optional($requestPerbaikanBarang->barang)->nama_barang 
+                    return optional($requestPerbaikanBarang->barang)->nama_barang
                         ? $requestPerbaikanBarang->barang->nama_barang . ' - ' . $requestPerbaikanBarang->barang->kode_barang
                         : '-';
-                })                
+                })
                 ->addColumn('user', function ($requestPerbaikanBarang) {
                     return $requestPerbaikanBarang->user->name ?? '-';
                 })
